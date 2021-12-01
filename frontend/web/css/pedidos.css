@@ -331,9 +331,9 @@ body {
 }
 
 #cover-spin::after {
-   
- 
- 
+
+
+
 }
 
 .font-10
@@ -692,6 +692,55 @@ a>.block {
     line-height: 1.46;
 }
 
+.pedidos .card-header
+{
+    padding: 5px 5px;
+    background: -webkit-linear-gradient(left, darkred,rgba(116, 2, 2, .9));
+    border-radius: 5px;
+}
+
+.pedidos .card-header .mb-0
+{
+    margin-top: 0;
+}
+
+.card-body .table td, .table th
+{
+    border:none;
+}
+
+.pedidos .card-header .mb-0 .btn
+{
+    color:white;
+    padding:0;
+    display: flex;
+    font-weight: 100;
+}
+
+.pedidos .card-header a
+{
+    color:white;
+}
+
+.pedidos .card-header a:hover
+{
+   text-decoration: none;
+}
+
+.table-info th,td
+{
+    font-size: 11px;
+}
+
+.table thead tr th{
+    font-size: 12px;
+}
+
+#accordion
+{
+    padding-bottom: 10px;
+}
+
 a {
     color: palevioletred;
     text-decoration: none;
@@ -705,7 +754,7 @@ a:hover {
 
 .productos {
     padding-right: 5px !important;
-    padding-left: 5px !important;
+    padding-left: 5px   !important;
     padding-bottom: 15px!important;
 }
 

@@ -236,14 +236,14 @@ class SiteController extends Controller
             $pedidos->idcliente=$cliente->id;
             $pedidos->nombres=$cliente->nombres.' '.$cliente->apellidos;
             $pedidos->usuariocreacion=  Yii::$app->user->identity->id;
-            
+
             $direccion =$cliente->direccion;
             $telefono =$cliente->telefono;
             $pedidos->direccion= $direccion;
             $pedidos->idcliente=  Yii::$app->user->identity->id;
-            $pedidos->idzona=  $valorsector->id;            
-            $pedidos->telefono=  $telefono;            
-            $pedidos->recargo=  $valorsector->total;            
+            $pedidos->idzona=  $valorsector->id;
+            $pedidos->telefono=  $telefono;
+            $pedidos->recargo=  $valorsector->total;
             $pedidos->estatuspedido='NUEVO';
             $pedidos->estatus='ACTIVO';
             $valortotal=0;
@@ -267,7 +267,7 @@ class SiteController extends Controller
                     //$value["id"];
                     $subtotalI= number_format($value["valorunitario"]/1.12,2);
                     $ivaI= number_format($value["valorunitario"]-$subtotalI,2);
-                    
+
                     $descripcion=$value["descripcion"];
                     if ($value["color"]!="N/A"){ $descripcion.=' '.$value["color"]; }
                     if ($value["clasificacion"]!="N/A"){ $descripcion.=' '.$value["clasificacion"]; }
@@ -275,7 +275,7 @@ class SiteController extends Controller
                     $PedidoDetalle->idpedido=$pedidos->id;
                     $PedidoDetalle->idproducto=$value["idproducto1"];
                     $PedidoDetalle->combo=$value["id"];
-                    
+
                     $PedidoDetalle->descripcion=$descripcion;
                     $PedidoDetalle->nombreprod=$value["nombre"];
                     $PedidoDetalle->cantidad=$value["cantidad"];
@@ -318,7 +318,7 @@ class SiteController extends Controller
     public function actionPedidoactivo()
     {
         $this->layout = 'pedidos';
-        $pedidos =  Pedidos::find()->where(['estatus' =>  "ACTIVO"])->orWhere(['estatuspedido' =>  "NUEVO"])->orderBy(["fechacreacion" => SORT_ASC])->limit(1)->all();
+        $pedidos =  Pedidos::find()->where(['estatus' =>  "ACTIVO"])->orWhere(['estatuspedido' =>  "NUEVO"])->orderBy(["fechacreacion" => SORT_ASC])->limit(2)->all();
         $pedidosuser= array();
         $cont=0;
         $combo=false;
@@ -333,19 +333,20 @@ class SiteController extends Controller
             $pedidosuser["cabecera"]->total=$valueped->total;
             //if ($pedidosDetalle->combo!=0){  }
             foreach ($pedidosDetalle as $key => $valuepedet) {
-                $pedidosuser["detalle"][$cont]->nombre=$valuepedet->nombreprod;
-                $pedidosuser["detalle"][$cont]->descripcion=$valuepedet->descripcion;
-                $pedidosuser["detalle"][$cont]->cantidad=$valuepedet->cantidad;
-                $pedidosuser["detalle"][$cont]->subtotal=$valuepedet->subtotal;
-                $pedidosuser["detalle"][$cont]->descuento=$valuepedet->descuento;
-                $pedidosuser["detalle"][$cont]->iva=$valuepedet->iva;
+                $pedidosuser["detalle"][$valueped->id][$cont]->nombre=$valuepedet->nombreprod;
+                $pedidosuser["detalle"][$valueped->id][$cont]->descripcion=$valuepedet->descripcion;
+                $pedidosuser["detalle"][$valueped->id][$cont]->cantidad=$valuepedet->cantidad;
+                $pedidosuser["detalle"][$valueped->id][$cont]->subtotal=$valuepedet->subtotal;
+                $pedidosuser["detalle"][$valueped->id][$cont]->descuento=$valuepedet->descuento;
+                $pedidosuser["detalle"][$valueped->id][$cont]->iva=$valuepedet->iva;
                 $cont++;
             }
         }
- 
+
 
         return $this->render('pedidoactivo', [
-            'pedidos' => $pedidosuser,
+            'pedidos' => $pedidos,
+            'pedidosdetalle' => $pedidosuser,
         ]);
     }
 

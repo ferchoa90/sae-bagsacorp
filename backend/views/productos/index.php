@@ -48,12 +48,9 @@ $partes = count($urls) - 1;
         </div><!-- /.box -->
     </div>
 <?php
-$this->registerJsFile(URL::base() . "/js/class/productosAdmin.js", ['depends' => [ \yii\bootstrap\BootstrapPluginAsset::className()]
+//$this->registerJsFile(URL::base() . "/js/class/productosAdmin.js" );
+
+$this->registerJsFile(URL::base() . "/js/class/productosAdmin.js", [
+    'depends' => [ // \yii\bootstrap\BootstrapPluginAsset::className()
+    ]
 ]);
-
-
-
-
-
-
-

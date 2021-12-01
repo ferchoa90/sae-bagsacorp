@@ -41,6 +41,29 @@ body {
     background-color: white;
 }
 
+.main-sidebar .sidebar-menu .nav-item a:hover {
+    border-left-color: #009C41 !important;
+}
+
+.logo {
+    background-color: #009C41 !important;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #01bd4f;
+    border-color: #01bd4f;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: none;
+}
+
 
 .txt_loading {
     width: 100%;
@@ -148,7 +171,7 @@ body {
 .slider-movil
 {
     width: 100%;
-    padding-right: 1%;  
+    padding-right: 1%;
 }
 
 

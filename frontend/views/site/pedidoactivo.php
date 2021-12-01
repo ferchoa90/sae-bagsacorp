@@ -1,7 +1,5 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+use backend\components\Pedido;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
@@ -27,31 +25,86 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col">
                                     <h4 class="text-left"><b>Pedido Actual</b></h4>
                                 </div>
-                                <div class="col align-self-center text-right text-muted parpadea" id="items">Esperando aceptación del restaurante</div>
+                                <div class="col align-self-center text-right text-muted parpadea" id="items"><?php $clasepedido= new Pedido; echo $clasepedido->getEstatuspedido($pedidos[0]->estatuspedido) ?></div>
                             </div>
                         </div>
-
-
                         <div id="contenidoPedidos">
-                            <?=$pedidos["cabecera"]->total; ?>
-                            <?php foreach ($pedidos["detalle"] as $key => $value) {
-                                echo $value->nombre;
-                            } 
+                            <?php foreach ($pedidos as $key => $value) { ?>
+                                <div id="accordion">
+                                <div class="card pedidos">
+                                    <div class="card-header" id="pedido-<?= $value->id ?>">
+                                    <h5 class="mb-0 col-12">
+                                        <a class="btn btn-link col-12 row" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <div class="col-11 text-left" >Pedido # 000<?= $value->id ?></div>
+
+                                            <div class="col-1" ><i class="fa fa-chevron-down" style="color:white;font-size: 10px;" aria-hidden="true"></i></div>
+                                        </a>
+                                    </h5>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse" aria-labelledby="pedido-<?= $value->id ?>" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <!--Table-->
+                                            <table class="table table-striped w-auto">
+                                                <!--Table head-->
+                                                <thead>
+                                                <tr>
+                                                    <th>Cantidad</th>
+                                                    <th>Nombre</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                                </thead>
+                                                <!--Table head-->
+
+                                                <!--Table body-->
+                                                <tbody>
+                                                <?php $cont=0; ?>
+                                                <?php foreach ($pedidosdetalle["detalle"][$value->id] as $key => $valuedet) { ?>
+
+                                                    <?php if ($cont % 2 ==0){ $style="table-info"; }else{ $style=""; } ?>
+                                                    <tr class="<?=$style ?>">
+                                                        <td scope="row"><?= $valuedet->cantidad ?></th>
+                                                        <td><?= $valuedet->nombre ?></td>
+                                                        <td><?= $valuedet->descripcion ?></td>
+                                                        <td>$ <?= number_format($valuedet->subtotal*$valuedet->cantidad,2) ?></td>
+                                                    </tr>
+
+                                                    <?php $cont++; ?>
+                                                <?php }?>
+
+
+                                                </tbody>
+                                                <!--Table body-->
+
+
+                                            </table>
+                                            <!--Table-->
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                </div>
+                            <?php
                             //var_dump($pedidos["cabecera"]);
+                            }
                             ?>
                         </div>
 
 
                         <div class="back-to-shop"><a href="<?= URL::base() ?>/site/pedidos">&leftarrow;</a><span class="text-muted">Regresar a mis órdenes</span></div>
                     </div>
-                     
+
                 </div>
             </div>
 
 		</div>
 	</div>
 	<!-- Footer -->
- 
+
 	<div class="container-fluid text-center footer">
 		Design by <a href="#">Acep Sistemas.</a></p>
 	</div>
@@ -59,8 +112,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
 var valRecargo=0;
 dataCard = [];
- 
+
 </script>
+
+<script>
+  //Cuando la página esté cargada completamente
+  $(document).ready(function(){
+    //Cada 10 segundos (10000 milisegundos) se ejecutará la función refrescar
+    setTimeout(refrescar, 10000);
+  });
+  function refrescar(){
+    //Actualiza la página
+    location.reload();
+  }
+</script>   
 
 <style>
     .item-pedido:hover{
@@ -89,7 +154,7 @@ dataCard = [];
 }
 
 .parpadea {
-  
+
   animation-name: parpadeo;
   animation-duration: 1s;
   animation-timing-function: linear;
@@ -101,19 +166,19 @@ dataCard = [];
   -webkit-animation-iteration-count: infinite;
 }
 
-@-moz-keyframes parpadeo{  
+@-moz-keyframes parpadeo{
   0% { opacity: 1.0; }
   50% { opacity: 0.0; }
   100% { opacity: 1.0; }
 }
 
-@-webkit-keyframes parpadeo {  
+@-webkit-keyframes parpadeo {
   0% { opacity: 1.0; }
   50% { opacity: 0.0; }
    100% { opacity: 1.0; }
 }
 
-@keyframes parpadeo {  
+@keyframes parpadeo {
   0% { opacity: 1.0; }
    50% { opacity: 0.0; }
   100% { opacity: 1.0; }
