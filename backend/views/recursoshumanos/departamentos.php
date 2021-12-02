@@ -48,4 +48,4 @@ $partes = count($urls) - 1;
 <?php
 $this->registerJsFile(URL::base() . "/js/class/departamentosAdmin.js"
 //['depends' => [ \yii\bootstrap\BootstrapPluginAsset::className()]]
-);
+); 

@@ -23,9 +23,9 @@ $partes = count($urls) - 1;
     <?= Html::a(Html::tag('i', '', ['class' => 'fa fa-plus']) . ' ', ['nuevo'], ['class' => 'btn btn-primary', "title" => "Agregar Usuario"]) ?>
     <br>
     <br>
-    <div class="box">
-        <div class="box-body">
-            <div class="box-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-body">
                 <table id="table_usuarios" class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr class="tableheader">

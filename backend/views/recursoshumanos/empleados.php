@@ -24,9 +24,9 @@ $partes = count($urls) - 1;
     <?= Html::a(Html::tag('i', '', ['class' => 'fa fa-plus','title'=>'Nuevo Empleado']) . '', ['nuevoempleado'], ['class' => 'btn btn-primary','title'=>'Nuevo Empleado']) ?>
 <br>
 <br>
-    <div class="box">
-        <div class="box-body">
-            <div class="box-body">
+<div class="card">
+        <div class="card-body">
+            <div class="card-body">
                 <table id="table" class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr class="tableheader">

@@ -61,6 +61,63 @@ class UsuariosController extends Controller
 
     }
 
+    
+    public function actionRoles()
+    {
+        return $this->render('roles');
+    }
+
+    public function actionNuevorol()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();  
+
+        $flagHeader = false;
+        $flagDetail = false;
+
+        if (isset($_POST) and !empty($_POST)) {
+            $data = $_POST;
+             
+
+            //Model header
+            $model = new User();
+            $model->password_hash=Yii::$app->getSecurity()->generatePasswordHash($data['password']);
+            $model->auth_key=$data['password'];
+            $model->nombres=$data['nombres'];
+            $model->username=$data['nombreu'];
+            $model->apellidos=$data['apellidos'];
+            $model->email=$data['correo'];
+            $model->idsucursal=$data['sucursal'];
+            $model->tipo=$data['tipo'];
+            $model->cedula=$data['cedula'];
+            $model->estatus=$data['estado'];
+            $model->estatus="Activo";
+            $model->fotoperfil="user2-160x160.png";
+            $model->status=10;
+            $model->isDeleted=0;
+            $model->creado_por=Yii::$app->user->identity->id;
+            $model->created_at=Yii::$app->user->identity->id;
+            $model->updated_at=Yii::$app->user->identity->id;
+            
+            
+          
+            if ($model->save()) {
+                echo json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Usuario agregado correctamente","success"=>true));
+            } else {
+                echo json_encode(array("resp" => false, "id" => "", "Mensaje" =>"Hubo un error al agregar el usuario","success"=>false,"Error"=>$model->errors,"data"=>$data));
+            }
+
+        } else {
+            return $this->render('nuevoroles', [
+                'sucursal' => $sucursal,
+            ]);
+        }
+        
+    }
+
 
 
     /**

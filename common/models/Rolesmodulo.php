@@ -5,28 +5,29 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "rolespermisos".
+ * This is the model class for table "rolesmodulo".
  *
  * @property int $id
- * @property int $idrol
- * @property int $idmodulo
- * @property resource $descripcion
+ * @property resource $nombre
+ * @property resource|null $descripcion
+ * @property int $idmenu
  * @property int $usuariocreacion
  * @property string $fechacreacion
  * @property string $estatus
  *
- * @property Rolesmodulo $idmodulo0
- * @property Roles $idrol0
+ * @property MenuAdmin $idmenu0
+ * @property Rolespermisos[] $rolespermisos
+ * @property Rolessubmodulo[] $rolessubmodulos
  * @property User $usuariocreacion0
  */
-class Rolespermisos extends \yii\db\ActiveRecord
+class Rolesmodulo extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'rolespermisos';
+        return 'rolesmodulo';
     }
 
     /**
@@ -35,13 +36,12 @@ class Rolespermisos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idrol', 'idmodulo', 'descripcion', 'usuariocreacion'], 'required'],
-            [['idrol', 'idmodulo', 'usuariocreacion'], 'integer'],
-            [['descripcion', 'estatus'], 'string'],
+            [['nombre', 'idmenu', 'usuariocreacion'], 'required'],
+            [['nombre', 'descripcion', 'estatus'], 'string'],
+            [['idmenu', 'usuariocreacion'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
-            [['idmodulo'], 'exist', 'skipOnError' => true, 'targetClass' => Rolesmodulo::className(), 'targetAttribute' => ['idmodulo' => 'id']],
-            [['idrol'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['idrol' => 'id']],
+            [['idmenu'], 'exist', 'skipOnError' => true, 'targetClass' => MenuAdmin::className(), 'targetAttribute' => ['idmenu' => 'id']],
         ];
     }
 
@@ -52,9 +52,9 @@ class Rolespermisos extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'idrol' => 'Idrol',
-            'idmodulo' => 'Idmodulo',
+            'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
+            'idmenu' => 'Idmenu',
             'usuariocreacion' => 'Usuariocreacion',
             'fechacreacion' => 'Fechacreacion',
             'estatus' => 'Estatus',
@@ -62,23 +62,33 @@ class Rolespermisos extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Idmodulo0]].
+     * Gets query for [[Idmenu0]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getIdmodulo0()
+    public function getIdmenu0()
     {
-        return $this->hasOne(Rolesmodulo::className(), ['id' => 'idmodulo']);
+        return $this->hasOne(MenuAdmin::className(), ['id' => 'idmenu']);
     }
 
     /**
-     * Gets query for [[Idrol0]].
+     * Gets query for [[Rolespermisos]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getIdrol0()
+    public function getRolespermisos()
     {
-        return $this->hasOne(Roles::className(), ['id' => 'idrol']);
+        return $this->hasMany(Rolespermisos::className(), ['idmodulo' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Rolessubmodulos]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRolessubmodulos()
+    {
+        return $this->hasMany(Rolessubmodulo::className(), ['idmodulo' => 'id']);
     }
 
     /**

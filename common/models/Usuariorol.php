@@ -5,28 +5,27 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "rolespermisos".
+ * This is the model class for table "usuariorol".
  *
  * @property int $id
  * @property int $idrol
- * @property int $idmodulo
- * @property resource $descripcion
- * @property int $usuariocreacion
+ * @property int $idusuario
  * @property string $fechacreacion
+ * @property int $usuariocreacion
  * @property string $estatus
  *
- * @property Rolesmodulo $idmodulo0
  * @property Roles $idrol0
+ * @property User $idusuario0
  * @property User $usuariocreacion0
  */
-class Rolespermisos extends \yii\db\ActiveRecord
+class Usuariorol extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'rolespermisos';
+        return 'usuariorol';
     }
 
     /**
@@ -35,13 +34,13 @@ class Rolespermisos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idrol', 'idmodulo', 'descripcion', 'usuariocreacion'], 'required'],
-            [['idrol', 'idmodulo', 'usuariocreacion'], 'integer'],
-            [['descripcion', 'estatus'], 'string'],
+            [['idrol', 'idusuario'], 'required'],
+            [['idrol', 'idusuario', 'usuariocreacion'], 'integer'],
             [['fechacreacion'], 'safe'],
+            [['estatus'], 'string'],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
-            [['idmodulo'], 'exist', 'skipOnError' => true, 'targetClass' => Rolesmodulo::className(), 'targetAttribute' => ['idmodulo' => 'id']],
             [['idrol'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::className(), 'targetAttribute' => ['idrol' => 'id']],
+            [['idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['idusuario' => 'id']],
         ];
     }
 
@@ -53,22 +52,11 @@ class Rolespermisos extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'idrol' => 'Idrol',
-            'idmodulo' => 'Idmodulo',
-            'descripcion' => 'Descripcion',
-            'usuariocreacion' => 'Usuariocreacion',
+            'idusuario' => 'Idusuario',
             'fechacreacion' => 'Fechacreacion',
+            'usuariocreacion' => 'Usuariocreacion',
             'estatus' => 'Estatus',
         ];
-    }
-
-    /**
-     * Gets query for [[Idmodulo0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIdmodulo0()
-    {
-        return $this->hasOne(Rolesmodulo::className(), ['id' => 'idmodulo']);
     }
 
     /**
@@ -79,6 +67,16 @@ class Rolespermisos extends \yii\db\ActiveRecord
     public function getIdrol0()
     {
         return $this->hasOne(Roles::className(), ['id' => 'idrol']);
+    }
+
+    /**
+     * Gets query for [[Idusuario0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdusuario0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'idusuario']);
     }
 
     /**
