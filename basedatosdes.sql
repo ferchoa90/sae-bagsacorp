@@ -7777,7 +7777,7 @@ CREATE TABLE `roles` (
   KEY `id` (`id`),
   KEY `usuariocreacion` (`usuariocreacion`),
   CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`usuariocreacion`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `roles` */
 
