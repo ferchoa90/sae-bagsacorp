@@ -98,4 +98,9 @@ class Proveedores extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Provincias::className(), ['id' => 'provincia']);
     }
+
+    public function getUsuariocreacion0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
 }

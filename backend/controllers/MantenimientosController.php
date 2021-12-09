@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use common\models\Productos;
 use common\models\Clientes;
+use common\models\Proveedores;
 use backend\components\Botones;
 
 
@@ -109,6 +110,75 @@ class MantenimientosController extends Controller
             $count++;
 
         }
+        return json_encode($arrayResp);
+
+    }
+
+    public function actionProveedoresreg()
+
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->user->isGuest) {
+
+            return $this->redirect(URL::base() . "/site/login");
+
+        }
+
+        $page = "Proveedores";
+
+        $model = Proveedores::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+
+        $arrayResp = array();
+
+        $count = 1;
+
+        foreach ($model as $key => $data) {
+
+            foreach ($data as $id => $text) {
+
+
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+
+                //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
+
+                //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
+
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+              //  $arrayResp[$key]['cliente'] = $data->cliente->nombres;
+                $view='proveedor';
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                    if (($id == "nombre") || ($id == "ruc") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "contacto") || ($id == "telefono") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "direccion") || ($id == "credito") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "correo")  || ($id == "persona") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "telefono") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+
+                }
+
+            }
+
+            $count++;
+
+        }
 
 
 
@@ -141,6 +211,11 @@ class MantenimientosController extends Controller
     public function actionClientes()
     {
         return $this->render('clientes');
+    }
+
+    public function actionProveedores()
+    {
+        return $this->render('proveedores');
     }
 
 
