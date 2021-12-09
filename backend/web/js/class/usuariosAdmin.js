@@ -124,7 +124,7 @@ function validarForm(datos) {
     console.log(datos);
 
     $.each(datos, function(index, element) {
-        //console.log(index+' :'+element.trim().length); 
+        //console.log(index+' :'+element.trim().length);
         if (element.trim() == "" || element.trim().length == 0) {
             if (cont == 0) { $("#" + index).focus(); }
             cont++;

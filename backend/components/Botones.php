@@ -21,6 +21,7 @@ class Botones extends Component
     {
 
         $result;
+        $return="";
         foreach($objetos as $obj):
 
 
@@ -65,6 +66,7 @@ class Botones extends Component
 
         ($tamanio=='') ? $tamanio=$tamaniodefault : '' ;
         ($tamanio=='pequeño') ? $tamanio='btn-sm' : '' ;
+        ($tamanio=='superp') ? $tamanio='btn-xs' : '' ;
         ($tamanio=='grande') ? $tamanio='btn-large' : '' ;
         ($tamanio=='completo') ? $tamanio='btn-block' : '' ;
 

@@ -46,15 +46,46 @@ $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/admi
     <?= $this->render('footer') ?>
 </div>
 
+<div id="loading" class="container h-100 col-12 text-center">
+    <div class="row align-items-center h-100">
+        <div class="col-12 mx-auto">
+            <div class="spinner-border text-success" role="status">
+                <span class="sr-only">Loading...</span>
 
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage() ?>
+
 <style>
+
+#loading {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  opacity: 0.7;
+  background-color: #000;
+  z-index: 99;
+}
+
+#loading-image {
+  position: absolute;
+  top: 100px;
+  left: 240px;
+  z-index: 100;
+}
     body{
         font-size: 0.9rem;
 
@@ -83,7 +114,7 @@ $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/admi
     margin-top: 3px;
     font-size: 11px;
 }
-.user-panel>.info>a 
+.user-panel>.info>a
 {
     color:white;
 }

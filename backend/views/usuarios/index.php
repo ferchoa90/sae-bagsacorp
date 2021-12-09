@@ -24,7 +24,7 @@ $partes = count($urls) - 1;
     <br>
     <br>
     <div class="card">
-        <div class="card-body">
+
             <div class="card-body">
                 <table id="table_usuarios" class="table table-striped table-bordered table-hover">
                     <thead>
@@ -37,14 +37,14 @@ $partes = count($urls) - 1;
                         <th>Perfil</th>
                         <th>Fecha Creación</th>
                         <th>Estado</th>
-                        <th></th>
+                        <th>&nbsp;Acciones&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
             </div><!-- /.box-body -->
-        </div><!-- /.box -->
+
     </div>
 <?php
 $this->registerJsFile(URL::base() . "/js/class/usuariosAdmin.js", [

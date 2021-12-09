@@ -14,7 +14,7 @@ use yii\db\Query;
 use backend\models\User;
 use common\models\Sucursal;
 
- 
+
 
 
 /**
@@ -61,7 +61,7 @@ class UsuariosController extends Controller
 
     }
 
-    
+
     public function actionRoles()
     {
         return $this->render('roles');
@@ -73,14 +73,14 @@ class UsuariosController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
 
-        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();  
+        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
 
         $flagHeader = false;
         $flagDetail = false;
 
         if (isset($_POST) and !empty($_POST)) {
             $data = $_POST;
-             
+
 
             //Model header
             $model = new User();
@@ -101,9 +101,9 @@ class UsuariosController extends Controller
             $model->creado_por=Yii::$app->user->identity->id;
             $model->created_at=Yii::$app->user->identity->id;
             $model->updated_at=Yii::$app->user->identity->id;
-            
-            
-          
+
+
+
             if ($model->save()) {
                 echo json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Usuario agregado correctamente","success"=>true));
             } else {
@@ -115,7 +115,7 @@ class UsuariosController extends Controller
                 'sucursal' => $sucursal,
             ]);
         }
-        
+
     }
 
 
@@ -124,7 +124,7 @@ class UsuariosController extends Controller
      * Renders the index view for the module
      * @return string
      */
-    
+
     public function actionRegistros()
 
     {
@@ -143,13 +143,10 @@ class UsuariosController extends Controller
 
                 if ($id == "id") {
 
-                    $arrayResp[$key]['button'] = '<a href="' . URL::base() . '/' . $page . '/view?id=' . $text . '" title="Ver" class="btn btn-xs btn-primary btnedit"><i class="fas fa-eye"></i></a>'
-
-                        . '&nbsp;<a href="' . URL::base() . '/' . $page . '/update?id=' . $text . '" title="Actualizar" class="btn btn-xs btn-info btnedit"><i class="fas fa-pencil-alt"></i></a>'
-
+                    $arrayResp[$key]['button'] = '<a href="' . URL::base() . '/' . $page . '/verdescarga?id=' . $text . '" title="Ver" class="btn btn-xs btn-primary btnedit"><i class="fas fa-eye"></i></a>'
+                        . '&nbsp;<a href="' . URL::base() . '/' . $page . '/actualizardescarga?id=' . $text . '" title="Actualizar" class="btn btn-xs btn-info btnedit"><span class="fas fa-pencil-alt"></span></a>'
                         . '&nbsp;<button type="submit" alt="Eliminar" title="Eliminar" data-id="' . $text . '" data-name="' . $id . '" onclick="deleteReg(this)" class="btn btn-xs btn-danger btnhapus">'
-
-                        . '<i class="fas fa-trash-alt"></i></button>';
+                        . '<i class="fas fa-trash"></i></button>';
 
                     //$arrayResp[$key]['button'] = '-';
 
@@ -157,7 +154,7 @@ class UsuariosController extends Controller
 
 
 
-               
+
 
                 if ($id == "estatus" and $text == 'Activo') {
 
@@ -218,14 +215,14 @@ class UsuariosController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
 
-        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();  
+        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
 
         $flagHeader = false;
         $flagDetail = false;
 
         if (isset($_POST) and !empty($_POST)) {
             $data = $_POST;
-             
+
 
             //Model header
             $model = new User();
@@ -246,9 +243,9 @@ class UsuariosController extends Controller
             $model->creado_por=Yii::$app->user->identity->id;
             $model->created_at=Yii::$app->user->identity->id;
             $model->updated_at=Yii::$app->user->identity->id;
-            
-            
-          
+
+
+
             if ($model->save()) {
                 echo json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Usuario agregado correctamente","success"=>true));
             } else {
@@ -275,11 +272,11 @@ class UsuariosController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
 
-        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();  
+        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
         $model = $this->findModel($id);
         if (isset($_POST) and !empty($_POST)) {
             $data = $_POST;
- 
+
             //Model header
             if ($data['password'])
             {
@@ -351,4 +348,3 @@ class UsuariosController extends Controller
     }
 
 }
-

@@ -117,7 +117,7 @@ class RecursoshumanosController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
 
-        $empleado= Empleados::find()->where(['id' => $id])->one();  
+        $empleado= Empleados::find()->where(['id' => $id])->one();
         return $this->render('verempleado', [
             'model' => $empleado,
 
@@ -132,14 +132,14 @@ class RecursoshumanosController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
 
-        $departamento = Departamentos::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();  
+        $departamento = Departamentos::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
 
         $flagHeader = false;
         $flagDetail = false;
 
         if (isset($_POST) and !empty($_POST)) {
             $data = $_POST;
-             
+
 
             //Model header
             $model = new Empleados();
@@ -161,8 +161,8 @@ class RecursoshumanosController extends Controller
             $model->usuariocreacion=Yii::$app->user->identity->id;
             $model->estatus=$data['estado'];
             $model->isDeleted=0;
-            
-          
+
+
             if ($model->save()) {
                 echo json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Empleado agregado correctamente","success"=>true));
             } else {
@@ -261,7 +261,7 @@ class RecursoshumanosController extends Controller
                     if (($id == "telefono") || ($id == "tiposangre") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "idbiometrico")  ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "nacionalidad") || ($id == "fechasalida") ) { $arrayResp[$key][$id] = $text; }
- 
+
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
                 }
             }
@@ -293,10 +293,10 @@ class RecursoshumanosController extends Controller
 
         foreach ($model as $key => $data) {
             foreach ($data as $id => $text) {
-                 
+
                 $arrayResp[$key]['num'] = $count+1;
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
-                $arrayResp[$key]['empresa'] = "N/A";
+                $arrayResp[$key]['empresa'] = "BAGSACORP";
                 if ($id == "id") {
                     $arrayResp[$key]['button'] = '<a href="' . URL::base() . '/' . $page . '/verdepartamento?id=' . $text . '" title="Ver" class="btn btn-xs btn-primary btnedit"><i class="fas fa-eye"></i></a>'
                         . '&nbsp;<a href="' . URL::base() . '/' . $page . '/editardepartamento?id=' . $text . '" title="Actualizar" class="btn btn-xs btn-info btnedit"><span class="fas fa-pencil-alt"></span></a>'
@@ -342,15 +342,15 @@ class RecursoshumanosController extends Controller
 
         foreach ($model as $key => $data) {
             foreach ($data as $id => $text) {
-                 
+
                 $arrayResp[$key]['num'] = $count+1;
                 //$arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
                 //$arrayResp[$key]['empresa'] = "N/A";
                 $arrayResp[$key]['empleado'] = $data->iduser0->apellidos.' '.$data->iduser0->nombres;
-                
+
                 if (($id == "fechahora")) { $arrayResp[$key][$id] = $text; }
                 if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
-                
+
             }
             $count++;
         }
@@ -406,13 +406,13 @@ class RecursoshumanosController extends Controller
 
         }
 
-        
+
 
         return json_encode($arrayResp);
 
     }
 
- 
+
 
 
 
@@ -449,10 +449,3 @@ class RecursoshumanosController extends Controller
 
 
 }
-
-
-
-
-
-
-

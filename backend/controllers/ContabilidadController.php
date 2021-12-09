@@ -10,6 +10,9 @@ use yii\helpers\Url;
 use yii\db\Query;
 use backend\models\User;
 use common\models\Bancos;
+use common\models\Cuentas;
+use backend\components\Botones;
+
 
 class ContabilidadController extends Controller
 {
@@ -47,6 +50,11 @@ class ContabilidadController extends Controller
         return $this->render('index');
     }
 
+    public function actionCuentas()
+    {
+        return $this->render('cuentas');
+    }
+
     public function actionBancos()
     {
         return $this->render('bancos');
@@ -69,7 +77,94 @@ class ContabilidadController extends Controller
 
     }
 
-   
+    public function actionBancosreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "eliminarbanco";
+        $model = Bancos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //($arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verfactura?='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarfactura?='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "nombre")  ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+
+    public function actionCuentasreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "eliminarfactura";
+        $model = Cuentas::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //($arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verfactura?='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarfactura?='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "parent") || ($id == "codigoant") || ($id == "codigo") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "saldo") || ($id == "cheque") || ($id == "nombre")  ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
     public function actionRegistros()
     {
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -107,7 +202,7 @@ class ContabilidadController extends Controller
             }
             $count++;
         }
-        
+
         echo json_encode($arrayResp);
     }
 
@@ -143,7 +238,7 @@ class ContabilidadController extends Controller
             }
             $count++;
         }
-        
+
         return json_encode($arrayResp);
     }
 
@@ -166,7 +261,7 @@ class ContabilidadController extends Controller
 
         return $this->render('verdescarga', [
             'model' => $this->findModel($id),
-           
+
         ]);
 
     }
@@ -253,7 +348,7 @@ class ContabilidadController extends Controller
                 //echo 'OK';
                 $data = $_POST;
                 //Model header
-                 
+
                 $model->nombre = $data['nombre'];
                 $model->archivo = $uploadFile["Nombrearchivo"];
                 $model->pagina = $data['tipo'];
@@ -274,7 +369,7 @@ class ContabilidadController extends Controller
             }else{
                 $return=array("success"=>false,"Mensaje"=>$uploadFile["Mensaje"],"resp" => false, "id" => "");
             }
-           
+
             echo json_encode($return);
         } else {
             return $this->render('nuevadescarga', [
@@ -335,7 +430,7 @@ class ContabilidadController extends Controller
             //}else{
             //    $return=array("success"=>false,"Mensaje"=>"Error al subir la imagen, verifique que la imagen no exista.","resp" => false, "id" => "");
             //}
-           
+
             echo json_encode($return);
         } else {
             $model = $this->findModel($id);
@@ -390,6 +485,3 @@ class ContabilidadController extends Controller
     }
 
 }
-
-
-

@@ -2,7 +2,8 @@
 
 namespace backend\components;
 
-
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 use Yii;
 
@@ -116,7 +117,7 @@ class Grid extends Component
 
         (!$nombre)? $nombre=$nombredefault : $nombre=$nombre;
 
-        (!$class)? $class=$classdefault : $class=$class;
+        (!$clase)? $clase=$classdefault : $clase=$clase;
 
         $classdefault='table table-striped table-bordered table-hover';
 
@@ -243,14 +244,14 @@ function deleteReg(id) {
 
 $(document).ready(function () {
 
-   // alert('$nombre')
-  // loading(1);
+//alert('$nombre')
+   loading(1);
     var url = '$url';
         $.post(url, { '_csrf-backend': '$token', '_csrf-frontend': '$token' })
         .done(function(data) {
                 var data = JSON.parse(data);
             $('$nombre').DataTable({
-                    "paging": true,
+                "paging": true,
                 "fixedHeader": true,
                 "lengthChange": true,
                 "scrollX": true,
@@ -263,7 +264,7 @@ $(document).ready(function () {
                 "pageLength": 10,
                 "data": data,
                 "language": {
-                        "search": "Buscar: ",
+                    "search": "Buscar: ",
                     "zeroRecords": "No se encontraron registros para la búsqueda.",
                     "info": "Página _PAGE_ de _PAGES_ |  Total: _MAX_ registros",
                     "infoEmpty": "No existen registros.",
@@ -282,7 +283,7 @@ $(document).ready(function () {
                         $data
                 ]
             });
-            //loading(0);
+            loading(0);
         });
     });
 

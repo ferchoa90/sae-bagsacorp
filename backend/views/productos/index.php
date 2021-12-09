@@ -1,56 +1,36 @@
 <?php
+use backend\components\Objetos;
+use backend\components\Botones;
+use backend\components\Bloques;
+use backend\components\Grid;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
+use backend\assets\AppAsset;
 /* @var $this yii\web\View */
 
 $this->title = "Administración de Productos";
 $this->params['breadcrumbs'][] = $this->title;
 
-$flagIndex = 'false';
+$grid= new Grid;
+$botones= new Botones;
 
-if (strpos($_SERVER['REQUEST_URI'], 'index') !== false) {
-    $flagIndex = 'true';
-}
+$columnas= array(
+    array('columna'=>'#', 'datareg' => 'num', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Codigo', 'datareg' => 'codigo', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Nombres', 'datareg' => 'nombreproducto', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Descripcion', 'datareg' => 'descripcion', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Tipo P.', 'datareg' => 'tipop', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Fecha C.', 'datareg' => 'fechacreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Usuario C.', 'datareg' => 'usuariocreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Estatus', 'datareg' => 'estatus', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Acciones', 'datareg' => 'acciones', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+);
 
-$urls = explode("/", str_replace('/index', '', $_SERVER['REQUEST_URI']));
-$partes = count($urls) - 1;
+echo $grid->getGrid(
+        array(
+            array('tipo'=>'datagrid','nombre'=>'table','id'=>'table','columnas'=>$columnas,'clase'=>'','style'=>'','col'=>'','adicional'=>'','url'=>'registros')
+        )
+);
 
 ?>
-    <!-- ========================================================================================================== -->
-    <!-- Trvia box -->
-    <input type="hidden" id="urlflag" value="<?= $flagIndex ?>">
-    <input type="hidden" id="urlself" value="<?= $urls[$partes] ?>">
-    <input type="hidden" id="token" value="<?= Yii::$app->request->getCsrfToken() ?>">
-    <?= Html::a(Html::tag('i', '', ['class' => 'fa fa-plus']) . '&nbsp; Agregar Producto', ['nuevo'], ['class' => 'btn btn-primary']) ?>
-<br>
-<br>
-    <div class="box">
-        <div class="box-body">
-            <div class="box-body">
-                <table id="table_slider" class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr class="tableheader">
-                        <th style="width:40px">#</th>
-                        <th>PRODUCTO</th>
-                        <th>DESCRIPCION</th>
-                        <th>IMAGEN</th>
-                        <th>PROVEEDOR</th>
-                        <th>FECHA CREACIÓN</th>
-                        <th>USUARIO CREACIÓN</th>
-                        <th>ESTATUS</th>
-                        <th style="width:95px"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
-    </div>
-<?php
-//$this->registerJsFile(URL::base() . "/js/class/productosAdmin.js" );
-
-$this->registerJsFile(URL::base() . "/js/class/productosAdmin.js", [
-    'depends' => [ // \yii\bootstrap\BootstrapPluginAsset::className()
-    ]
-]);

@@ -4,13 +4,17 @@
 
 function loading(stat) {
     if (stat == 1) {
-        $('#loading-area').removeClass('loading-off');
+        /*('#loading-area').removeClass('loading-off');
         $('#loading-area').removeClass('loading-on');
-        $('body').addClass('modal-open');
+        $('body').addClass('modal-open');*/
+        $('#loading').show();
+
     }
     if (stat == 0) {
-        $('#loading-area').removeClass('loading-on');
+        /*$('#loading-area').removeClass('loading-on');
         $('#loading-area').addClass('loading-off');
-        $('body').removeClass('modal-open');
+        $('body').removeClass('modal-open');*/
+        $('#loading').hide();
     }
+    return true;
 }

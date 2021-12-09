@@ -9,13 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property resource $nombre
- * @property resource $descripcion
- * @property int $isDeleted
- * @property string $fechacreacion
+ * @property resource|null $descripcion
  * @property int $usuariocreacion
+ * @property string $fechacreacion
  * @property string $estatus
- *
- * @property User $usuariocreacion0
  */
 class Bancos extends \yii\db\ActiveRecord
 {
@@ -35,9 +32,8 @@ class Bancos extends \yii\db\ActiveRecord
         return [
             [['nombre', 'usuariocreacion'], 'required'],
             [['nombre', 'descripcion', 'estatus'], 'string'],
-            [['isDeleted', 'usuariocreacion'], 'integer'],
+            [['usuariocreacion'], 'integer'],
             [['fechacreacion'], 'safe'],
-            [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
         ];
     }
 
@@ -50,18 +46,9 @@ class Bancos extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
-            'isDeleted' => 'Is Deleted',
-            'fechacreacion' => 'Fechacreacion',
             'usuariocreacion' => 'Usuariocreacion',
+            'fechacreacion' => 'Fechacreacion',
             'estatus' => 'Estatus',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsuariocreacion0()
-    {
-        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
 }
