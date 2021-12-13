@@ -79,7 +79,7 @@ body {
 }
 
 .nav-treeview {
-    background: #81e091;
+   /* background: #81e091;*/
 }
 
 .navbar
@@ -89,6 +89,7 @@ body {
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
     color: black;
+   /* border-bottom: 1px solid rgba(0,161,64,.3);*/
 }
 
 [class*=sidebar-dark-] {

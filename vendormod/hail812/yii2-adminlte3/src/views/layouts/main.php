@@ -90,10 +90,16 @@ $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/admi
         font-size: 0.9rem;
 
     }
-.nav-treeview{
-
-    background: #2c3b41;
+.menu-is-opening .nav-treeview .nav-item .nav-link {
+    border-bottom: 1px solid rgba(0,161,64,.3);
+    background: rgba(129,224,145,.3);
 }
+
+.sidebar-menu a{
+    
+    background: rgba(129,224,145,.3);
+}
+
 .main-sidebar .sidebar {
     background-color: #222d32;
 }
