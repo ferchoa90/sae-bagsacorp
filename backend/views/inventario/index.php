@@ -1,65 +1,54 @@
 <?php
+use backend\components\Objetos;
+use backend\components\Botones;
+use backend\components\Bloques;
+use backend\components\Grid;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
+use backend\assets\AppAsset;
 /* @var $this yii\web\View */
 
 $this->title = "Administración de Inventario";
 $this->params['breadcrumbs'][] = $this->title;
 
-$flagIndex = 'false';
-
-if (strpos($_SERVER['REQUEST_URI'], 'index') !== false) {
-    $flagIndex = 'true';
-}
-
-$urls = explode("/", str_replace('/index', '', $_SERVER['REQUEST_URI']));
-$partes = count($urls) - 1;
+$grid= new Grid;
+$botones= new Botones;
+?>
+<div class="row col-12 p-2" >
+<?php
+echo $botones->getBotongridArray(
+    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'agregarstockex', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
 
 ?>
-    <!-- ========================================================================================================== -->
-    <!-- Trvia box -->
-    <input type="hidden" id="urlflag" value="<?= $flagIndex ?>">
-    <input type="hidden" id="urlself" value="<?= $urls[$partes] ?>">
-    <input type="hidden" id="token" value="<?= Yii::$app->request->getCsrfToken() ?>">
-    <?= Html::a(Html::tag('i', '', ['class' => 'fa fa-plus']) . '&nbsp; Agregar Stock', ['nuevo'], ['class' => 'btn btn-primary']) ?>
-<br>
-<br>
-    <div class="box">
-        <div class="box-body">
-            <div class="box-body">
-                <table id="table_slider" class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr class="tableheader">
-                        <th>#</th>
-                        <th>Título</th>
-                        <th>Imagen</th>
-                        <th>Stock</th>
-                        <th>PVP Final</th>
-                        <th>PVP Men.</th>
-                        <th>Código Art.</th>
-                        <th>Sucursal</th>
-                        <th>Tipo</th>
-                        <th>Presentacion</th>
-                        <th>Color</th>
-                        <th>Calidad</th>
-                        <th>Usuario Creación</th>
-                        <th>Fecha Creación</th>
-                        <th>Estado</th>
-                        <th>&nbsp;Acciones&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
-    </div>
-   
+</div>
 <?php
-//$this->registerJsFile(URL::base() . "/js/class/inventarioAdmin.js", ['depends' => [ \yii\bootstrap\BootstrapPluginAsset::className()]
-//]);
 
 
+$columnas= array(
+    array('columna'=>'#', 'datareg' => 'num', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Título', 'datareg' => 'titulo', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Imagen', 'datareg' => 'imagen', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Stock', 'datareg' => 'stock', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'PVP Final', 'datareg' => 'preciovp', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'PVP Men', 'datareg' => 'preciov2', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Código Art.', 'datareg' => 'codigobarras', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Tipo', 'datareg' => 'tipod', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Presentacion', 'datareg' => 'presentacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Color', 'datareg' => 'color', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Calidad', 'datareg' => 'calidad', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Usuario C.', 'datareg' => 'usuariocreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Estatus', 'datareg' => 'estatus', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Acciones', 'datareg' => 'acciones', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+);
+
+echo $grid->getGrid(
+        array(
+            array('tipo'=>'datagrid','nombre'=>'table','id'=>'table','columnas'=>$columnas,'clase'=>'','style'=>'','col'=>'','adicional'=>'','url'=>'registros')
+        )
+);
+
+?>
 
 
 

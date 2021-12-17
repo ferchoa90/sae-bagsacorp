@@ -82,6 +82,36 @@ body {
    /* background: #81e091;*/
 }
 
+.nav-sidebar .nav-link>.right, .nav-sidebar .nav-link>p>.right {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.dropdown-menu .active{
+
+    background-color: #009C41 ;
+    
+}
+
+.dropdown-item:focus, .dropdown-item:hover
+{
+    background-color: #009C41 ;
+
+}
+
+
+.dropdown-menu .active a{
+    color: white;
+}
+
+
+.dropdown-menu .active:hover{
+
+    background-color: #009C41 ;
+    color: white;
+}
+
 .navbar
 {
     padding:.30rem 0.5rem;

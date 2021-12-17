@@ -127,7 +127,7 @@ class Botones extends Component
         $div='
          <a  '.$link.'  class="'.$clase.'" onclick="'.$onclick.'">
                     <button type="submit" id="'.$id.'" name="'.$nombre.'" alt="'.$titulo.'" title="'.$titulo.'" onclick="" class="'.$tipocolor.' '.$tamanio.'">
-                    '.$icono.'
+                    '.$icono.$titulo.'
                     </button>
         </a>
         ';

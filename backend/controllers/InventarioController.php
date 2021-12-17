@@ -36,7 +36,7 @@ use common\models\Sucursal;
 use common\models\Productos;
 
 use backend\models\User;
-
+use backend\components\Botones;
 
 
 class InventarioController extends Controller
@@ -756,7 +756,7 @@ class InventarioController extends Controller
 
                     $arrayResp[$count]['codigobarras'] = $dataI->codigobarras;
 
-                    $arrayResp[$count]['sucursal'] = $dataI->sucursal->nombre;
+                   // $arrayResp[$count]['sucursal'] = $dataI->sucursal->nombre;
 
                     $arrayResp[$count]['tipod'] = $dataI->clasificacion->nombre;
 
@@ -772,27 +772,26 @@ class InventarioController extends Controller
 
                     if ( $dataI->estatus  == 'ACTIVO') {
 
-                        $arrayResp[$count]["estatus"] = '<small class="label label-success"><i class="fa fa-circle"></i>&nbsp; ' . $dataI->estatus . '</small>';
+                        $arrayResp[$count]["estatus"] =  '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $dataI->estatus . '</small>';
 
                     } elseif ($dataI->estatus == 'INACTIVO') {
 
-                        $arrayResp[$count]["estatus"]  = '<small class="label label-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $dataI->estatus . '</small>';
+                        $arrayResp[$count]["estatus"]  = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' .$dataI->estatus . '</small>';
 
                     }
 
              
 
-                    
+                    $botones= new Botones;
 
-                    $arrayResp[$count]['button'] = '<a href="' . URL::base() . '/' . $page . '/view?id=' . $dataI->id . '" title="Ver" class="btn btn-xs btn-primary btnedit"><i class="glyphicon glyphicon-eye-open"></i></a>'
-
-                        . '&nbsp;<a href="' . URL::base() . '/' . $page . '/update?id=' . $dataI->id . '" title="Actualizar" class="btn btn-xs btn-info btnedit"><span class="glyphicon glyphicon-pencil"></span></a>'
-
-                        . '&nbsp;<button type="submit" alt="Eliminar" title="Eliminar" data-id="' . $dataI->id . '" data-name="' . $data->nombreproducto . '" onclick="deleteReg(this)" class="btn btn-xs btn-danger btnhapus">'
-
-                        . '<i class="glyphicon glyphicon-trash"></i></button>';
-
-                    //$arrayResp[$count]['button'] = '-';
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'view'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'update'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                      $arrayResp[$count]['acciones'] = $botonC ;
 
             
 

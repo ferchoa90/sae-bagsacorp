@@ -149,20 +149,20 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 <?php
 $this->registerCssFile(URL::base() . "/js/plugins/daterangepicker/daterangepicker-bs3.css", [
-    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
+   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
 ]);
 
 $this->registerJsFile(URL::base() . "/js/plugins/moment.min.js", [
-    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
+   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
 ]);
 
 $this->registerJsFile(URL::base() . "/js/plugins/daterangepicker/daterangepicker.js", [
-    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
+   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
 
 ]);
 
 $this->registerJsFile(URL::base() . "/js/class/productosNew.js", [
-    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
+   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
 ]);
 
 

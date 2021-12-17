@@ -49,6 +49,10 @@ class Iconos extends Component
                 $tipo='fas fa-eye';
                 break;
 
+            case 'nuevo':
+                $tipo='fa fa-plus';
+                break;
+
             default:
                 $tipo=$tipodefault;
                 break;
