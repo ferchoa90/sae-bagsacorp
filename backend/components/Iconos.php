@@ -53,6 +53,14 @@ class Iconos extends Component
                 $tipo='fa fa-plus';
                 break;
 
+            case 'guardar':
+                $tipo='fa fa-save';
+                break;
+
+            case 'regresar':
+                $tipo='fa fa-chevron-left';
+                break;    
+
             default:
                 $tipo=$tipodefault;
                 break;

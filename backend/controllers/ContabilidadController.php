@@ -13,6 +13,7 @@ use common\models\Bancos;
 use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporpagar;
+use common\models\Cuentasparametros;
 use backend\components\Botones;
 
 
@@ -52,6 +53,11 @@ class ContabilidadController extends Controller
         return $this->render('index');
     }
 
+    public function actionConfigcuentas()
+    {
+        return $this->render('configcuentas');
+    }
+
     public function actionCuentas()
     {
         return $this->render('cuentas');
@@ -72,23 +78,22 @@ class ContabilidadController extends Controller
         return $this->render('bancos');
     }
 
+    public function actionEditarconfigcuenta($id)
+    {
+
+      
+        return $this->render('editarconfigcuenta', [
+            'model' => Cuentasparametros::find()->where(['id' => $id, "isDeleted" => 0])->one(),
+        ]);
+        
+    }
+
    public function actionInteracciones()
     {
         return $this->render('interacciones');
     }
 
-    public function actionViewpronostico($id)
-    {
-         if (Yii::$app->user->isGuest) {
-            return $this->redirect(URL::base() . "/site/login");
-        }
-
-        return $this->render('viewpronostico', ['model' => $this->findModel($id),
-           // 'modelDetail' => TriviaDetail::find()->where(['id_header' => $id, "deleted" => 0])->orderBy(["orden" => SORT_ASC])->all(),
-        ]);
-
-    }
-
+   
     public function actionBancosreg()
     {
 
@@ -131,6 +136,51 @@ class ContabilidadController extends Controller
         }
         return json_encode($arrayResp);
     }
+
+    public function actionConfigcuentasreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "cuentasparametros";
+        $model = Cuentasparametros::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //($arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['cuentacont'] = $data->idcuentacontable0->codigoant;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verconfigcuenta?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarconfigcuenta?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "nombre")  || ($id == "descripcion") || ($id == "cuentacontable") || ($id == "cuentaanticipo")    ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+
 
     public function actionCuentasporcobrarreg()
     {
