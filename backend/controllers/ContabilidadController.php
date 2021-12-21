@@ -14,6 +14,7 @@ use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporpagar;
 use common\models\Cuentasparametros;
+use common\models\Clientes;
 use backend\components\Botones;
 
 
@@ -76,6 +77,22 @@ class ContabilidadController extends Controller
     public function actionBancos()
     {
         return $this->render('bancos');
+    }
+
+    public function actionNuevacuentapc()
+    {
+        $clientes=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombres" => SORT_ASC])->all();
+        $clientesArray=array();
+        $cont=0;
+        foreach ($clientes as $key => $value) {
+            $clientesArray[$cont]["value"]=$value->nombres;
+            $clientesArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+        return $this->render('nuevacuentapc', [
+            'clientes' => $clientesArray,
+        ]);   
+ 
     }
 
     public function actionEditarconfigcuenta($id)

@@ -261,7 +261,7 @@ $(document).ready(function () {
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "pageLength": 10,
+                "pageLength": 25,
                 "data": data,
                 "language": {
                     "search": "Buscar: ",

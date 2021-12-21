@@ -46,7 +46,7 @@ class Objetos extends Component
 
         foreach($objetos as $obj):
 
-            //var_dump($objetos);
+          //  var_dump($objetos);
 
 
 
@@ -56,7 +56,13 @@ class Objetos extends Component
 
                     $resultado.= $this->getInput($obj['subtipo'],$obj['nombre'], $obj['id'], $obj['valor'], $obj['onchange'], $obj['clase'], $obj['estilo'], $obj['icono'],$obj['boxbody'],$obj['etiqueta'], $obj['col'], $obj['adicional']); 
 
-                    break; 
+                    break;
+                
+            case 'select': 
+
+                $resultado.= $this->getSelect($obj['subtipo'],$obj['nombre'], $obj['id'], $obj['valor'], $obj['onchange'], $obj['clase'], $obj['estilo'], $obj['icono'],$obj['boxbody'],$obj['etiqueta'], $obj['col'], $obj['adicional']); 
+
+                break;
 
                     
 
@@ -79,8 +85,10 @@ class Objetos extends Component
         if ($return)
 
         {
+            $boxrow='<div class="row">';
+            $endrow='</div>';
 
-            return $resultado;
+            return $boxrow.$resultado.$endrow;
 
         }else{
 
@@ -120,6 +128,104 @@ class Objetos extends Component
 
     }
 
+    public function getSelect($tipo, $nombre='', $id='', $valor=NULL, $onchange='', $clase='', $style='', $icono='',$boxbody=false,$etiqueta='', $col='', $adicional)
+
+    {
+
+        $input='';
+
+        $classdefault='form-control pull-right';
+
+        $boxbodydefault='<div class="box-body">';
+
+        $enddiv='</div>';
+
+
+
+        switch ($clase) {
+
+            case '':
+
+                $clase=$classdefault;
+
+                break;
+
+            
+
+            default:
+
+                $clase=$clase;
+
+                break;
+
+        }
+
+
+
+        switch ($etiqueta) {
+
+            case '':
+
+                $select='<select class="'.$clase.'" id="'.$id.'" name="'.$nombre.'">';
+
+                break;
+
+                
+
+                default:
+
+                $select='<select class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$etiqueta.'">';
+
+                break;
+
+        }
+        $selectvalue+='<option>'.$etiqueta.'</option>';
+
+      foreach ($valor as $key => $value) {
+          $selectvalue.='<option value="'.$value["id"].'">'.$value["value"].'</option>';
+  
+      }
+      
+
+        $resultado='
+
+        <div class="'.$col.'">
+
+            <div class="form-group">
+
+                <label>'.$etiqueta.'</label>
+
+                <div class="input-group mb-3">
+
+                    <div class="input-group-prepend">
+
+                        <span class="input-group-text"><i class="fas fa-edit"></i></span>
+
+                    </div>
+
+                    '.$select.$selectvalue.'</select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+       ';
+
+        if ($boxbody):
+
+            $resultado=$boxbodydefault.$resultado.$enddiv;
+        else:
+            //$resultado=$bo$resultado.$enddiv;
+
+        endif;
+
+        return $resultado;
+
+
+    }
+
 
 
     private static function getInputText($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta, $col, $adicional)
@@ -130,7 +236,7 @@ class Objetos extends Component
 
         $classdefault='form-control pull-right';
 
-        $boxbody='<div class="box-body">';
+        $boxbodydefault='<div class="box-body">';
 
         $enddiv='</div>';
 
@@ -204,7 +310,9 @@ class Objetos extends Component
 
         if ($boxbody):
 
-            $resultado=$boxbody.$resultado.$enddiv;
+            $resultado=$boxbodydefault.$resultado.$enddiv;
+        else:
+            //$resultado=$bo$resultado.$enddiv;
 
         endif;
 

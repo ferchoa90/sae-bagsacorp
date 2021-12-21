@@ -80,7 +80,7 @@ class Bloques extends Component
                 $tipocolor='card card-warning';
                 break;
 
-            case 'plomo':
+            case 'plomo' || 'gris':
                 $tipocolor='card card-secondary';
                 break;
 
