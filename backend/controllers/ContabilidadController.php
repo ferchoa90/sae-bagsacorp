@@ -14,6 +14,8 @@ use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporpagar;
 use common\models\Cuentasparametros;
+use common\models\Periodofiscal;
+use common\models\Cuentastipo;
 use common\models\Clientes;
 use backend\components\Botones;
 
@@ -64,6 +66,11 @@ class ContabilidadController extends Controller
         return $this->render('cuentas');
     }
 
+    public function actionPeriodofiscal()
+    {
+        return $this->render('periodofiscal');
+    }
+
     public function actionCuentasporcobrar()
     {
         return $this->render('cuentasporcobrar');
@@ -89,20 +96,42 @@ class ContabilidadController extends Controller
             $clientesArray[$cont]["id"]=$value->id;
             $cont++;
         }
+
+        $cuentas=Cuentastipo::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombre" => SORT_ASC])->all();
+        $cuentasArray=array();
+        $cont=0;
+        foreach ($cuentas as $key => $value) {
+            $cuentasArray[$cont]["value"]=$value->nombre;
+            $cuentasArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+
         return $this->render('nuevacuentapc', [
+            'tipocuenta' => $cuentasArray,
             'clientes' => $clientesArray,
-        ]);   
- 
+        ]);
+
     }
 
     public function actionEditarconfigcuenta($id)
     {
 
-      
+
         return $this->render('editarconfigcuenta', [
             'model' => Cuentasparametros::find()->where(['id' => $id, "isDeleted" => 0])->one(),
         ]);
-        
+
+    }
+
+    public function actionEditarperiodofiscal($id)
+    {
+
+
+        return $this->render('editarperiodofiscal', [
+            'model' => Periodofiscal::find()->where(['id' => $id, "isDeleted" => 0])->one(),
+        ]);
+
     }
 
    public function actionInteracciones()
@@ -110,7 +139,7 @@ class ContabilidadController extends Controller
         return $this->render('interacciones');
     }
 
-   
+
     public function actionBancosreg()
     {
 
@@ -146,6 +175,52 @@ class ContabilidadController extends Controller
                 } else {
                    //if  ($id == "nombre"){ echo $text;}
                     if (($id == "nombre")  ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+    public function actionPeriodofiscalreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "periodofiscal";
+        $model = Periodofiscal::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verperiodofiscal?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarperiodofiscal?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-light "><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'CERRADO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-danger"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "descripcion") || ($id == "anioinicio") || ($id == "aniofin")  ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
                 }
             }
@@ -201,13 +276,13 @@ class ContabilidadController extends Controller
 
     public function actionCuentasporcobrarreg()
     {
- 
+
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
         $page = "eliminarbanco";
-        $model = Cuentasporcobrar::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $model = Cuentasporcobrar::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1500)->all();
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {
@@ -245,7 +320,7 @@ class ContabilidadController extends Controller
 
     public function actionCuentasporpagarreg()
     {
- 
+
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");

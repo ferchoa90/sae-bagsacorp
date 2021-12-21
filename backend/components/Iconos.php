@@ -19,6 +19,66 @@ class Iconos extends Component
                 return $this->getIcono($tipo,$nombre, $id, $titulo, $clase, $style, $col,$adicional);
     }
 
+    public function getIconofa($icono)
+    {
+                return $this->getFaicono($icono);
+    }
+
+    private function getFaicono($icono='')
+    {
+        switch ($icono) {
+            case 'lapiz':
+                $tipo='fas fa-pencil-alt';
+                break;
+
+            case 'ver':
+                $tipo='fas fa-eye';
+                break;
+
+            case 'tacho':
+                $tipo='fas fa-trash';
+                break;
+
+            case 'eliminar':
+                $tipo='fas fa-trash';
+                break;
+
+            case 'editar':
+                $tipo='fas fa-pencil-alt';
+                break;
+
+            case 'ojo':
+                $tipo='fas fa-eye';
+                break;
+
+            case 'nuevo':
+                $tipo='fa fa-plus';
+                break;
+
+            case 'guardar':
+                $tipo='fa fa-save';
+                break;
+
+            case 'regresar':
+                $tipo='fa fa-chevron-left';
+                break;
+
+            case 'calendario':
+                $tipo='fa fa-calendar';
+                break;
+
+            case 'valor' || 'dolar':
+                $tipo='fa fa-usd';
+                break;
+
+            default:
+                $tipo=$tipodefault;
+                break;
+        }
+
+        return $tipo;
+    }
+
     private static function getIcono($tipo,$nombre='', $id='', $titulo='', $clase='', $style='', $col='', $adicional)
     {
         $classdefault='';
@@ -59,7 +119,15 @@ class Iconos extends Component
 
             case 'regresar':
                 $tipo='fa fa-chevron-left';
-                break;    
+                break;
+
+            case 'calendario':
+                $tipo='fa fa-calendar';
+                break;
+
+            case 'valor' || 'dolar':
+                $tipo='fa fa-usd';
+                break;
 
             default:
                 $tipo=$tipodefault;

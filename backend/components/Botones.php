@@ -31,7 +31,7 @@ class Botones extends Component
                     break;
 
                 case 'separador':
-                    //echo $this->getSeparador($obj['clase'],$obj['estilo'], $obj['color']);
+                    $return.=$this->getSeparador($obj['clase'],$obj['estilo'], $obj['color']);
                     break;
                 default:
 
