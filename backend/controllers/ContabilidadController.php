@@ -66,6 +66,12 @@ class ContabilidadController extends Controller
         return $this->render('cuentas');
     }
 
+    public function actionNuevacuenta()
+    {
+        $cuenta=
+        return $this->render('nuevacuenta');
+    }
+
     public function actionPeriodofiscal()
     {
         return $this->render('periodofiscal');
