@@ -65,6 +65,10 @@ class Objetos extends Component
                 return $this->getInputNumber($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
 
+            case 'moneda':
+                return $this->getInputMoney($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
+                break;
+
             case 'fecha':
                 return $this->getInputDate($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
@@ -209,6 +213,57 @@ class Objetos extends Component
 
         switch ($leyenda) {
             case '':
+                $input='<input type="number"  class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'">';
+                break;
+
+                default:
+                $input='<input type="number" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'">';
+                break;
+        }
+
+        $resultado='
+        <div class="'.$col.'">
+            <div class="form-group">
+                <label>'.$etiqueta.'</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="'.$iconfa.'"></i></span>
+                    </div>
+                    '.$input.'
+                </div>
+            </div>
+        </div>
+       ';
+        if ($boxbody):
+            $resultado=$boxbodydefault.$resultado.$enddiv;
+        else:
+            //$resultado=$bo$resultado.$enddiv;
+        endif;
+        return $resultado;
+
+    }
+
+    private static function getInputMoney($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
+    {
+        $iconfa=new Iconos;
+        $iconfa= $iconfa->getIconofa($icono);
+        $input='';
+        $classdefault='form-control pull-right';
+        $boxbodydefault='<div class="box-body">';
+        $enddiv='</div>';
+
+        switch ($clase) {
+            case '':
+                $clase=$classdefault;
+                break;
+
+            default:
+                $clase=$clase;
+                break;
+        }
+
+        switch ($leyenda) {
+            case '':
                 $input='<input type="number"  min="0" step="0.01" data-number-to-fixed="2" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'">';
                 break;
 
@@ -216,8 +271,6 @@ class Objetos extends Component
                 $input='<input type="number" min="0" step="0.01" data-number-to-fixed="2" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'">';
                 break;
         }
-
-
 
         $resultado='
         <div class="'.$col.'">
@@ -349,11 +402,11 @@ class Objetos extends Component
     {
         switch ($color) {
             case !'':
-                return '<hr style="color: '.$color.'" />';
+                return '<div class="col-12"><hr style="color: '.$color.'" /></div>';
                 break;
 
             default:
-                return '<hr style="color: #0056b2;" />';
+                return '<div class="col-12"><hr style="color: #0056b2;" /></div>';
                 break;
         }
 

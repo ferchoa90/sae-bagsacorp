@@ -23,9 +23,15 @@ $div= new Bloques;
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$clientes, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cliente: ', 'col'=>'col-12 col-md-8', 'adicional'=>''),
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipocuenta', 'id'=>'tipocuenta', 'valor'=>$tipocuenta, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Tipo Cuenta: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'fechaemision', 'id'=>'fechaemision', 'valor'=>date("Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,'etiqueta'=>'Fecha emisión: ', 'col'=>'col-12 col-md-5', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'valor', 'id'=>'valor', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Valor: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'valor', 'id'=>'valor', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Valor: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'textarea', 'nombre'=>'concepto', 'id'=>'concepto', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Concepto: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
-
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'formacobro', 'id'=>'formacobro', 'valor'=>$formacobro, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Forma Cobro: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'banco', 'id'=>'banco', 'valor'=>$bancos, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Banco: ', 'col'=>'col-12 col-md-5', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cuenta', 'id'=>'cuenta', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cuenta N: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cheque', 'id'=>'cheque', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cheque N: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'fechaemision', 'id'=>'fechaemision', 'valor'=>date("Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,'etiqueta'=>'Fecha vencimiento: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+ 
     ),true
 );
  //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-9 col-xs-12 ','','','','');

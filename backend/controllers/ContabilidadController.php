@@ -19,6 +19,7 @@ use common\models\Cuentastipo;
 use common\models\Clientes;
 use common\models\Diario;
 use common\models\Diariodetalle;
+use common\models\Formapagocuentas;
 use backend\components\Botones;
 
 
@@ -74,6 +75,7 @@ class ContabilidadController extends Controller
         $cuentasArray=array();
         $cont=0;
         foreach ($cuentas as $key => $value) {
+            if ($cont==0){ $cuentasArray[$cont]["value"]="Seleccione una cuenta"; $cuentasArray[$cont]["id"]=-1; $cont++; } 
             $cuentasArray[$cont]["value"]=$value->codigoant.' -> '.$value->nombre;
             $cuentasArray[$cont]["id"]=$value->id;
             $cont++;
@@ -116,6 +118,7 @@ class ContabilidadController extends Controller
         $clientesArray=array();
         $cont=0;
         foreach ($clientes as $key => $value) {
+            if ($cont==0){ $clientesArray[$cont]["value"]="Seleccione un cliente"; $clientesArray[$cont]["id"]=-1; $cont++; } 
             $clientesArray[$cont]["value"]=$value->nombres;
             $clientesArray[$cont]["id"]=$value->id;
             $cont++;
@@ -130,10 +133,32 @@ class ContabilidadController extends Controller
             $cont++;
         }
 
+        $bancosArray=array();
+        $bancos=Bancos::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombre" => SORT_ASC])->all();
+        $cont=0;
+        foreach ($bancos as $key => $value) {
+            if ($cont==0){ $bancosArray[$cont]["value"]="Seleccione un banco"; $bancosArray[$cont]["id"]=-1; $cont++; } 
+            $bancosArray[$cont]["value"]=$value->nombre;
+            $bancosArray[$cont]["id"]=$value->id;
+            $cont++;
+        }    
+
+        
+        $bancos=Formapagocuentas::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombre" => SORT_ASC])->all();
+        $formacobroArray=array();
+        $cont=0;
+        foreach ($bancos as $key => $value) {
+            if ($cont==0){ $formacobroArray[$cont]["value"]="Seleccione una forma de cobro"; $formacobroArray[$cont]["id"]=-1; $cont++; } 
+            $formacobroArray[$cont]["value"]=$value->nombre;
+            $formacobroArray[$cont]["id"]=$value->id;
+            $cont++;
+        }    
 
         return $this->render('nuevacuentapc', [
             'tipocuenta' => $cuentasArray,
             'clientes' => $clientesArray,
+            'bancos' => $bancosArray,
+            'formacobro' => $formacobroArray,
         ]);
 
     }
