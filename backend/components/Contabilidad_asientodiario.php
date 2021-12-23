@@ -3,6 +3,7 @@ namespace backend\components;
 use Yii;
 use backend\models\Configuracion;
 use backend\models\Diario;
+use backend\models\Diariodetalle;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
@@ -17,10 +18,13 @@ use yii\base\InvalidConfigException;
 class Contabilidad_asientodiario extends Component
 {
 
-    public function getAsientodiario()
+    public function getAsientodiario($tipo,$array=true,$orderby,$limit,$all=true)
     {
-
-
+        if ($all){
+            $asiento= Diario::find()->where(["isDeleted"=>0])->all();
+        }else{
+            $asiento= Diario::find()->where(["isDeleted"=>0])->one();
+        }
     }
 
     public function Nuevo($asiento,$tipo)
@@ -58,7 +62,7 @@ class Contabilidad_asientodiario extends Component
         $result;
         switch ($tipo) {
             case 'nuevo':
-                
+
                 break;
 
             default:

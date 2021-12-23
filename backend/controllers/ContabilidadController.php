@@ -17,6 +17,8 @@ use common\models\Cuentasparametros;
 use common\models\Periodofiscal;
 use common\models\Cuentastipo;
 use common\models\Clientes;
+use common\models\Diario;
+use common\models\Diariodetalle;
 use backend\components\Botones;
 
 
@@ -68,8 +70,19 @@ class ContabilidadController extends Controller
 
     public function actionNuevacuenta()
     {
-        $cuenta=
-        return $this->render('nuevacuenta');
+        $cuentas=Cuentas::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["codigoant" => SORT_ASC])->all();
+        $cuentasArray=array();
+        $cont=0;
+        foreach ($cuentas as $key => $value) {
+            $cuentasArray[$cont]["value"]=$value->codigoant.' -> '.$value->nombre;
+            $cuentasArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        //var_dump($clientesArray);
+        return $this->render('nuevacuenta', [
+            'cuentas' => $cuentasArray,
+        ]);
     }
 
     public function actionPeriodofiscal()
@@ -90,6 +103,11 @@ class ContabilidadController extends Controller
     public function actionBancos()
     {
         return $this->render('bancos');
+    }
+
+    public function actionAsientos()
+    {
+        return $this->render('asiento');
     }
 
     public function actionNuevacuentapc()
@@ -122,10 +140,19 @@ class ContabilidadController extends Controller
 
     public function actionEditarconfigcuenta($id)
     {
-
-
         return $this->render('editarconfigcuenta', [
             'model' => Cuentasparametros::find()->where(['id' => $id, "isDeleted" => 0])->one(),
+        ]);
+
+    }
+
+    public function actionVerasiento($id)
+    {
+        $asiento= Diario::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verasiento', [
+            'asiento' =>$asiento,
+            'asientodetalle' => Diariodetalle::find()->where(['diario' => $asiento->diario, "isDeleted" => 0])->all(),
         ]);
 
     }
@@ -181,6 +208,51 @@ class ContabilidadController extends Controller
                 } else {
                    //if  ($id == "nombre"){ echo $text;}
                     if (($id == "nombre")  ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+
+    public function actionAsientoreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "eliminarbanco";
+        $model = Diario::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1500)->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verasiento?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarasiento?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "diario") || ($id == "anio") || ($id == "fecha") || ($id == "concepto")  ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "total") || ($id == "tipoaux")    ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
                 }
             }

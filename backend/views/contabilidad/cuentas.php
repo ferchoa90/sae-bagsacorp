@@ -15,6 +15,17 @@ $this->params['breadcrumbs'][] = $this->title;
 $grid= new Grid;
 $botones= new Botones;
 
+
+?>
+
+<div class="row col-12 p-2" >
+<?php
+echo $botones->getBotongridArray(
+    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'nuevacuenta', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
+?>
+</div>
+<?php
+
 $columnas= array(
     array('columna'=>'#', 'datareg' => 'num', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Código', 'datareg' => 'codigoant', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),

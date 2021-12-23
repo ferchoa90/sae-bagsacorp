@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
 
-$this->title = "Nueva cuenta por cobrar";
+$this->title = "Nueva cuenta";
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -20,11 +20,10 @@ $div= new Bloques;
 
  $contenido=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$clientes, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cliente: ', 'col'=>'col-12 col-md-8', 'adicional'=>''),
-        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipocuenta', 'id'=>'tipocuenta', 'valor'=>$tipocuenta, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Tipo Cuenta: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'fechaemision', 'id'=>'fechaemision', 'valor'=>date("Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,'etiqueta'=>'Fecha emisión: ', 'col'=>'col-12 col-md-5', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'valor', 'id'=>'valor', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Valor: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'textarea', 'nombre'=>'concepto', 'id'=>'concepto', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Concepto: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$cuentas, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Categoria: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cuenta', 'id'=>'cuenta', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre de la cuenta: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'saldo', 'id'=>'saldo', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Saldo: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cheque', 'id'=>'cheque', 'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cheque: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
 
     ),true
 );
@@ -42,9 +41,7 @@ $div= new Bloques;
 
  $contenido2='<div style="line-height:25px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
- $contenido2.='<b>Debe:</b>&nbsp;&nbsp;&nbsp;$ 0.00<br>';
- $contenido2.='<b>Haber:</b>&nbsp;&nbsp;&nbsp;$ 0.00<br></div>';
- $contenido2.='<hr style="color: #0056b2;">';
+
  echo $div->getBloqueArray(
     array(
         array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$botonC),
