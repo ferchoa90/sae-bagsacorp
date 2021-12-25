@@ -31,12 +31,17 @@ class Grid extends Component
         switch ($objetos[0]['tipo']) {
             case 'datagrid':
                 $resultado.= $this->getGridBoostrap($objetos,$objetos[0]['tipo'],$objetos[0]['nombre'], $objetos[0]['id'], $objetos[0]['columnas'], $objetos[0]['clase'], $objetos[0]['estilo'], $objetos[0]['col'], $objetos[0]['adicional'], $objetos[0]['url']);
-
                 break;
 
             case 'separador':
                 $resultado.= $this->getSeparador($objetos[0]['clase'],$objetos[0]['estilo'], $objetos[0]['color']);
                 break;
+            
+            case 'datagridsimple':
+                $resultado.= $this->getGridBoostrap2($objetos,$objetos[0]['cabecera'],$objetos[0]['contenido'],$objetos[0]['pie'],$objetos[0]['data'],$objetos[0]['nombre'], $objetos[0]['id'], $objetos[0]['clase'], $objetos[0]['estilo'], $objetos[0]['col'], $objetos[0]['adicional']);
+
+                break;
+    
             default:
 
                 break;
@@ -48,6 +53,56 @@ class Grid extends Component
         }else{
             echo $resultado;
         }
+    }
+
+    public function getGridBoostrap2($objetos, $cabecera,$contenido,$pie,$data, $nombre='', $id='', $clase='', $estilo='', $col='', $adicional='')
+    {
+        $result='';
+        $tablein='<table class="table table-striped">';
+        $tableend='</table>';
+        $theadin='<thead><tr>';
+        $theadend='</tr><thead>';
+        $tbodyin='<tbody>';
+        $tbodyend='<tbody>';
+        $trin='<tr>';
+        $trout='</tr>';
+        $thheadconten='';
+
+        $contcol=0;
+       // print_r($contenido[1]);
+        foreach ($cabecera as $key => $value) {
+             $contcol++;
+             $thheadconten.='<th scope="col" class="'.$value["clase"].'">'.$value["titulo"].'</th>';
+        }
+
+        $thbodyconten='';
+        $controw=0;
+        
+        /*foreach ($contenido as $key => $value) {
+            if ($controw==0){ $thbodyconten.=$trin; }           
+            $thbodyconten.='<td scope="col" class="'.$value["clase"].'">'.$value["titulo"].'</td>';    
+            if ($contcol==$controw){ $thbodyconten.=$trout; $controw=0; }
+        }*/
+
+        foreach ($data as $key => $value) {
+            //echo array_keys($value)."\n";
+
+            $thbodyconten.=$trin;
+            foreach ($contenido as  $valueC) {
+                $thbodyconten.='<td scope="col" >'.$value[$valueC].'</td>';        
+                
+            }
+            $thbodyconten.=$trout;
+            $contcol++;
+        }
+        $result=$tablein.$theadin.$thheadconten.$theadend.$tbodyin.$thbodyconten.$tbodyend.$tableend;
+        if ($contcol>5){ 
+            $divscroll='<div class="col-12 col-md-12" style="position: relative;height: 300px;overflow: auto; padding-top:1%;"> ';
+            $divscrollend='</div> ';
+            $result=$divscroll.$tablein.$theadin.$thheadconten.$theadend.$tbodyin.$thbodyconten.$tbodyend.$tableend.$divscrollend;
+
+         }
+        return $result;
     }
 
     public function getGridBoostrap($objetos, $tipo, $nombre='', $id='',$columnas='', $clase='', $estilo='', $col='', $adicional='',$url)

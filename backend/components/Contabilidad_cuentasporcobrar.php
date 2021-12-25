@@ -19,7 +19,7 @@ class Contabilidad_cuentasporcobrar extends Component
 
     public function getCuentasporcobrar($objetos)
     {
-
+        
 
     }
 

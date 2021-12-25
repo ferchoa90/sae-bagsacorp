@@ -114,6 +114,8 @@ class ContabilidadController extends Controller
 
     public function actionNuevacuentapc()
     {
+        $clientes2=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombres" => SORT_ASC])->all();
+
         $clientes=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombres" => SORT_ASC])->all();
         $clientesArray=array();
         $cont=0;
@@ -157,6 +159,7 @@ class ContabilidadController extends Controller
         return $this->render('nuevacuentapc', [
             'tipocuenta' => $cuentasArray,
             'clientes' => $clientesArray,
+            'clientes2' => $clientes2,
             'bancos' => $bancosArray,
             'formacobro' => $formacobroArray,
         ]);
