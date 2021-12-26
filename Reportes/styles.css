@@ -1,0 +1,11 @@
+
+table  th {
+    width: 15em;
+}
+
+    tr:nth-of-type(1) > th{
+        background-color: darkorange;
+        text-align:center;
+
+    }
+}
