@@ -322,7 +322,7 @@ class FacturacionController extends Controller
 
         $page = "facturacion";
 
-        $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1500)->all();
 
         $arrayResp = array();
 
@@ -352,7 +352,7 @@ class FacturacionController extends Controller
                     $arrayResp[$key]['acciones'] = $botonC ;
                     //$arrayResp[$key]['button'] = '-';
                 }
-                if ($id == "estatus" && $text == 'ACTIVA') {
+                if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
@@ -408,7 +408,7 @@ class FacturacionController extends Controller
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
 
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
-            
+
                 $view='factura';
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
@@ -429,7 +429,7 @@ class FacturacionController extends Controller
                     if (($id == "nfactura") || ($id == "fecha") || ($id == "hora") || ($id == "guiaremision")  || ($id == "observacion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechaintraslado") || ($id == "fechafintraslado") || ($id == "puntopartida") || ($id == "puntollegada") ) { $arrayResp[$key][$id] = $text; }
                     if ( ($id == "usuariocreacion")  || ($id == "fechacreacion")) { $arrayResp[$key][$id] = $text; }
-        
+
 
                 }
 

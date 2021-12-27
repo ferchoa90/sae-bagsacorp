@@ -16,6 +16,8 @@ use common\models\Proveedores;
 use common\models\Productos;
 use common\models\Provincias;
 use common\models\Tipoproducto;
+use common\models\Cuentas;
+use backend\components\Contabilidad_cuentas;
 use backend\models\User;
 use backend\components\Botones;
 
@@ -648,37 +650,39 @@ class ProductosController extends Controller
 
 
     public function actionVertipo($id)
-
-
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
-
-
+        $tipoproducto= Tipoproducto::find()->where(['id'=>$id])->one();
+        //$cuentaID=New Contabilidad_cuentas;
+        // die(var_Dump($tipoproducto["id"]));
+        //$cuentaID= $cuentaID->getCuenta($tipoproducto["id"]);
         return $this->render('vertipo', [
-
-            'model' =>  Tipoproducto::find()->where(['id'=>$id])->one()
-
+            'model' =>  $tipoproducto,
+           // 'cuentas' =>  $cuentas,
         ]);
-
-
-
     }
 
     public function actionEditartipo($id)
     {
-
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
+        $cuentasArray=array();
+        $cuentas=Cuentas::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["codigoant" => SORT_ASC])->all();
+        $cont=0;
+        foreach ($cuentas as $key => $value) {
+            if ($cont==0){ $cuentasArray[$cont]["value"]="Seleccione una cuenta"; $bancosArray[$cont]["id"]=-1; $cont++; }
+            $cuentasArray[$cont]["value"]=$value->codigoant. ' ('.$value->nombre.')';
+            $cuentasArray[$cont]["id"]=$value->codigoant;
+            $cont++;
+        }
+
+
         return $this->render('editartipo', [
-            'model' =>  Tipoproducto::find()->where(['id'=>$id])->one()
+            'model' =>  Tipoproducto::find()->where(['id'=>$id])->one(),
+            'cuentas' =>  $cuentasArray,
         ]);
     }
 

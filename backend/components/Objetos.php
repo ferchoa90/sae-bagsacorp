@@ -30,7 +30,7 @@ class Objetos extends Component
                     break;
 
             case 'select':
-                $resultado.= $this->getSelect($obj['subtipo'],$obj['nombre'], $obj['id'], $obj['valor'], $obj['onchange'], $obj['clase'], $obj['estilo'], $obj['icono'],$obj['boxbody'],$obj['etiqueta'],$obj['leyenda'], $obj['col'], $obj['adicional']);
+                $resultado.= $this->getSelect($obj['subtipo'],$obj['nombre'], $obj['id'], $obj['valor'], $obj['valordefecto'], $obj['onchange'], $obj['clase'], $obj['estilo'], $obj['icono'],$obj['boxbody'],$obj['etiqueta'],$obj['leyenda'], $obj['col'], $obj['adicional']);
                 break;
 
                 case 'separador':
@@ -83,7 +83,7 @@ class Objetos extends Component
         }
         return $date;
     }
-    public function getSelect($tipo, $nombre='', $id='', $valor=NULL, $onchange='', $clase='', $style='', $icono='',$boxbody=false,$etiqueta='',$leyenda='', $col='', $adicional)
+    public function getSelect($tipo, $nombre='', $id='', $valor=NULL, $valordefecto=NULL, $onchange='', $clase='', $style='', $icono='',$boxbody=false,$etiqueta='',$leyenda='', $col='', $adicional)
     {
         $iconfa=new Iconos;
         $iconfa= $iconfa->getIconofa($icono);
@@ -102,6 +102,8 @@ class Objetos extends Component
                 break;
         }
 
+
+
         switch ($etiqueta) {
             case '':
                 $select='<select class="'.$clase.'" id="'.$id.'" name="'.$nombre.'">';
@@ -112,9 +114,11 @@ class Objetos extends Component
                 break;
         }
         $selectvalue+='<option>'.$etiqueta.'</option>';
-      foreach ($valor as $key => $value) {
-          $selectvalue.='<option value="'.$value["id"].'">'.$value["value"].'</option>';
 
+      foreach ($valor as $key => $value) {
+        if($valordefecto!=NULL && $value["id"]==$valordefecto){$selected=' selected="selected" '; }
+          $selectvalue.='<option value="'.$value["id"].'" '.$selected.'>'.$value["value"].'</option>';
+          $selected="";
       }
 
         $resultado='

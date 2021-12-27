@@ -91,7 +91,7 @@ body {
 .dropdown-menu .active{
 
     background-color: #009C41 ;
-    
+
 }
 
 .dropdown-item:focus, .dropdown-item:hover
@@ -190,6 +190,10 @@ body {
     top: 0;
     bottom: 0;
     position: absolute;
+}
+
+.card-primary:not(.card-outline)>.card-header {
+    background-color: #0069d9;
 }
 
 .spinner > div {
