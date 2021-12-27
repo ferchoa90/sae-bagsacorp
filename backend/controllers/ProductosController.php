@@ -443,9 +443,9 @@ class ProductosController extends Controller
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
-                    if (($id == "nombre")  || ($id == "descripcion") ) { $arrayResp[$key][$id] = $text; }
-                    if (($id == "persona") || ($id == "usuariocreacion") ) { $arrayResp[$key][$id] = $text; }
-                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "nombre")  || ($id == "descripcion") || ($id == "cuentainv") || ($id == "cuentaventas") || ($id == "cuentaventasdes") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "persona") || ($id == "usuariocreacion") || ($id == "cuentaventasdev") || ($id == "cuentacostos") || ($id == "cuentacostosdes") || ($id == "cuentacostosdev") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") || ($id == "cuentasalidainv") || ($id == "cuentasalidamue") || ($id == "cuentaentradainv") ) { $arrayResp[$key][$id] = $text; }
 
                 }
 
@@ -669,6 +669,17 @@ class ProductosController extends Controller
 
 
 
+    }
+
+    public function actionEditartipo($id)
+    {
+
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        return $this->render('editartipo', [
+            'model' =>  Tipoproducto::find()->where(['id'=>$id])->one()
+        ]);
     }
 
 
