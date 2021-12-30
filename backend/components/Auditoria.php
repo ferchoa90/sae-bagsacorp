@@ -10,18 +10,13 @@ use yii\base\InvalidConfigException;
 /**
  * Created by VSCODE.
  * User: Mario Aguilar
- * Date: 21/12/21
- * Time: 12:08
+ * Date: 29/12/21
+ * Time: 23:29
  */
 
-class Contabilidad_cuentasporcobrar extends Component
+class Auditoria extends Component
 {
 
-    public function getCuentasporcobrar($objetos)
-    {
-        
-
-    }
 
     public function Nuevo($cuentaporcobrar)
     {
