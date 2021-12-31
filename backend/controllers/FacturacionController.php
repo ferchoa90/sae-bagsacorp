@@ -467,6 +467,11 @@ class FacturacionController extends Controller
         return $this->render('index3');
     }
 
+    public function actionModaltest()
+    {
+        return $this->render('modaltest');
+    }
+
     public function actionNuevafactura()
     {
         $clientes = new Clientes;

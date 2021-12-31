@@ -18,7 +18,7 @@ use backend\components\Iconos;
 class Objetos extends Component
 {
 
-    public function getObjetosArray($objetos,$return=false)
+    public function getObjetosArray($objetos,$return=false,$form=false,$id='',$method='',$url='')
     {
         $resultado;
         foreach($objetos as $obj):
@@ -41,6 +41,10 @@ class Objetos extends Component
                     break;
             }
         endforeach;
+        if ($form){
+            $token='<input type="hidden" name="_csrf-frontend" value="F3IuJ0WqAIDRbOjq1RlBFIpaxB7lSZJhS5T5otDBKLc6MXFeM9Iw0atVvIOhLSl24CiwLJcc8A0-2JT2oIxx8w==">';
+            $resultado='<form class="col-12 col-md-12" id="'.$id.'" method="'.$method.'" action="'.$url.'">'.$resultado.$token.'</form>';
+        }
         if ($return)
         {
             $boxrow='<div class="row">';
@@ -72,6 +76,11 @@ class Objetos extends Component
             case 'fecha':
                 return $this->getInputDate($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
+
+            case 'checkbox':
+                return $this->getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
+                break;
+
 
             case 'textarea':
                 return $this->getInputTextarea($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
@@ -142,6 +151,70 @@ class Objetos extends Component
         return $resultado;
 
     }
+
+private static function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
+    {
+        $iconfa=new Iconos;
+        $iconfa= $iconfa->getIconofa($icono);
+        $input='';
+        $classdefault='form-control pull-right';
+        $boxbodydefault='<div class="box-body">';
+        $enddiv='</div>';
+
+        switch ($clase) {
+            case '':
+                $clase=$classdefault;
+                break;
+
+            default:
+                $clase=$clase;
+                break;
+        }
+
+        $input=' <input type="checkbox" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'"  checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger">';
+
+
+
+        $resultado='
+        <div class="'.$col.'">
+            <div class="form-group">
+                <div class="input-group mb-3">
+
+                    '.$input.'
+                </div>
+            </div>
+        </div>
+
+        <script>
+  $(function() {
+    $("#'.$id.'").bootstrapToggle({
+      on: "Enabled",
+      off: "Disabled"
+    });
+  })
+</script>
+
+
+       ';
+
+       $this->registerJsFile("https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js",[
+        'depends' => [
+            \yii\web\JqueryAsset::className()
+        ]
+    ]);
+
+    $this->registerCssFile('https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css', [
+        'depends' => [\yii\web\JqueryAsset::className()]
+        ]);
+        if ($boxbody):
+            $resultado=$boxbodydefault.$resultado.$enddiv;
+        else:
+            //$resultado=$bo$resultado.$enddiv;
+        endif;
+        return $resultado;
+
+    }
+
 
     private static function getInputText($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
     {

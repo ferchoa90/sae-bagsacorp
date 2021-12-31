@@ -18,15 +18,15 @@ $this->title = "Nueva Factura";
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div class="row w-100 d-flex ">
-            
-              <div class=" p-2 ">
+
+              <div class=" p-1 ">
                 <a href="javascript:encerarFactura();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-close fa-sm text-white-50"></i> Limpiar</a>
               </div>
-              <div class=" p-2">
+              <div class=" p-1">
                 <a href="javascript:generarFactura();" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm"><i class="fas fa-credit-card fa-sm text-white-50"></i> Generar Factura</a>
               </div>
-              <div class=" p-2">
-                <a href="javascript:;" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-save fa-sm text-white-50"></i> Formas de pago</a>
+              <div class=" p-1">
+                <a href="javascript:;" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-save fa-sm text-white-50"></i> Datos factura</a>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@ $this->title = "Nueva Factura";
                   </h6>
                   <h6 class="m-0 font-weight-bold text-primary col-7 col-xs-7">
                         <div class="input-group">
-     
+
                             <input style="" id="producto" data-provide="typeahead" autocomplete="off" type="text" class="form-control bg-light border-0 small" placeholder="Item..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                             <!-- <button class="btn btn-primary" type="button"  data-toggle="modal" data-target="#exampleModal">
@@ -112,65 +112,12 @@ $this->title = "Nueva Factura";
               </div>
             </div>
           </div>
-<!-- Modal -->
-<div class="modal fade" id="nuevoClienteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Agregar Cliente</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="form-clientes" action="/frontend/web/site/facturar" method="post">
-          <input type="hidden" name="_csrf-frontend" value="F3IuJ0WqAIDRbOjq1RlBFIpaxB7lSZJhS5T5otDBKLc6MXFeM9Iw0atVvIOhLSl24CiwLJcc8A0-2JT2oIxx8w==">
-                  <div class="form-group field-clientes-cedula required">
-          <label class="control-label" for="clientes-cedula">Cedula</label>
-          <input type="text" id="clientes-cedula" class="form-control" name="cedula" autocomplete="nope" placeholder="Cédula O  Ruc" aria-required="true">
-          <p class="help-block help-block-error"></p>
-          </div>
-                  <div class="form-group field-clientes-nombres required">
-          <label class="control-label" for="clientes-nombres">Nombres</label>
-          <input type="text" id="clientes-nombres" class="form-control" name="nombres" placeholder="Nombres O  Razón Social" aria-required="true">
-          <p class="help-block help-block-error"></p>
-          </div>
-                  <div class="form-group field-clientes-nombres required">
-          <label class="control-label" for="clientes-nombres">Apellidos</label>
-          <input type="text" id="clientes-apellidos" class="form-control" name="apellidos" placeholder="Apellidos" value="" aria-required="true">
-          <p class="help-block help-block-error"></p>
-          </div>
-                  <div class="form-group field-clientes-direccion">
-          <label class="control-label" for="clientes-direccion">Direccion</label>
-          <input type="text" id="clientes-direccion" class="form-control" name="direccion" placeholder="Dirección">
-          <p class="help-block help-block-error"></p>
-          </div>
-                  <div class="form-group field-clientes-telefono">
-          <label class="control-label" for="clientes-telefono">Telefono</label>
-          <input type="text" id="clientes-telefono" class="form-control" name="telefono" placeholder="Teléfono">
-          <p class="help-block help-block-error"></p>
-          </div>
-                  <div class="form-group field-clientes-correo required">
-          <label class="control-label" for="clientes-correo">Correo</label>
-          <input type="text" id="clientes-correo" class="form-control" name="correo" placeholder="Correo Electrónico" aria-required="true">
-          <p class="help-block help-block-error"></p>
-          </div>
-          <div class="modal-footer" style="padding-right:0px; padding-bottom:0px;">
-            <div class="form-group" style="padding-right:0px; margin-bottom:0px;">
-              <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-dismiss="modal">Cancelar</button>
-              <button type="button" onclick="javascript:agregarCliente(this);" id="reservassave" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" name="save-button">Agregar</button>          </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+
+<!-- End of Footer -->
 </div>
-  
-      <!-- End of Footer -->
-    </div>
-    <!-- End of Content Wrapper -->
- 
- 
+<!-- End of Content Wrapper -->
+
+
   <!-- Button trigger modal -->
   <input type="hidden" id="token" name="_csrf-backend" value="<?= Yii::$app->request->getCsrfToken() ?>">
 <!-- Modal -->
