@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $cedula
- * @property string $nombres
+ * @property string $razonsocial
  * @property string $apellidos
  * @property string $direccion
  * @property string $telefono
@@ -37,13 +37,13 @@ class Clientes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cedula', 'nombres', 'correo'], 'required', 'message' => 'Este campo es obligatorio'],
+            [['cedula', 'razonsocial', 'correo'], 'required', 'message' => 'Este campo es obligatorio'],
             [['tipo', 'estatus'], 'string'],
             [['usuariocreacion'], 'integer'],
             [['cedula'], 'unique','message' => 'Este registro ya existe'],
             [['fechacreacion'], 'safe'],
             [['cedula'], 'string', 'max' => 13],
-            [['nombres', 'apellidos'], 'string', 'max' => 150],
+            [['razonsocial', 'apellidos'], 'string', 'max' => 150],
             [['direccion'], 'string', 'max' => 250],
             [['telefono'], 'string', 'max' => 20],
             [['correo'], 'string', 'max' => 80],
@@ -59,7 +59,7 @@ class Clientes extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'cedula' => 'Cedula',
-            'nombres' => 'Nombres',
+            'razonsocial' => 'Razonsocial',
             'apellidos' => 'Apellidos',
             'direccion' => 'Direccion',
             'telefono' => 'Telefono',

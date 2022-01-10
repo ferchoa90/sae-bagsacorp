@@ -114,14 +114,14 @@ class ContabilidadController extends Controller
 
     public function actionNuevacuentapc()
     {
-        $clientes2=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombres" => SORT_ASC])->all();
+        $clientes2=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["razonsocial" => SORT_ASC])->all();
 
-        $clientes=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombres" => SORT_ASC])->all();
+        $clientes=$clientes2;
         $clientesArray=array();
         $cont=0;
         foreach ($clientes as $key => $value) {
             if ($cont==0){ $clientesArray[$cont]["value"]="Seleccione un cliente"; $clientesArray[$cont]["id"]=-1; $cont++; } 
-            $clientesArray[$cont]["value"]=$value->nombres;
+            $clientesArray[$cont]["value"]=$value->razonsocial;
             $clientesArray[$cont]["id"]=$value->id;
             $cont++;
         }

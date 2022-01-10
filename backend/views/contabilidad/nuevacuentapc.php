@@ -66,7 +66,7 @@ $cabecera= array(
 
  
 
-$campos= array("id","cedula","nombres");
+$campos= array("id","cedula","razonsocial");
 
 $pie=array();
 
