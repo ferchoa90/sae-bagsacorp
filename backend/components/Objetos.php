@@ -2,10 +2,14 @@
 namespace backend\components;
 
 use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\web\View;
+
+use backend\assets\AppAsset;
+use yii\base\Component;
 use backend\models\User;
 use backend\models\Configuracion;
-use yii\base\Component;
-use yii\base\InvalidConfigException;
 use backend\components\Iconos;
 
 /**
@@ -85,6 +89,10 @@ class Objetos extends Component
             case 'textarea':
                 return $this->getInputTextarea($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
+            
+            case 'onoff':
+                return $this->getInputOnoff($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
+                break;
 
             default:
                 return "Debe indicar un tipo de Input";
@@ -152,7 +160,7 @@ class Objetos extends Component
 
     }
 
-private static function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
+private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
     {
         $iconfa=new Iconos;
         $iconfa= $iconfa->getIconofa($icono);
@@ -196,16 +204,6 @@ private static function getInputCheckbox($nombre, $id, $valor, $onchange, $clase
 
 
        ';
-
-       $this->registerJsFile("https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js",[
-        'depends' => [
-            \yii\web\JqueryAsset::className()
-        ]
-    ]);
-
-    $this->registerCssFile('https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css', [
-        'depends' => [\yii\web\JqueryAsset::className()]
-        ]);
         if ($boxbody):
             $resultado=$boxbodydefault.$resultado.$enddiv;
         else:
@@ -421,6 +419,67 @@ private static function getInputCheckbox($nombre, $id, $valor, $onchange, $clase
             return $resultado;
 
         }
+
+        private function getInputOnoff($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
+        {
+            $iconfa=new Iconos;
+            $iconfa= $iconfa->getIconofa($icono);
+            $input='';
+            $classdefault='form-control pull-right';
+            $boxbodydefault='<div class="box-body">';
+            $enddiv='</div>';
+
+            switch ($clase) {
+                case '':
+                    $clase=$classdefault;
+                    break;
+
+                default:
+                    $clase=$clase;
+                    break;
+            }
+
+            switch ($leyenda) {
+                case '':
+                    $input='<input type="checkbox" id="'.$id.'" name="'.$nombre.'"   class="'.$clase.'"  data-on="'.$valor.'" data-off="'.$valor.'" data-toggle="toggle" data-onstyle="outline-info" data-offstyle="outline-danger"/>';
+                    break;
+
+                    default:
+                    $input='<input type="checkbox" id="'.$id.'" name="'.$nombre.'"   class="'.$clase.'"  data-on="'.$valor.'" data-off="'.$leyenda.'" data-toggle="toggle" data-onstyle="outline-info" data-offstyle="outline-danger"/>';
+                    break;
+            }
+
+            $resultado='
+            <div class="'.$col.'">
+                <div class="form-group">
+                    <label>'.$etiqueta.'</label>
+                    <div class="input-group mb-3">
+                        
+                        '.$input.'
+                    </div>
+                </div>
+            </div>
+        ';
+       
+     //   Yii::$app->getView()->registerJsFile("https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js", \yii\web\View::POS_END);
+      //  Yii::$app->getView()->registerCssFile("https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css", \yii\web\View::POS_END);
+ 
+            if ($boxbody):
+                $resultado=$boxbodydefault.$resultado.$enddiv;
+            else:
+                //$resultado=$bo$resultado.$enddiv;
+            endif;
+            return $resultado;
+
+        }
+
+        public function getRegistrarJS($nombre,$url,$datareg)
+        {
+            $this->registerJsFile('@web/js/core.js',['depends'=>['backend\assets\AppAsset']]);
+
+        }
+    
+
     private static function getInputDate($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
     {
         $iconfa=new Iconos;
