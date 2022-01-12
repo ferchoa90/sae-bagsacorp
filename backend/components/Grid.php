@@ -3,12 +3,12 @@ namespace backend\components;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use Yii;
-use backend\models\User;
-use backend\models\Configuracion;
 use yii\web\View;
 use backend\assets\AppAsset;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use backend\models\User;
+use backend\models\Configuracion;
 
 
 /**

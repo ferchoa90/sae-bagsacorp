@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
         'js/plugins/sweetalert/sweetalert.css',
         'js/plugins/datatables/dataTables.bootstrap.css',
         'js/plugins/datatables/buttons/buttons.dataTables.min.css', 
+        'https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css', 
         'css/site.css',
     ];
     public $js = [
@@ -31,6 +32,7 @@ class AppAsset extends AssetBundle
         'js/plugins/datatables/buttons/dataTables.buttons.min.js',
         'js/plugins/datatables/buttons/buttons.flash.min.js',
         'js/plugins/datatables/buttons/buttons.html5.min.js',
+        'https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js',
         'js/scripts.js',
     ];
     public $depends = [

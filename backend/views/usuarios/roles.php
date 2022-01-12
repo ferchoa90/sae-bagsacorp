@@ -1,174 +1,86 @@
-<?php
+ <?php
+use backend\components\Objetos;
+use backend\components\Bloques;
+use backend\components\Botones;
+use backend\components\Navs;
+use backend\components\Iconos;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Yii;
 use yii\web\View;
+use backend\assets\AppAsset;
+
 /* @var $this yii\web\View */
-/* @var $model app\models\TriviaHead */
-$this->title = 'Crear Rol';
+
+$this->title = "Nuevo rol";
 $this->params['breadcrumbs'][] = ['label' => 'Administración de Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-?>
-    <input type="hidden" id="action" value="create">
-    <input type="hidden" id="id" value="0">
-    <div class=" ">
-        <div class="box-body">
-            <a class="btn btn-success" id="btn_save"><i class="fa fa-save"></i></a>
-        </div>
-        <br>
-        <div class="box-body" id="messages" style="display:none;"></div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-9 col-xs-12">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Configuración de Rol</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Estado</label>
-                                        <select class="form-control select2" style="width: 100%;" id="estado">
-                                            <option selected="selected" value="Activo">Activo</option>
-                                            <option value="Inactivo">Inactivo</option>
-                                        </select>
-                                    </div><!-- /.form-group -->
-                                </div><!-- /.col -->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Sucursal</label>
-                                        <select class="form-control select2" style="width: 100%;" id="sucursal">
-                                            <option >seleccione...</option>
-                                            <?php $cont=0; foreach ($sucursal as $key => $value) { ?>
-                                                <option value="<?=$value->id ?>" <?php if($cont==0){ echo 'selected="selected" ';  } ?>  ><?=$value->nombre ?></option>
-                                            <?php $cont++; } ?>
-                                        </select>
-                                    </div><!-- /.form-group -->
-                                </div><!-- /.col -->
-                            </div><!-- /.row -->
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-                <div class="col-md-3 col-xs-12">
-                <div class="card card-success">
-                        <div class="card-header">
-                            <h3 class="card-title">Usuario</h3>
-                        </div>
-                       
-                        <div class="card-body">
-                            
-                            <div class="form-group">
-                                <label>Creado por: </label>
-                                <?= Yii::$app->user->identity->nombres.' '.Yii::$app->user->identity->apellidos ?>
-                            </div> 
-                        </div> 
-                    </div> 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-xs-12">
-                    <div class="card card-secondary">
-                        <div class="card-header">
-                            <h3 class="card-title">Datos</h3>
-                        </div>
-                        <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3 col-xs-3">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>Nombres:</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-edit"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Nombres"  id="nombres">
-                                    </div>
-                                </div><!-- /.form group -->
-                            </div><!-- /.box-body -->
-                            <div class="col-md-3 col-xs-3">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>Apellidos:</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-edit"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Apellidos" id="apellidos">
-                                    </div>
-                                </div><!-- /.form group -->
-                            </div><!-- /.box-body -->
-                            <div class="col-md-3 col-xs-3">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>Cédula:</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                                        </div>
-                                        <input class="form-control" placeholder="Cédula" type="number" min="0000000000" max="9999999999" id="cedula" >
-                                    </div>
-                                </div><!-- /.form group -->
-                            </div><!-- /.box-body -->
-                            <div class="col-md-3 col-xs-3">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>Correo:</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                        </div>
-                                        <input type="email" class="form-control" placeholder="Email" id="correo" >
-                                    </div>
-                                </div><!-- /.form group -->
-                            </div><!-- /.box-body -->
-                            <div class="col-md-3 col-xs-3">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>Nombre de Usuario:</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">@</span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Username"  id="nusuario">
-                                    </div>
-                                </div><!-- /.form group -->
-                            </div><!-- /.box-body -->
-                            <div class="col-md-3 col-xs-3">
-                                <label>Contraseña:</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
-                                    </div>
-                                    <input type="password" class="form-control" placeholder="contraseña" id="contrasena">
-                                </div>
-                            </div>
-                           
-                    </div><!-- /.box -->
-                    </div><!-- /.box -->
-                </div>
-                
-                
-                      
-            </div>
-            
-        </div>
-        </div>
-        <!--<div class="box-body">
-            <a class="btn btn-success"><i class="fa fa-save"></i>&nbsp; Guardar</a>
-        </div>-->
-    </div>
-<?php
-$this->registerCssFile(URL::base() . "/js/plugins/daterangepicker/daterangepicker-bs3.css", [
-//    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
-]);
-$this->registerJsFile(URL::base() . "/js/plugins/moment.min.js", [
-//    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
-]);
-$this->registerJsFile(URL::base() . "/js/plugins/daterangepicker/daterangepicker.js", [
-//    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
-]);
-$this->registerJsFile(URL::base() . "/js/class/usuariosNew.js", [
-//    'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]
-]);
 
+$objeto= new Objetos;
+$nav= new Navs;
+$div= new Bloques;
+
+//var_dump($clientes);
+//$contenidotab='';
+$modulousuario=$objeto->getObjetosArray(
+    array(
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agusuario', 'id'=>'agusuario', 'valor'=>'Agregar Usuario', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-5 col-md-5',  'adicional'=>'data-width="200" data-height="35"'),
+    ),true
+);
+
+
+$contenidotab=$nav->getNavsarray(
+    array(
+        array('tipo'=>'config','nombre'=>'tabpermisos', 'id'=>'tabpermisos', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'tab','nombre'=>'usuarios', 'id'=>'usuarios', 'titulo'=>'Usuarios', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulousuario),
+        array('tipo'=>'tab','nombre'=>'contabilidad', 'id'=>'contabilidad', 'titulo'=>'Contabilidad', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>'Hola2'),
+
+    )
+);
+
+
+ $contenido=$objeto->getObjetosArray(
+    array(
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'nombrerol', 'id'=>'nombrerol', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'descripcion', 'id'=>'descripcion', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Descripción','leyenda'=>'Descripción del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulousuarios', 'id'=>'modulousuarios', 'valor'=>'Usuarios', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulocontable', 'id'=>'modulocontable', 'valor'=>'Contabilidad', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulofacturacion', 'id'=>'modulofacturacion', 'valor'=>'Facturación', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloinventario', 'id'=>'moduloinventario', 'valor'=>'Inventario', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulorecursosh', 'id'=>'modulorecursosh', 'valor'=>'R. Humanos', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloreportes', 'id'=>'moduloreportes', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        
+
+    ),true
+);
+ //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-9 col-xs-12 ','','','','');
+ //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-3 col-xs-12 ','','','','');
+ //echo $contenido;
+ $botones= new Botones; $botonC=$botones->getBotongridArray(
+    array(
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        array('tipo'=>'link','nombre'=>'guardar', 'id' => 'guardar', 'titulo'=>'&nbsp;Guardar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'guardar','tamanio'=>'pequeño',  'adicional'=>''),
+        array('tipo'=>'link','nombre'=>'regresar', 'id' => 'guardar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>'')
+
+));
+
+
+ $contenido2='<div style="line-height:25px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+ $contenido2.='<hr style="color: #0056b2;">';
+ $contenido2.='</div>';
+
+ echo $div->getBloqueArray(
+    array(
+        array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$contenidotab.$botonC),
+        array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
+    )
+);
+
+//var_dump($objeto);
+?>
+
+
+
+ 
