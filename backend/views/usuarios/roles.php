@@ -2,6 +2,7 @@
 use backend\components\Objetos;
 use backend\components\Bloques;
 use backend\components\Botones;
+use backend\components\Navs;
 use backend\components\Iconos;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -17,10 +18,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 $objeto= new Objetos;
+$nav= new Navs;
 $div= new Bloques;
 
 //var_dump($clientes);
+//$contenidotab='';
+$modulousuario=$objeto->getObjetosArray(
+    array(
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agusuario', 'id'=>'agusuario', 'valor'=>'Agregar Usuario', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-5 col-md-5',  'adicional'=>'data-width="200" data-height="35"'),
+    ),true
+);
 
+
+$contenidotab=$nav->getNavsarray(
+    array(
+        array('tipo'=>'config','nombre'=>'tabpermisos', 'id'=>'tabpermisos', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'tab','nombre'=>'usuarios', 'id'=>'usuarios', 'titulo'=>'Usuarios', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulousuario),
+        array('tipo'=>'tab','nombre'=>'contabilidad', 'id'=>'contabilidad', 'titulo'=>'Contabilidad', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>'Hola2'),
+
+    )
+);
 
 
  $contenido=$objeto->getObjetosArray(
@@ -33,6 +50,7 @@ $div= new Bloques;
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloinventario', 'id'=>'moduloinventario', 'valor'=>'Inventario', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulorecursosh', 'id'=>'modulorecursosh', 'valor'=>'R. Humanos', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloreportes', 'id'=>'moduloreportes', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>''),
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
         
 
     ),true
@@ -55,12 +73,14 @@ $div= new Bloques;
 
  echo $div->getBloqueArray(
     array(
-        array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$botonC),
+        array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$contenidotab.$botonC),
         array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
     )
 );
 
 //var_dump($objeto);
 ?>
+
+
 
  

@@ -441,11 +441,11 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
 
             switch ($leyenda) {
                 case '':
-                    $input='<input type="checkbox" id="'.$id.'" name="'.$nombre.'"   class="'.$clase.'"  data-on="'.$valor.'" data-off="'.$valor.'" data-toggle="toggle" data-onstyle="outline-info" data-offstyle="outline-danger"/>';
+                    $input='<input type="checkbox" id="'.$id.'" name="'.$nombre.'"   class="'.$clase.'"  data-on="'.$valor.'" data-off="'.$valor.'" data-toggle="toggle" data-onstyle="outline-info" data-offstyle="outline-danger" '.$adicional.' />';
                     break;
 
                     default:
-                    $input='<input type="checkbox" id="'.$id.'" name="'.$nombre.'"   class="'.$clase.'"  data-on="'.$valor.'" data-off="'.$leyenda.'" data-toggle="toggle" data-onstyle="outline-info" data-offstyle="outline-danger"/>';
+                    $input='<input type="checkbox" id="'.$id.'" name="'.$nombre.'"   class="'.$clase.'"  data-on="'.$valor.'" data-off="'.$leyenda.'" data-toggle="toggle" data-onstyle="outline-info" data-offstyle="outline-danger" '.$adicional.' />';
                     break;
             }
 
