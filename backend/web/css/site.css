@@ -191,6 +191,15 @@ body {
     bottom: 0;
     position: absolute;
 }
+.toggle-on.btn{
+    font-size: 0.9em;
+    font-weight: normal !important;
+}
+
+.toggle-off.btn{
+    font-size: 0.9em;
+    font-weight: normal !important;
+}
 
 .card-primary:not(.card-outline)>.card-header {
     background-color: #0069d9;
