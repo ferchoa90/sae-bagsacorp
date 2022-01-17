@@ -39,7 +39,7 @@ class Roles extends \yii\db\ActiveRecord
         return [
             [['nombre', 'usuariocreacion'], 'required'],
             [['descripcion', 'estatus'], 'string'],
-            [['usuariocreacion', 'frontend', 'backend', 'isDeleted'], 'integer'],
+            [['usuariocreacion','isDeleted'], 'integer'],
             [['fechacreacion', 'fechamod'], 'safe'],
             [['nombre'], 'string', 'max' => 200],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
@@ -56,8 +56,6 @@ class Roles extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
             'usuariocreacion' => 'Usuariocreacion',
-            'frontend' => 'Frontend',
-            'backend' => 'Backend',
             'fechacreacion' => 'Fechacreacion',
             'fechamod' => 'Fechamod',
             'isDeleted' => 'Is Deleted',

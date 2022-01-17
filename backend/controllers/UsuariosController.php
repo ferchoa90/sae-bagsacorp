@@ -2,7 +2,8 @@
 
 namespace backend\controllers;
 
-use app\components\GlobalData;
+use backend\components\GlobalData;
+use backend\components\Usuarios_roles;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,6 +14,7 @@ use yii\db\Query;
 
 use backend\models\User;
 use common\models\Sucursal;
+use common\models\Roles;
 
 
 
@@ -65,6 +67,22 @@ class UsuariosController extends Controller
     public function actionRoles()
     {
         return $this->render('roles');
+    }
+
+    public function actionFormrol()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        extract($_POST);
+        $rol= new Usuarios_Roles;
+        $rol= $rol->Nuevo($_POST);
+        var_dump($rol);
+
+        $response=array("response" => true, "id" => $model->id, "Mensaje"=> "Registro agregado correctamente","success"=>true);
+        //return $this->render('formrol');
+        return json_encode($response);
+
     }
 
     public function actionNuevorol()

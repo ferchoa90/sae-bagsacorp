@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use Yii;
 use yii\web\View;
 use backend\assets\AppAsset;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 
@@ -16,6 +17,7 @@ $this->title = "Nuevo rol";
 $this->params['breadcrumbs'][] = ['label' => 'Administración de Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$urlpost='formrol';
 
 $objeto= new Objetos;
 $nav= new Navs;
@@ -59,37 +61,64 @@ $modulocontabilidad=$objeto->getObjetosArray(
 
 $modulofacturacion=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agfacturacion', 'id'=>'agfacturacion', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edfacturacion', 'id'=>'edfacturacion', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elifacturacion', 'id'=>'elifacturacion', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'repfacturacion', 'id'=>'repfacturacion', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agfacturacion', 'id'=>'agfacturacion', 'valor'=>'Agregar Factura', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edfacturacion', 'id'=>'edfacturacion', 'valor'=>'Editar Factura', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elifacturacion', 'id'=>'elifacturacion', 'valor'=>'Eliminar Factura', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agentrega', 'id'=>'agentrega', 'valor'=>'Agregar Entrega', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edentrega', 'id'=>'edentrega', 'valor'=>'Editar Entrega', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elientrega', 'id'=>'elientrega', 'valor'=>'Eliminar Entrega', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
     ),true
 );
 
 $moduloinventario=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'aginventario', 'id'=>'aginventario', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edinventario', 'id'=>'edinventario', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'eliinventario', 'id'=>'eliinventario', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'repinventario', 'id'=>'repinventario', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agfacturacion', 'id'=>'agfacturacion', 'valor'=>'Agregar Inv.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edfacturacion', 'id'=>'edfacturacion', 'valor'=>'Editar Inv.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elifacturacion', 'id'=>'elifacturacion', 'valor'=>'Eliminar Inv.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        
     ),true
 );
 
 $modulorecursosh=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agrecursosh', 'id'=>'agrecursosh', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edrecursosh', 'id'=>'edrecursosh', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elirecursosh', 'id'=>'elirecursosh', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'reprecursosh', 'id'=>'reprecursosh', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agempleado', 'id'=>'agempleado', 'valor'=>'Agregar Empl.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edempleado', 'id'=>'edempleado', 'valor'=>'Editar Empl.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'eliempleado', 'id'=>'eliempleado', 'valor'=>'Eliminar Empl.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agdepartamento', 'id'=>'agdepartamento', 'valor'=>'Agregar Dep.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'eddepartamento', 'id'=>'eddepartamento', 'valor'=>'Editar Dep.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elidepartamento', 'id'=>'elidepartamento', 'valor'=>'Eliminar Dep.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agrolpagos', 'id'=>'agrolpagos', 'valor'=>'Agregar Rol p.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edrolpagos', 'id'=>'edrolpagos', 'valor'=>'Editar Rol p.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elirolpagos', 'id'=>'elirolpagos', 'valor'=>'Eliminar Rol p.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
     ),true
 );
 
 $moduloreportes=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agreportes', 'id'=>'agreportes', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edreportes', 'id'=>'edreportes', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elireportes', 'id'=>'elireportes', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'repreportes', 'id'=>'repreportes', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agreportes', 'id'=>'agreportes', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edreportes', 'id'=>'edreportes', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elireportes', 'id'=>'elireportes', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'repreportes', 'id'=>'repreportes', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+    ),true
+);
+
+$modulomantenimiento=$objeto->getObjetosArray(
+    array(
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agclientes', 'id'=>'agclientes', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edclientes', 'id'=>'edclientes', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'eliclientes', 'id'=>'eliclientes', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agproveedores', 'id'=>'agproveedores', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edproveedores', 'id'=>'edproveedores', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'eliproveedores', 'id'=>'eliproveedores', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agsocios', 'id'=>'agsocios', 'valor'=>'Agregar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edsocios', 'id'=>'edsocios', 'valor'=>'Editar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elisocios', 'id'=>'elisocios', 'valor'=>'Eliminar', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+    ),true
+);
+
+$moduloauditoria=$objeto->getObjetosArray(
+    array(
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'verauditoria', 'id'=>'verauditoria', 'valor'=>'Ver registros', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
     ),true
 );
 
@@ -97,8 +126,13 @@ $moduloreportes=$objeto->getObjetosArray(
 $contenidotab=$nav->getNavsarray(
     array(
         array('tipo'=>'config','nombre'=>'tabpermisos', 'id'=>'tabpermisos', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
-        array('tipo'=>'tab','nombre'=>'usuarios', 'id'=>'usuarios', 'titulo'=>'Usuarios', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulousuario),
-        array('tipo'=>'tab','nombre'=>'contabilidad', 'id'=>'contabilidad', 'titulo'=>'Contabilidad', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulocontabilidad),
+        array('tipo'=>'tab','nombre'=>'tabusuarios', 'id'=>'tabusuarios', 'titulo'=>'Usuarios', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulousuario),
+        array('tipo'=>'tab','nombre'=>'tabcontabilidad', 'id'=>'tabcontabilidad', 'titulo'=>'Contabilidad', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulocontabilidad),
+        array('tipo'=>'tab','nombre'=>'tabfacturacion', 'id'=>'tabfacturacion', 'titulo'=>'Facturacion', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulofacturacion),
+        array('tipo'=>'tab','nombre'=>'tabinventario', 'id'=>'tabinventario', 'titulo'=>'Inventario', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$moduloinventario),
+        array('tipo'=>'tab','nombre'=>'tabrecursosh', 'id'=>'tabrecursosh', 'titulo'=>'R. Humanos', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulorecursosh),
+        array('tipo'=>'tab','nombre'=>'tabmantenimientos', 'id'=>'tabmantenimientos', 'titulo'=>'Mantenimientos', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$modulomantenimiento),
+        array('tipo'=>'tab','nombre'=>'tabauditoria', 'id'=>'tabauditoria', 'titulo'=>'Auditoria', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del rol ', 'col'=>'col-12 col-md-6', 'adicional'=>'', 'contenido'=>$moduloauditoria),
     )
 );
 
@@ -113,6 +147,8 @@ $contenidotab=$nav->getNavsarray(
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloinventario', 'id'=>'moduloinventario', 'valor'=>'Inventario', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulorecursosh', 'id'=>'modulorecursosh', 'valor'=>'R. Humanos', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloreportes', 'id'=>'moduloreportes', 'valor'=>'Reportes', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'modulomantenimiento', 'id'=>'modulomantenimiento', 'valor'=>'Mantenimiento', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
+        array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'moduloauditoria', 'id'=>'moduloauditoria', 'valor'=>'Auditoria', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Módulo: ', 'col'=>'col-3 col-md-3', 'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
     ),true
 );
@@ -131,17 +167,57 @@ $contenidotab=$nav->getNavsarray(
  $contenido2='<div style="line-height:25px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='</div>';
+?>
 
+<?php $form = ActiveForm::begin(['id'=>'frmDatos']); ?>
+<?php
  echo $div->getBloqueArray(
     array(
         array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$contenidotab.$botonC),
         array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
     )
 );
-
-//var_dump($objeto);
 ?>
+<?php ActiveForm::end(); ?>
+
+<script>
+       $(document).ready(function(){
+        $("#frmDatos").find(':input').each(function() {
+         var elemento= this;
+         console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value); 
+        });
+
+        $('#frmDatos').on('submit', function(e){
+            var form    = $(this),
+                nombre   = $('#nombrerol').val(),
+                descripcion   = $('#descripcion').val(),
+                modusuarios   = $("#modulousuarios").prop('checked'),
+                modcontabilidad   = $("#modulocontable").prop('checked'),
+                modfacturacion   = $("#modulofacturacion").prop('checked'),
+                modinventario   = $("#moduloinventario").prop('checked'),
+                modrrhh   = $("#modulorecursosh").prop('checked'),
+                modreportes   = $("#moduloreportes").prop('checked'),
+                modmantenimiento   = $("#modulomantenimiento").prop('checked'),
+                modauditoria   = $("#moduloauditoria").prop('checked');
+            
+            e.preventDefault(); // <=================== Here
+            $.ajax({
+                url: '<?= $urlpost ?>',
+                async: 'false',
+                cache: 'false',
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response){
+                if ( response == 0 ) {
+                    // ============================ Not here, this would be too late
+                    span.text('email does not exist');
+                }
+            }
+        });
+});
 
 
+       });
+  </script>
 
  
