@@ -18,7 +18,7 @@ class Auditoria extends Component
 {
 
 
-    public function Nuevo($cuentaporcobrar)
+    public function Nuevo($modulo,$proceso,$cadena,$usuario)
     {
         //$date = date("Y-m-d H:i:s");
         $result;

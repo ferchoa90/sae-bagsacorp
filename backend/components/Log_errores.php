@@ -5,7 +5,8 @@ use backend\models\Configuracion;
 use common\models\Cuentas;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
-use common\models\Roles;
+
+use common\models\Log;
 
 
 
@@ -16,44 +17,61 @@ use common\models\Roles;
  * Time: 11:47
  */
 
-class Usuarios_roles extends Component
+class Log_errores extends Component
 {
+
 
     public function getLog($tipo,$array=true,$orderby,$limit,$all=true)
     {
         if ($all){
-            $asiento= Cuentas::find()->where(["isDeleted"=>0])->all();
-        }else{
-            $asiento= Cuentas::find()->where(["isDeleted"=>0])->one();
+            //$asiento= Cuentas::find()->where(["isDeleted"=>0])->all();
+        }else{                       
+            //$asiento= Cuentas::find()->where(["isDeleted"=>0])->one();
         }
     }
  
-    public function Nuevo($modulo,$error)
+    public function Nuevo($modulo,$error,$observacion='',$codigo=0,$usuario)
     {
         //$date = date("Y-m-d H:i:s");
-        $modelRol= new Roles;
+        $idlog=0;
+        $idmodulo=0;
+        $modellog= new Log;
         $result=false;
-        if ($roles):
-            $modelRol->nombre=$roles["nombrerol"];
-            $modelRol->descripcion=$roles["descripcion"];
-            $modelRol->usuariocreacion=Yii::$app->user->identity->id;
-            //$modelRol->fechacreacion=$roles->idfactura;
-            $modelRol->isDeleted=0;
-            $modelRol->estatus="ACTIVO";
-            //var_dump($roles);
+        echo 'SSS: '.json_encode($error);
+        if ($modulo && $usuario):
+            $modellog->modulo=$modulo;
+            $modellog->descripcion=json_encode($error);
+            $modellog->observacion="$observacion";
+            $modellog->codigo="$codigo";
+            $modellog->usuariocreacion=Yii::$app->user->identity->id;
+            //$modellog->fechacreacion=$roles->idfactura;
+            $modellog->estatus="ACTIVO";
+            $modellog->save();
 
-            if ($modelRol->save()):
-                return true;
-            else:
-                //var_dump($modelRol->errors);
-                return false;
-            endif;
+            //var_dump($modellog);
+            var_dump($modellog->errors);
+            //var_dump($roles);
+            $error=false;
+            
         else:
             $result=false;
         endif;
         return $result;
     }
 
+    public function callback($tipo,$id)
+    {
+        switch ($tipo) {
+            case 1:
+                //$modelRol= Roles::find()->where(["id"=>$id])->one();
+                return true;
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
     
 
 
