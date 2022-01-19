@@ -77,9 +77,14 @@ class UsuariosController extends Controller
         extract($_POST);
         $rol= new Usuarios_Roles;
         $rol= $rol->Nuevo($_POST);
-        var_dump($rol);
-
-        $response=array("response" => true, "id" => $model->id, "Mensaje"=> "Registro agregado correctamente","success"=>true);
+        //var_dump($rol);
+        //die(var_dump($rol));
+        if ($rol)
+        {
+            $response=$rol;
+        }else{
+            $response=array("response" => true, "id" => $model->id, "Mensaje"=> "Error al agregar el registro","success"=>false);
+        }
         //return $this->render('formrol');
         return json_encode($response);
 
@@ -123,9 +128,9 @@ class UsuariosController extends Controller
 
 
             if ($model->save()) {
-                echo json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Usuario agregado correctamente","success"=>true));
+                return json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Usuario agregado correctamente","success"=>true));
             } else {
-                echo json_encode(array("resp" => false, "id" => "", "Mensaje" =>"Hubo un error al agregar el usuario","success"=>false,"Error"=>$model->errors,"data"=>$data));
+                return json_encode(array("resp" => false, "id" => "", "Mensaje" =>"Hubo un error al agregar el usuario","success"=>false,"Error"=>$model->errors,"data"=>$data));
             }
 
         } else {

@@ -16,9 +16,14 @@ class AdminLteAsset extends AssetBundle
         '/backend/web/css/skins/_all-skins.min.css',
         '/backend/web/js/plugins/sweetalert/sweetalert.css',
         'https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css',
-       // '/backend/web/js/plugins/datatables/dataTables.bootstrap.css',
-       // '/backend/web/js/plugins/datatables/buttons/buttons.dataTables.min.css',
-
+        // '/backend/web/js/plugins/datatables/dataTables.bootstrap.css',
+        // '/backend/web/js/plugins/datatables/buttons/buttons.dataTables.min.css',
+        
+        '//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css',
+        
+        '//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css',
+        '//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css',
+        '//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css',
         '/backend/web/css/site.css',
         //'https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css',
 
@@ -44,6 +49,7 @@ class AdminLteAsset extends AssetBundle
         'https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
         'https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js',
+        '//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js',
         '/backend/web/js/scripts.js',
 
 

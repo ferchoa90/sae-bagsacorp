@@ -18,3 +18,21 @@ function loading(stat) {
     }
     return true;
 }
+
+function notificacion(msg,tipo)
+{
+    if (tipo=="success")
+    {
+        alertify.success(msg);
+    }
+
+    if (tipo=="error")
+    {
+        alertify.error(msg);
+    }
+
+    if (tipo=="warning")
+    {
+        alertify.warning(msg);
+    }
+}

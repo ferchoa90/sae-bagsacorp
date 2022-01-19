@@ -35,7 +35,7 @@ class Rolespermisos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idrol', 'idmodulo', 'descripcion', 'usuariocreacion'], 'required'],
+            [['idrol', 'idmodulo', 'usuariocreacion'], 'required'],
             [['idrol', 'idmodulo', 'usuariocreacion'], 'integer'],
             [['descripcion', 'estatus'], 'string'],
             [['fechacreacion'], 'safe'],

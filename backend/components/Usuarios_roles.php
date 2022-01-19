@@ -68,7 +68,7 @@ class Usuarios_roles extends Component
                 if ($roles["modulousuarios"]=="on"){
                     $modelRolpermiso= new Rolespermisos;
                     $modelRolpermiso->idrol=$modelRol->id;
-                    //$modelRolpermiso->idmodulo=1;
+                    $modelRolpermiso->idmodulo=1;
                     $modelRolpermiso->usuariocreacion=Yii::$app->user->identity->id;
                     $modelRolpermiso->estatus="ACTIVO";
                     if (!$modelRolpermiso->save()){ $error=false; $this->callback(1,$idrol,$modelRolpermiso->errors); return false; }
@@ -81,16 +81,15 @@ class Usuarios_roles extends Component
                     $modelRolpermiso->estatus="ACTIVO";
                     if (!$modelRolpermiso->save()){ $error=false; $this->callback(1,$idrol,$modelRolpermiso->errors); return false; }
                 }
-
-                return true;
+                return array("response" => true, "id" => $modelRol->id, "Mensaje"=> "Registro agregado","tipo"=>"success", "success"=>true);
             else:
                 //var_dump($modelRol->errors);
-                return false;
+                return array("response" => true, "id" => 0, "Mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
             endif;
         else:
-            $result=false;
+            return array("response" => true, "id" => 0, "Mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
         endif;
-        return $result;
+        return array("response" => true, "id" => 0, "Mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
     }
 
     public function callback($tipo,$id,$error)
@@ -106,7 +105,7 @@ class Usuarios_roles extends Component
 
                 $log= new Log_errores;
                 $observacion="ID: ".$id;
-                echo $log->Nuevo("ROLES",$error,$observacion,0,Yii::$app->user->identity->id);
+                $log->Nuevo("ROLES",$error,$observacion,0,Yii::$app->user->identity->id);
 
                 return true;
                 break;

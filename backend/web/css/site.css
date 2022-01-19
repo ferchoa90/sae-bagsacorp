@@ -94,9 +94,16 @@ body {
 
 }
 
-.dropdown-item:focus, .dropdown-item:hover
+.dropdown-item:hover *
+{
+    color: white !important;
+
+}
+
+.dropdown-item:focus, .dropdown-item:hover 
 {
     background-color: #009C41 ;
+    color: white;
 
 }
 
@@ -116,6 +123,11 @@ body {
 {
     padding:.30rem 0.5rem;
 }
+
+.alertify-notifier.ajs-right .ajs-message.ajs-visible {
+    left: auto !important;
+}
+.aler
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
     color: black;

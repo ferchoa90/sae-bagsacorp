@@ -24,13 +24,13 @@ class Notificaciones_usuario extends Component
 
     public function getNotificaciones($usuario=0,$destinatario=0,$estatus='NUEVO')
     {
-        $mensajes=Notificaciones::find()->where(["estatus"=>"NUEVO"])->orderBy(["fechacreacion"=>SORT_DESC])->all();
+        $mensajes=Notificaciones::find()->where(["estatusnot"=>"NO LEIDO"])->orderBy(["fechacreacion"=>SORT_DESC])->all();
         return $mensajes;
     }
 
     public function getNnotificaciones($usuario=0,$destinatario=0,$estatus='NUEVO')
     {
-        $mensajes=Notificaciones::find()->where(["estatus"=>"NUEVO"])->orderBy(["fechacreacion"=>SORT_DESC])->count();
+        $mensajes=Notificaciones::find()->where(["estatusnot"=>"NO LEIDO"])->orderBy(["fechacreacion"=>SORT_DESC])->count();
         return $mensajes;
     }
 

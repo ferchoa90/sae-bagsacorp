@@ -184,7 +184,7 @@ $contenidotab=$nav->getNavsarray(
        $(document).ready(function(){
         $("#frmDatos").find(':input').each(function() {
          var elemento= this;
-         console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value); 
+         //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value); 
         });
 
         $('#frmDatos').on('submit', function(e){
@@ -208,9 +208,14 @@ $contenidotab=$nav->getNavsarray(
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response){
-                if ( response == 0 ) {
+                data=JSON.parse(response);
+                //console.log(response);
+                console.log(data.success);
+                if ( data.success == true ) {
                     // ============================ Not here, this would be too late
-                    span.text('email does not exist');
+                    notificacion(data.mensaje,data.tipo);
+                }else{
+                    notificacion(data.mensaje,data.tipo);
                 }
             }
         });
