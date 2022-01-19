@@ -55,7 +55,7 @@ $modulocontabilidad=$objeto->getObjetosArray(
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agdeclaraciones', 'id'=>'agdeclaraciones', 'valor'=>'Agregar Declaraciones', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'eddeclaraciones', 'id'=>'eddeclaraciones', 'valor'=>'Editar Declaraciones', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elideclaraciones', 'id'=>'elideclaraciones', 'valor'=>'Eliminar Declaraciones', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
-        
+
     ),true
 );
 
@@ -75,7 +75,7 @@ $moduloinventario=$objeto->getObjetosArray(
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'agfacturacion', 'id'=>'agfacturacion', 'valor'=>'Agregar Inv.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'edfacturacion', 'id'=>'edfacturacion', 'valor'=>'Editar Inv.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
         array('tipo'=>'input','subtipo'=>'onoff', 'nombre'=>'elifacturacion', 'id'=>'elifacturacion', 'valor'=>'Eliminar Inv.', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-3 col-md-3',  'adicional'=>' data-width="80%" data-height="35"'),
-        
+
     ),true
 );
 
@@ -182,13 +182,14 @@ $contenidotab=$nav->getNavsarray(
 
 <script>
        $(document).ready(function(){
-        $("#frmDatos").find(':input').each(function() {
-         var elemento= this;
-         //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value); 
-        });
+        //$("#frmDatos").find(':input').each(function() {
+        // var elemento= this;
+         //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value);
+        //});
 
-        $('#frmDatos').on('submit', function(e){
-            var form    = $(this),
+        $("#frmDatos").on('click', function() {
+            if (validardatos()==true){
+                var form    = $(this),
                 nombre   = $('#nombrerol').val(),
                 descripcion   = $('#descripcion').val(),
                 modusuarios   = $("#modulousuarios").prop('checked'),
@@ -199,30 +200,60 @@ $contenidotab=$nav->getNavsarray(
                 modreportes   = $("#moduloreportes").prop('checked'),
                 modmantenimiento   = $("#modulomantenimiento").prop('checked'),
                 modauditoria   = $("#moduloauditoria").prop('checked');
-            
-            e.preventDefault(); // <=================== Here
-            $.ajax({
-                url: '<?= $urlpost ?>',
-                async: 'false',
-                cache: 'false',
-                type: 'POST',
-                data: form.serialize(),
-                success: function(response){
-                data=JSON.parse(response);
-                //console.log(response);
-                console.log(data.success);
-                if ( data.success == true ) {
-                    // ============================ Not here, this would be too late
-                    notificacion(data.mensaje,data.tipo);
-                }else{
-                    notificacion(data.mensaje,data.tipo);
+                $.ajax({
+                    url: '<?= $urlpost ?>',
+                    async: 'false',
+                    cache: 'false',
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function(response){
+                    data=JSON.parse(response);
+                    //console.log(response);
+                    console.log(data.success);
+                    if ( data.success == true ) {
+                        // ============================ Not here, this would be too late
+                        notificacion(data.mensaje,data.tipo);
+                        $this.data().isSubmitted = true;
+                        return true;
+                    }else{
+                        notificacion(data.mensaje,data.tipo);
+                    }
                 }
+            });
+            }else{
+
+                notificacion("Faltan campos obligatorios","error");
+                //e.preventDefault(); // <=================== Here
+                return false;
             }
+  });
+
+        $('#frmDatos').on('submit', function(e){
+            e.preventDefault(); // <=================== Here
+            $this = $(this);
+            if ($this.data().isSubmitted) {
+                return false;
+            }
+
+
         });
-});
 
 
        });
-  </script>
 
- 
+       function validardatos()
+       {
+           console.log("validardatos");
+            if ($('#nombrerol').val()!=""){
+                if ($('#descripcion').val()!=""){
+                    return true;
+                }else{
+                    $('#descripcion').focus();
+                    return false;
+                }
+            }else{
+                $('#nombrerol').focus();
+                return false;
+            }
+       }
+  </script>

@@ -100,7 +100,7 @@ body {
 
 }
 
-.dropdown-item:focus, .dropdown-item:hover 
+.dropdown-item:focus, .dropdown-item:hover
 {
     background-color: #009C41 ;
     color: white;
@@ -144,7 +144,7 @@ body {
 }
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
-    background-color: rgba(0,161,64,.5);
+    background-color: rgba(0,161,64,.8);
     color: white;
 }
   #loading-image {
@@ -176,6 +176,10 @@ body {
     background-color: #007bff;
     border-color: #007bff;
     box-shadow: none;
+}
+
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
+    color: gray;
 }
 
 
