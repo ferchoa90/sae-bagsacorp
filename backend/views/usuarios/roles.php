@@ -187,19 +187,11 @@ $contenidotab=$nav->getNavsarray(
          //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value);
         //});
 
-        $("#frmDatos").on('click', function() {
+        $("#guardar").on('click', function() {
             if (validardatos()==true){
-                var form    = $(this),
+                var form    = $('#frmDatos'),
                 nombre   = $('#nombrerol').val(),
-                descripcion   = $('#descripcion').val(),
-                modusuarios   = $("#modulousuarios").prop('checked'),
-                modcontabilidad   = $("#modulocontable").prop('checked'),
-                modfacturacion   = $("#modulofacturacion").prop('checked'),
-                modinventario   = $("#moduloinventario").prop('checked'),
-                modrrhh   = $("#modulorecursosh").prop('checked'),
-                modreportes   = $("#moduloreportes").prop('checked'),
-                modmantenimiento   = $("#modulomantenimiento").prop('checked'),
-                modauditoria   = $("#moduloauditoria").prop('checked');
+                descripcion   = $('#descripcion').val();
                 $.ajax({
                     url: '<?= $urlpost ?>',
                     async: 'false',

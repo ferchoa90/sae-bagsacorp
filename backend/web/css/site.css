@@ -124,10 +124,14 @@ body {
     padding:.30rem 0.5rem;
 }
 
+.fa-circle-thin:before {
+    content: "\f111";
+}
+
 .alertify-notifier.ajs-right .ajs-message.ajs-visible {
     left: auto !important;
 }
-.aler
+ 
 
 [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link {
     color: black;

@@ -83,7 +83,7 @@ class UsuariosController extends Controller
         {
             $response=$rol;
         }else{
-            $response=array("response" => true, "id" => $model->id, "Mensaje"=> "Error al agregar el registro","success"=>false);
+            $response=array("response" => true, "id" => $model->id, "mensaje"=> "Error al agregar el registro","success"=>false);
         }
         //return $this->render('formrol');
         return json_encode($response);
