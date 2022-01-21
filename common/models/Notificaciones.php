@@ -16,6 +16,7 @@ use Yii;
  * @property string $estatusnot
  * @property string $estatus
  *
+ * @property User $destinatario0
  * @property User $usuariocreacion0
  */
 class Notificaciones extends \yii\db\ActiveRecord
@@ -34,12 +35,12 @@ class Notificaciones extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'titulo', 'mensaje', 'destinatario', 'usuariocreacion'], 'required'],
-            [['id', 'destinatario', 'usuariocreacion'], 'integer'],
+            [['titulo', 'mensaje', 'destinatario', 'usuariocreacion'], 'required'],
             [['titulo', 'mensaje', 'estatusnot', 'estatus'], 'string'],
+            [['destinatario', 'usuariocreacion'], 'integer'],
             [['fechacreacion'], 'safe'],
-            [['id'], 'unique'],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
+            [['destinatario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['destinatario' => 'id']],
         ];
     }
 
@@ -58,6 +59,16 @@ class Notificaciones extends \yii\db\ActiveRecord
             'estatusnot' => 'Estatusnot',
             'estatus' => 'Estatus',
         ];
+    }
+
+    /**
+     * Gets query for [[Destinatario0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDestinatario0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'destinatario']);
     }
 
     /**
