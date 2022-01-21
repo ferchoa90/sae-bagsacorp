@@ -27,7 +27,7 @@ class Botones extends Component
 
             switch ($obj['tipo']) {
                 case 'link':
-                    $return.=$this->getBoton($obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['adicional']);
+                    $return.=$this->getBoton($obj['subtipo'],$obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['adicional']);
                     break;
 
                 case 'separador':
@@ -41,12 +41,12 @@ class Botones extends Component
         return $return;
     }
 
-    public function getBotones($tipo, $nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional )
+    public function getBotones($nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional )
     {
         //$date = date("Y-m-d H:i:s");
         switch ($tipo) {
             case 'bloquediv':
-                return $this->getBoton($nombre, $id, $titulo, $link,$onclick ,$clase, $style, $col,$tipocolor,$icono,$tamanio='', $adicional);
+                return $this->getBoton($subtipo,$nombre, $id, $titulo, $link,$onclick ,$clase, $style, $col,$tipocolor,$icono,$tamanio='', $adicional);
                 break;
 
             default:
@@ -56,7 +56,7 @@ class Botones extends Component
         return $date;
     }
 
-    private function getBoton($nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional)
+    private function getBoton($tipo, $nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional)
     {
         $classdefault=' ';
         $tipocolordefault='btn btn-primary';
@@ -69,6 +69,8 @@ class Botones extends Component
         ($tamanio=='superp') ? $tamanio='btn-xs' : '' ;
         ($tamanio=='grande') ? $tamanio='btn-large' : '' ;
         ($tamanio=='completo') ? $tamanio='btn-block' : '' ;
+
+        ($tipo=='submit') ? $tipoboton='submit' : $tipoboton='button' ;
 
 
 
@@ -126,7 +128,7 @@ class Botones extends Component
 
         $div='
          <a  '.$link.'  class="'.$clase.'" onclick="'.$onclick.'">
-                    <button type="submit" id="'.$id.'" name="'.$nombre.'" alt="'.$titulo.'" title="'.$titulo.'" onclick="" class="'.$tipocolor.' '.$tamanio.'">
+                    <button type="'.$tipoboton.'" id="'.$id.'" name="'.$nombre.'" alt="'.$titulo.'" title="'.$titulo.'" onclick="" class="'.$tipocolor.' '.$tamanio.'">
                     '.$icono.$titulo.'
                     </button>
         </a>
