@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\db\Query;
-
+use backend\components\Botones;
 use backend\models\User;
 use common\models\Sucursal;
 use common\models\Roles;
@@ -92,53 +92,7 @@ class UsuariosController extends Controller
 
     public function actionNuevorol()
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(URL::base() . "/site/login");
-        }
-
-        $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
-        $flagHeader = false;
-        $flagDetail = false;
-
-        if (isset($_POST) and !empty($_POST)) {
-            $data = $_POST;
-
-
-            //Model header
-            $model = new User();
-            $model->password_hash=Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-            $model->auth_key=$data['password'];
-            $model->nombres=$data['nombres'];
-            $model->username=$data['nombreu'];
-            $model->apellidos=$data['apellidos'];
-            $model->email=$data['correo'];
-            $model->idsucursal=$data['sucursal'];
-            $model->tipo=$data['tipo'];
-            $model->cedula=$data['cedula'];
-            $model->estatus=$data['estado'];
-            $model->estatus="Activo";
-            $model->fotoperfil="user2-160x160.png";
-            $model->status=10;
-            $model->isDeleted=0;
-            $model->creado_por=Yii::$app->user->identity->id;
-            $model->created_at=Yii::$app->user->identity->id;
-            $model->updated_at=Yii::$app->user->identity->id;
-
-
-
-            if ($model->save()) {
-                return json_encode(array("resp" => true, "id" => $model->id, "Mensaje"=> "Usuario agregado correctamente","success"=>true));
-            } else {
-                return json_encode(array("resp" => false, "id" => "", "Mensaje" =>"Hubo un error al agregar el usuario","success"=>false,"Error"=>$model->errors,"data"=>$data));
-            }
-
-        } else {
-            return $this->render('nuevoroles', [
-                'sucursal' => $sucursal,
-            ]);
-        }
-
+        return $this->render('nuevorol');
     }
 
 
@@ -148,8 +102,48 @@ class UsuariosController extends Controller
      * @return string
      */
 
-    public function actionRegistros()
+    public function actionRolesreg()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $view = "usuarios";
+        $model = Roles::find()->where(["isDeleted"=>"0"])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 1;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                //$arrayResp[$key]['num'] = $count;
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $view='rol';
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = $botonC ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
 
+                if ($id == "estatus" and $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" and $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                    if (($id == "nombre") || ($id == "descripcion") || ($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+
+    public function actionRegistros()
     {
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
@@ -159,54 +153,29 @@ class UsuariosController extends Controller
         $arrayResp = array();
         $count = 1;
         foreach ($model as $key => $data) {
-
             foreach ($data as $id => $text) {
-
                 //$arrayResp[$key]['num'] = $count;
-
                 if ($id == "id") {
-
                     $arrayResp[$key]['button'] = '<a href="' . URL::base() . '/' . $page . '/verdescarga?id=' . $text . '" title="Ver" class="btn btn-xs btn-primary btnedit"><i class="fas fa-eye"></i></a>'
                         . '&nbsp;<a href="' . URL::base() . '/' . $page . '/actualizardescarga?id=' . $text . '" title="Actualizar" class="btn btn-xs btn-info btnedit"><span class="fas fa-pencil-alt"></span></a>'
                         . '&nbsp;<button type="submit" alt="Eliminar" title="Eliminar" data-id="' . $text . '" data-name="' . $id . '" onclick="deleteReg(this)" class="btn btn-xs btn-danger btnhapus">'
                         . '<i class="fas fa-trash"></i></button>';
-
                     //$arrayResp[$key]['button'] = '-';
-
                 }
-
-
-
-
 
                 if ($id == "estatus" and $text == 'Activo') {
-
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
-
                 } elseif ($id == "estatus" and $text == 'Inactivo') {
-
                     $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
-
                 } else {
-
                     if (($id == "nombres") || ($id == "apellidos") || ($id == "username") ) { $arrayResp[$key][$id] = $text; }
-
                     if (($id == "tipo") || ($id == "fechacreacion") || ($id == "correo") ) { $arrayResp[$key][$id] = $text; }
-
                     if (($id == "id")  || ($id == "email")) { $arrayResp[$key][$id] = $text; }
-
                 }
-
             }
-
             $count++;
-
         }
-
-
-
         return json_encode($arrayResp);
-
     }
 
     /**

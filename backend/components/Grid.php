@@ -146,24 +146,25 @@ class Grid extends Component
         if ($boxbody):
             $resultado=$resultado;
         endif;
-        $this->getRegistrarJS($nombre,$url,$objetos[0]['columnas']);
+        $this->getRegistrarJS($nombre,$objetos[0]['url'],$objetos[0]['columnas']);
         return $resultado;
 
     }
 
     public function getRegistrarJS($nombre,$url,$datareg)
     {
-        $urlrefer=$_SERVER["HTTP_REFERER"];
+        $urlrefer=$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
         $token=Yii::$app->request->getCsrfToken();
         $urlfinal= explode("/",$urlrefer);
         foreach ($urlfinal  as $value) {
             $urlfinal=$value;
         }
+        $urlfinal=str_replace("/".$urlfinal,"",$urlrefer);
         $data='';
         foreach ($datareg as $value) {
             $data.='{ "data": "'.$value['datareg'].'" },';
         }
-        //echo $data;
+        echo $urlfinal;
 
         $script = <<< JS
 function deleteReg(id) {
@@ -208,7 +209,7 @@ $(document).ready(function () {
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
-                "pageLength": 25,
+                "pageLength": 15,
                 "data": data,
                 "language": {
                     "search": "Buscar: ",

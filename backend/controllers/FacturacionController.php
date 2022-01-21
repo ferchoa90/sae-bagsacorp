@@ -322,7 +322,7 @@ class FacturacionController extends Controller
 
         $page = "facturacion";
 
-        $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1500)->all();
+        $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(500)->all();
 
         $arrayResp = array();
 
@@ -339,7 +339,7 @@ class FacturacionController extends Controller
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
 
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
-                $arrayResp[$key]['cliente'] = $data->cliente->nombres;
+                $arrayResp[$key]['cliente'] = $data->cliente->razonsocial;
                 $view='factura';
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
