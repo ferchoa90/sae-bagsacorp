@@ -121,16 +121,15 @@ class Grid extends Component
 
         foreach($objetos[0]['columnas'] as $col):
 
-            $columnas.='
-                <th>'.$col['columna'].'</th>
-            '
-            ;
+            $columnas.='<th>'.$col['columna'].'</th>';
 
         endforeach;
+//echo $columnas;
+        $contentTable='<table id="'.$nombre.'"  name="'.$id.'" class="'.$classdefault.'"><thead><tr class="tableheader">'.$columnas.'</tr></thead><tbody></tbody> </table>';
 
         $resultado='
         <div class="card">
-            <div class="card-body">
+            <div id="bodydiv" class="card-body">
                 <table id="'.$nombre.'"  name="'.$id.'" class="'.$classdefault.'">
                     <thead>
                     <tr class="tableheader">
@@ -143,35 +142,38 @@ class Grid extends Component
             </div><!-- /.box -->
         </div>
        ';
+      
         if ($boxbody):
             $resultado=$resultado;
         endif;
-        $this->getRegistrarJS($nombre,$objetos[0]['url'],$objetos[0]['columnas']);
+        $this->getRegistrarJS($nombre,$objetos[0]['url'],$objetos[0]['columnas'],$contentTable);
         return $resultado;
 
     }
 
-    public function getRegistrarJS($nombre,$url,$datareg)
+    public function getRegistrarJS($nombre,$url,$datareg,$contentTable)
     {
-        $urlrefer=$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+        //$urlrefer=$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+        $urlrefer=$_SERVER["REQUEST_URI"];
         $token=Yii::$app->request->getCsrfToken();
         $urlfinal= explode("/",$urlrefer);
         foreach ($urlfinal  as $value) {
             $urlfinal=$value;
         }
+        $urlfinal2=$urlrefer;
         $urlfinal=str_replace("/".$urlfinal,"",$urlrefer);
         $data='';
         foreach ($datareg as $value) {
             $data.='{ "data": "'.$value['datareg'].'" },';
         }
-        echo $urlfinal;
+       // echo $urlfinal;
 
         $script = <<< JS
 function deleteReg(id) {
     var id_reg = id;
     urlflag=false;
     console.log('url2: '+'$urlfinal')
-    console.log(id)
+    //console.log(id)
     swal({
             title: "Eliminar Registro",
             text: "Esta seguro de eliminar el registro?",
@@ -182,57 +184,73 @@ function deleteReg(id) {
             closeOnConfirm: true
         },
         function () {
-            var url =  '$urlfinal' + "$url?id=" + id_reg;
+            var url =  '$urlfinal2' + "eliminar?id=" + id_reg;
+            //var url =  '/$urlfinal';
             $.post(url, {
                 '_csrf-frontend': '$token'
             }).done(function (data) {
                 loading(0);
-                $.notify('Registro eliminado', "success");
+                //$.notify('Registro eliminado', "success");
+                notificacion("Registro eliminado","success");
+                //$('#$nombre').DataTable().clear().draw();
+                //$('#$nombre').table.fnDestroy();
+                 $('#bodydiv').html('$contentTable');
+                init();
+
+            }).fail(function() {
+                notificacion("Error al enviar la información","error");
             });
         });
 }
+var ref="";
+function init()
+{
+    loading(1);
+
+var url = '$url';
+    $.post(url, { '_csrf-backend': '$token', '_csrf-frontend': '$token' })
+    .done(function(data) {
+    var data = JSON.parse(data);
+       $('$nombre').DataTable({
+            "paging": true,
+            "fixedHeader": true,
+            "lengthChange": true,
+            "scrollX": true,
+            "colReorder": true,
+            "searching": true,
+            "orderCellsTop": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "retrieve": true,
+            "pageLength": 15,
+            "data": data,
+            "language": {
+                "search": "Buscar: ",
+                "zeroRecords": "No se encontraron registros para la búsqueda.",
+                "info": "Página _PAGE_ de _PAGES_ |  Total: _MAX_ registros",
+                "infoEmpty": "No existen registros.",
+                "lengthMenu": "Registros por página  _MENU_",
+                "infoFiltered": "(Filtrado de _MAX_ registros).",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "paginate": {
+                        "first": "Inicio",
+                    "last": "Final",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            "columns": [
+                    $data
+            ]
+        });
+        loading(0);
+    });
+}
 $(document).ready(function () {
 //alert('$nombre')
-   loading(1);
-    var url = '$url';
-        $.post(url, { '_csrf-backend': '$token', '_csrf-frontend': '$token' })
-        .done(function(data) {
-                var data = JSON.parse(data);
-            $('$nombre').DataTable({
-                "paging": true,
-                "fixedHeader": true,
-                "lengthChange": true,
-                "scrollX": true,
-                "colReorder": true,
-                "searching": true,
-                "orderCellsTop": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "pageLength": 15,
-                "data": data,
-                "language": {
-                    "search": "Buscar: ",
-                    "zeroRecords": "No se encontraron registros para la búsqueda.",
-                    "info": "Página _PAGE_ de _PAGES_ |  Total: _MAX_ registros",
-                    "infoEmpty": "No existen registros.",
-                    "lengthMenu": "Registros por página  _MENU_",
-                    "infoFiltered": "(Filtrado de _MAX_ registros).",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "paginate": {
-                            "first": "Inicio",
-                        "last": "Final",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                },
-                "columns": [
-                        $data
-                ]
-            });
-            loading(0);
-        });
+   init();
     });
 JS;
 Yii::$app->getView()->registerJs($script, \yii\web\View::POS_END);

@@ -67,6 +67,10 @@ class Iconos extends Component
                 $tipo='fa fa-calendar';
                 break;
 
+            case 'arroba':
+                $tipo='fa fa-envelope';
+                break;
+
             case 'valor' || 'dolar':
                 $tipo='fa fa-usd';
                 break;

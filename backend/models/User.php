@@ -2,6 +2,7 @@
 
 namespace backend\models;
 use common\models\Sucursal;
+use common\models\Roles;
 
 
 use Yii;
@@ -41,8 +42,8 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            [['tipo', 'estatus'], 'string'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['estatus'], 'string'],
+            [['idrol','status', 'created_at', 'updated_at'], 'integer'],
             [['fechacreacion'], 'safe'],
             [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['nombres', 'apellidos'], 'string', 'max' => 100],
@@ -78,7 +79,7 @@ class User extends \yii\db\ActiveRecord
 
     public static function isUserClient($username)
     {
-        if (static::findOne(['username' => $username, 'tipo' => 'Usuario'])) {
+        if (static::findOne(['username' => $username, 'idrol' => '2'])) {
 
             return true;
         } else {
@@ -93,9 +94,14 @@ class User extends \yii\db\ActiveRecord
         return $this->hasOne(Sucursal::className(), ['id' => 'idsucursal']);
     }
 
+    public function getRol()
+    {
+        return $this->hasOne(Roles::className(), ['id' => 'idrol']);
+    }
+
     public static function isUserAdmin($username)
     {
-        if (static::findOne(['username' => $username, 'tipo' => 'Administrador','tipo' => 'Superadmin'])) {
+        if (static::findOne(['username' => $username, 'idrol' => '1'])) {
 
             return true;
         } else {
