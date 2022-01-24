@@ -16,6 +16,7 @@ use backend\models\User;
 use common\models\Sucursal;
 use common\models\Roles;
 use common\models\Rolespermisos;
+use backend\components\Usuarios_sistema;
 
 /**
  * Default controller for the `admin` module
@@ -241,14 +242,9 @@ class UsuariosController extends Controller
         extract($_POST);
         $usuario= new Usuarios_sistema;
         $usuario= $usuario->Nuevo($_POST);
-        //var_dump($rol);
-        //die(var_dump($rol));
-        if ($usuario)
-        {
-            $response=$rol;
-        }else{
-            $response=array("response" => true, "id" =>0, "mensaje"=> "Error al agregar el registro","success"=>false);
-        }
+        //die(var_dump($_POST));
+        $response=$usuario;
+
         //return $this->render('formrol');
         return json_encode($response);
 

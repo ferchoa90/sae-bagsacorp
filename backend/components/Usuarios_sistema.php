@@ -57,17 +57,16 @@ class Usuarios_sistema extends Component
         $result=false;
         if ($usuario):
             $data = $usuario;
-            $modelUsuario->password_hash=Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-            $modelUsuario->auth_key=$data['password'];
+            $modelUsuario->password_hash=Yii::$app->getSecurity()->generatePasswordHash($data['clave']);
             $modelUsuario->nombres=$data['nombres'];
-            $modelUsuario->username=$data['nombreu'];
             $modelUsuario->apellidos=$data['apellidos'];
+            $modelUsuario->username=$data['nombreusuario'];
+            $modelUsuario->auth_key='qBsm2pBnvWqODXkw8497oMu6BCKknip-';
             $modelUsuario->email=$data['correo'];
-            $modelUsuario->idsucursal=$data['sucursal'];
-            $modelUsuario->tipo=$data['tipo'];
+            $modelUsuario->idsucursal=1;
+            $modelUsuario->idrol=$data['rol'];
             $modelUsuario->cedula=$data['cedula'];
-            $modelUsuario->estatus=$data['estado'];
-            $modelUsuario->estatus="Activo";
+            //$modelUsuario->estatus="Activo";
             $modelUsuario->fotoperfil="user2-160x160.png";
             $modelUsuario->status=10;
             $modelUsuario->isDeleted=0;
@@ -77,10 +76,11 @@ class Usuarios_sistema extends Component
 
             if ($modelUsuario->save()) {
                 $idusuario=$modelUsuario->id;
-                $error=false; $this->callback(1,$idusuario,$modelUsuario->errors);
+                $error=false; 
+                //$this->callback(1,$idusuario,$modelUsuario->errors);
                 return array("response" => true, "id" => $modelUsuario->id, "mensaje"=> "Registro agregado","tipo"=>"success", "success"=>true); 
             } else {
-                $this->callback(1,$idrol,$modelUsuario->errors);
+                $this->callback(1,$idusuario,$modelUsuario->errors);
                 return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
             }    
         else:
@@ -98,18 +98,13 @@ class Usuarios_sistema extends Component
     {
         switch ($tipo) {
             case 1:
-                // callback para la función nuevo
-                //$modelRolpermiso= Rolespermisos::deleteAll(["idrol"=>$id]);
-                //$modelRolpermiso->delete();
-                
-                /*$modelRol= User::find()->where(["id"=>$id])->one();
-                $modelRol->delete();*/
+
 
                 $log= new Log_errores;
                 $observacion="ID: ".$id;
-                $log->Nuevo("ROLES",$error,$observacion,0,Yii::$app->user->identity->id);
+                $log->Nuevo("USUARIO ",$error,$observacion,0,Yii::$app->user->identity->id);
 
-                return true;
+                //return true;
                 break;
             
             default:

@@ -208,7 +208,8 @@ $contenidotab=$nav->getNavsarray(
                     if ( data.success == true ) {
                         // ============================ Not here, this would be too late
                         notificacion(data.mensaje,data.tipo);
-                        $this.data().isSubmitted = true;
+                        //$this.data().isSubmitted = true;
+                        $('#frmDatos')[0].reset();
                         return true;
                     }else{
                         notificacion(data.mensaje,data.tipo);

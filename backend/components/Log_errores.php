@@ -37,7 +37,7 @@ class Log_errores extends Component
         $idmodulo=0;
         $modellog= new Log;
         $result=false;
-        echo 'SSS: '.json_encode($error);
+        //echo 'SSS: '.json_encode($error);
         if ($modulo && $usuario):
             $modellog->modulo=$modulo;
             $modellog->descripcion=json_encode($error);
@@ -47,12 +47,11 @@ class Log_errores extends Component
             //$modellog->fechacreacion=$roles->idfactura;
             $modellog->estatus="ACTIVO";
             $modellog->save();
-
             //var_dump($modellog);
-            var_dump($modellog->errors);
+            //var_dump($modellog->errors);
             //var_dump($roles);
             $error=false;
-            
+            $result=true;
         else:
             $result=false;
         endif;

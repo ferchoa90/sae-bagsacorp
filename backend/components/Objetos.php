@@ -69,6 +69,10 @@ class Objetos extends Component
                 return $this->getInputText($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
 
+            case 'clave':
+                return $this->getInputPassword($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
+                break;
+
             case 'numero':
                 return $this->getInputNumber($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
@@ -240,6 +244,59 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
 
                 default:
                 $input='<input type="text" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'">';
+                break;
+        }
+
+
+
+        $resultado='
+        <div class="'.$col.'">
+            <div class="form-group">
+                <label>'.$etiqueta.'</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="'.$iconfa.'"></i></span>
+                    </div>
+                    '.$input.'
+                </div>
+            </div>
+        </div>
+       ';
+        if ($boxbody):
+            $resultado=$boxbodydefault.$resultado.$enddiv;
+        else:
+            //$resultado=$bo$resultado.$enddiv;
+        endif;
+        return $resultado;
+
+    }
+
+    private static function getInputPassword($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
+    {
+        $iconfa=new Iconos;
+        $iconfa= $iconfa->getIconofa($icono);
+        $input='';
+        $classdefault='form-control pull-right';
+        $boxbodydefault='<div class="box-body">';
+        $enddiv='</div>';
+
+        switch ($clase) {
+            case '':
+                $clase=$classdefault;
+                break;
+
+            default:
+                $clase=$clase;
+                break;
+        }
+
+        switch ($leyenda) {
+            case '':
+                $input='<input type="password" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'">';
+                break;
+
+                default:
+                $input='<input type="password" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'">';
                 break;
         }
 
