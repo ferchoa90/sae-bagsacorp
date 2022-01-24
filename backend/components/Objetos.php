@@ -93,7 +93,7 @@ class Objetos extends Component
             case 'textarea':
                 return $this->getInputTextarea($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
-            
+
             case 'onoff':
                 return $this->getInputOnoff($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
@@ -345,11 +345,11 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
 
         switch ($leyenda) {
             case '':
-                $input='<input type="number"  class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'">';
+                $input='<input type="number"  class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'"  '.$adicional.'>';
                 break;
 
                 default:
-                $input='<input type="number" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'">';
+                $input='<input type="number" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'"  '.$adicional.'>';
                 break;
         }
 
@@ -511,16 +511,16 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
                 <div class="form-group">
                     <label>'.$etiqueta.'</label>
                     <div class="input-group mb-3">
-                        
+
                         '.$input.'
                     </div>
                 </div>
             </div>
         ';
-       
+
      //   Yii::$app->getView()->registerJsFile("https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js", \yii\web\View::POS_END);
       //  Yii::$app->getView()->registerCssFile("https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css", \yii\web\View::POS_END);
- 
+
             if ($boxbody):
                 $resultado=$boxbodydefault.$resultado.$enddiv;
             else:
@@ -535,7 +535,7 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
             $this->registerJsFile('@web/js/core.js',['depends'=>['backend\assets\AppAsset']]);
 
         }
-    
+
 
     private static function getInputDate($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
     {

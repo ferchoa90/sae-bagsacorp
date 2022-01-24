@@ -109,7 +109,7 @@ class UsuariosController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
-        
+
         $model = Roles::find()->where(["isDeleted"=>"0"])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
         $count = 1;
@@ -159,7 +159,7 @@ class UsuariosController extends Controller
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
                 $arrayResp[$key]['perfil'] = $data->rol->nombre;
-                $view='usuarios';
+                $view='usuario';
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
@@ -179,7 +179,7 @@ class UsuariosController extends Controller
                 } else {
                     if (($id == "nombres") || ($id == "apellidos") || ($id == "username") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "cedula") || ($id == "fechacreacion") || ($id == "email") ) { $arrayResp[$key][$id] = $text; }
-                    
+
                 }
             }
             $count++;
@@ -187,7 +187,7 @@ class UsuariosController extends Controller
         return json_encode($arrayResp);
     }
 
-    
+
 
     /**
      * Displays a single TriviaHead model.
@@ -222,11 +222,11 @@ class UsuariosController extends Controller
         $rolesArray=array();
         $cont=0;
         foreach ($roles as $key => $value) {
-            if ($cont==0){ $rolesArray[$cont]["value"]="Seleccione un rol"; $rolesArray[$cont]["id"]=-1; $cont++; } 
+            if ($cont==0){ $rolesArray[$cont]["value"]="Seleccione un rol"; $rolesArray[$cont]["id"]=-1; $cont++; }
             $rolesArray[$cont]["value"]=$value->nombre;
             $rolesArray[$cont]["id"]=$value->id;
             $cont++;
-        }    
+        }
 
         return $this->render('nuevousuario', [
             'sucursal' => $sucursal,
@@ -309,7 +309,7 @@ class UsuariosController extends Controller
 
         $model = User::findOne($id);
         $model->isDeleted = 1;
-        
+
         if ($model->save())
         {
             return true;
@@ -327,7 +327,7 @@ class UsuariosController extends Controller
 
         $model = Roles::findOne($id);
         $model->isDeleted = 1;
-        
+
         if ($model->save())
         {
             return true;

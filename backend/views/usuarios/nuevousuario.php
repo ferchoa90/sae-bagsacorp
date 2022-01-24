@@ -12,8 +12,6 @@ use backend\assets\AppAsset;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-
-
 $this->title = 'Crear Usuario';
 $this->params['breadcrumbs'][] = ['label' => 'Administración de Usuarios', 'url' => ['usuarios']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,18 +23,15 @@ $nav= new Navs;
 $div= new Bloques;
 
 $this->title = "Administración de Usuarios";
-$botones= new Botones; 
-
+$botones= new Botones;
 //var_dump($clientes);
 //$contenidotab='';
-
-
  $contenido=$objeto->getObjetosArray(
     array(
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'nombres', 'id'=>'nombres', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre','leyenda'=>'Nombre del usuario ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'apellidos', 'id'=>'apellidos', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Apellido','leyenda'=>'Apellido del usuario ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'nombreusuario', 'id'=>'nombreusuario', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre de usuario','leyenda'=>'Nombre de usuario ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'cedula', 'id'=>'cedula', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'tarjeta','boxbody'=>false,'etiqueta'=>'Cédula de usuario','leyenda'=>'Cédula de usuario ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cedula', 'id'=>'cedula', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'tarjeta','boxbody'=>false,'etiqueta'=>'Cédula de usuario','leyenda'=>'Cédula de usuario ', 'col'=>'col-12 col-md-6', 'adicional'=>'max="9999999999"  maxlength="10" onKeyPress="if(this.value.length==10) return false;" '),
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'rol', 'id'=>'rol', 'valor'=>$roles, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Tipo de usuario: ', 'col'=>'col-6 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'correo', 'id'=>'correo', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'carta','boxbody'=>false,'etiqueta'=>'Correo de usuario','leyenda'=>'Correo de usuario ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'clave', 'nombre'=>'clave', 'id'=>'clave', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'llave','boxbody'=>false,'etiqueta'=>'Contraseña','leyenda'=>'Contraseña ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
@@ -70,14 +65,12 @@ $botones= new Botones;
 );
 ?>
 <?php ActiveForm::end(); ?>
-
 <script>
        $(document).ready(function(){
         //$("#frmDatos").find(':input').each(function() {
         // var elemento= this;
          //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value);
         //});
-
         $("#guardar").on('click', function() {
             if (validardatos()==true){
                 var form    = $('#frmDatos'),
@@ -105,26 +98,19 @@ $botones= new Botones;
                 }
             });
             }else{
-
                 notificacion("Faltan campos obligatorios","error");
                 //e.preventDefault(); // <=================== Here
                 return false;
             }
-  });
-
+        });
         $('#frmDatos').on('submit', function(e){
             e.preventDefault(); // <=================== Here
             $this = $(this);
             if ($this.data().isSubmitted) {
                 return false;
             }
-
-
         });
-
-
        });
-
        function validardatos()
        {
            console.log("validardatos");
@@ -156,7 +142,6 @@ $botones= new Botones;
                         $('#nombreusuario').focus();
                         return false;
                     }
-                    
                 }else{
                     $('#apellidos').focus();
                     return false;
@@ -167,6 +152,11 @@ $botones= new Botones;
             }
        }
   </script>
-
-
-
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { -moz-appearance:textfield; }
+</style>
