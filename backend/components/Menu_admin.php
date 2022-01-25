@@ -84,46 +84,34 @@ class Menu_admin extends Component
     public function Nuevo($roles)
     {
         //$date = date("Y-m-d H:i:s");
-        $idrol=0;
-        $idmodulo=0;
-        $modelRol= new Roles;
+        $idmenu=0;
+        $modelMenu= new Menuadmin;
         $result=false;
         if ($roles):
-            $modelRol->nombre=$roles["nombrerol"];
-            $modelRol->descripcion=$roles["descripcion"];
-            $modelRol->usuariocreacion=Yii::$app->user->identity->id;
-            //$modelRol->fechacreacion=$roles->idfactura;
-            $modelRol->isDeleted=0;
-            $modelRol->estatus="ACTIVO";
+            $modelMenu->nombre=$roles["nombre"];
+            $modelMenu->icono=$roles["icono"];
+            $modelMenu->link=$roles["link"];
+            $modelMenu->orden=$roles["orden"];
+            $modelMenu->idparent=$roles["superior"];
+            $modelMenu->usuarioc=Yii::$app->user->identity->id;
+            $modelMenu->usuariom=Yii::$app->user->identity->id;
+            //$modelMenu->fechacreacion=$roles->idfactura;
+            $modelMenu->isDeleted=0;
+            $modelMenu->estatus="ACTIVO";
             //var_dump($roles);
             $error=false;
-            if ($modelRol->save()):
-                $idrol=$modelRol->id;
-                if ($roles["modulousuarios"]=="on"){
-                    $modelRolpermiso= new Rolespermisos;
-                    $modelRolpermiso->idrol=$modelRol->id;
-                    $modelRolpermiso->idmodulo=1;
-                    $modelRolpermiso->usuariocreacion=Yii::$app->user->identity->id;
-                    $modelRolpermiso->estatus="ACTIVO";
-                    if (!$modelRolpermiso->save()){ $error=false; $this->callback(1,$idrol,$modelRolpermiso->errors); return false; }
-                }
-                if ($roles["modulocontable"]=="on"){
-                    $modelRolpermiso= new Rolespermisos;
-                    $modelRolpermiso->idrol=$modelRol->id;
-                    $modelRolpermiso->idmodulo=2;
-                    $modelRolpermiso->usuariocreacion=Yii::$app->user->identity->id;
-                    $modelRolpermiso->estatus="ACTIVO";
-                    if (!$modelRolpermiso->save()){ $error=false; $this->callback(1,$idrol,$modelRolpermiso->errors); return false; }
-                }
-                return array("response" => true, "id" => $modelRol->id, "Mensaje"=> "Registro agregado","tipo"=>"success", "success"=>true);
+            if ($modelMenu->save()):
+                $error=false;
+                return array("response" => true, "id" => $modelMenu->id, "mensaje"=> "Registro agregado","tipo"=>"success", "success"=>true);
             else:
+                $this->callback(1,$idmenu,$modelMenu->errors);
                 //var_dump($modelRol->errors);
-                return array("response" => true, "id" => 0, "Mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
+                return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
             endif;
         else:
-            return array("response" => true, "id" => 0, "Mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
+            return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
         endif;
-        return array("response" => true, "id" => 0, "Mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
+        return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
     }
 
     public function callback($tipo,$id,$error)
@@ -131,15 +119,15 @@ class Menu_admin extends Component
         switch ($tipo) {
             case 1:
                 // callback para la función nuevo
-                $modelRolpermiso= Rolespermisos::deleteAll(["idrol"=>$id]);
+                //$modelRolpermiso= Rolespermisos::deleteAll(["idrol"=>$id]);
                 //$modelRolpermiso->delete();
                 
-                $modelRol= Roles::find()->where(["id"=>$id])->one();
-                $modelRol->delete();
+                //$modelRol= Roles::find()->where(["id"=>$id])->one();
+                //$modelRol->delete();
 
                 $log= new Log_errores;
                 $observacion="ID: ".$id;
-                $log->Nuevo("ROLES",$error,$observacion,0,Yii::$app->user->identity->id);
+                $log->Nuevo("MENU ADMIN",$error,$observacion,0,Yii::$app->user->identity->id);
 
                 return true;
                 break;

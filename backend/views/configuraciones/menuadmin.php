@@ -10,12 +10,12 @@ use backend\assets\AppAsset;
 /* @var $this yii\web\View */
 
 $botones= new Botones;
-$this->title = "Administración de Facturas";
+$this->title = "Administración de Menús";
 ?>
 <div class="row col-12 p-2" >
 <?php
 echo $botones->getBotongridArray(
-    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'nuevafactura', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
+    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'nuevomenu', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
 
 ?>
 </div>

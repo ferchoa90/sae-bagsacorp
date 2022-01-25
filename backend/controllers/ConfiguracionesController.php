@@ -4,6 +4,7 @@ namespace backend\controllers;
 use Yii;
 use backend\components\Globaldata;
 use backend\components\Botones;
+use backend\components\Menu_admin;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -61,6 +62,33 @@ class ConfiguracionesController extends Controller
         return $this->render('menuadmin');
     }
 
+    public function actionFormmenuadmin()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        extract($_POST);
+        $menuadmin= new Menu_admin;
+        $menuadmin= $menuadmin->Nuevo($_POST);
+        //die(var_dump($_POST));
+        $response=$menuadmin;
+
+        //return $this->render('formrol');
+        return json_encode($response);
+
+    }
+
+    public function actionVermenuadmin($id)
+    {
+        $menuadmin= Menuadmin::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('vermenuadmin', [
+            'menuadmin' =>$menuadmin,
+            //'rolpermisos' => Rolespermisos::find()->where(['idrol' => $rol->id])->all(),
+        ]);
+
+    }
+
     public function actionMenuadminreg()
     {
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -116,11 +144,51 @@ class ConfiguracionesController extends Controller
         }
         return json_encode($arrayResp);
     }
+
+    public function actionNuevomenu()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        //$menuadmin = Menuadmin::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $menuadmin = Menuadmin::find()->where(['isDeleted' => '0',"idparent"=>"0"])->orderBy(["nombre" => SORT_ASC])->all();
+        $menuadminArray=array();
+        $cont=0;
+        foreach ($menuadmin as $key => $value) {
+            if ($cont==0){ $menuadminArray[$cont]["value"]="Seleccione / Ninguno"; $menuadminArray[$cont]["id"]=-1; $cont++; }
+            $menuadminArray[$cont]["value"]=$value->nombre;
+            $menuadminArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        return $this->render('nuevomenu', [
+            //'sucursal' => $sucursal,
+            'menuadmin' => $menuadminArray,
+        ]);
+    }
     
 
     public function actionReimpresion()
     {
         return $this->render('reimpresion');
+    }
+
+    public function actionMenuadmineliminar($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $model = Menuadmin::findOne($id);
+        $model->isDeleted = 1;
+
+        if ($model->save())
+        {
+            return true;
+        }else{
+            return false;
+        }
+        //return $this->redirect(['index']);
     }
 
       
