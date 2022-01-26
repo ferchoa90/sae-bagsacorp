@@ -36,12 +36,12 @@ class Grid extends Component
             case 'separador':
                 $resultado.= $this->getSeparador($objetos[0]['clase'],$objetos[0]['estilo'], $objetos[0]['color']);
                 break;
-            
+
             case 'datagridsimple':
                 $resultado.= $this->getGridBoostrap2($objetos,$objetos[0]['cabecera'],$objetos[0]['contenido'],$objetos[0]['pie'],$objetos[0]['data'],$objetos[0]['nombre'], $objetos[0]['id'], $objetos[0]['clase'], $objetos[0]['estilo'], $objetos[0]['col'], $objetos[0]['adicional']);
 
                 break;
-    
+
             default:
 
                 break;
@@ -77,10 +77,10 @@ class Grid extends Component
 
         $thbodyconten='';
         $controw=0;
-        
+
         /*foreach ($contenido as $key => $value) {
-            if ($controw==0){ $thbodyconten.=$trin; }           
-            $thbodyconten.='<td scope="col" class="'.$value["clase"].'">'.$value["titulo"].'</td>';    
+            if ($controw==0){ $thbodyconten.=$trin; }
+            $thbodyconten.='<td scope="col" class="'.$value["clase"].'">'.$value["titulo"].'</td>';
             if ($contcol==$controw){ $thbodyconten.=$trout; $controw=0; }
         }*/
 
@@ -89,14 +89,14 @@ class Grid extends Component
 
             $thbodyconten.=$trin;
             foreach ($contenido as  $valueC) {
-                $thbodyconten.='<td scope="col" >'.$value[$valueC].'</td>';        
-                
+                $thbodyconten.='<td scope="col" >'.$value[$valueC].'</td>';
+
             }
             $thbodyconten.=$trout;
             $contcol++;
         }
         $result=$tablein.$theadin.$thheadconten.$theadend.$tbodyin.$thbodyconten.$tbodyend.$tableend;
-        if ($contcol>5){ 
+        if ($contcol>5){
             $divscroll='<div class="col-12 col-md-12" style="position: relative;height: 300px;overflow: auto; padding-top:1%;"> ';
             $divscrollend='</div> ';
             $result=$divscroll.$tablein.$theadin.$thheadconten.$theadend.$tbodyin.$thbodyconten.$tbodyend.$tableend.$divscrollend;
@@ -121,7 +121,7 @@ class Grid extends Component
 
         foreach($objetos[0]['columnas'] as $col):
 
-            $columnas.='<th>'.$col['columna'].'</th>';
+            $columnas.='<th >'.$col['columna'].'</th>';
 
         endforeach;
 //echo $columnas;
@@ -132,7 +132,7 @@ class Grid extends Component
             <div id="bodydiv" class="card-body">
                 <table id="'.$nombre.'"  name="'.$id.'" class="'.$classdefault.'">
                     <thead>
-                    <tr class="tableheader">
+                    <tr class="tableheader ">
                     '.$columnas.'
                     </tr>
                     </thead>
@@ -142,7 +142,7 @@ class Grid extends Component
             </div><!-- /.box -->
         </div>
        ';
-      
+
         if ($boxbody):
             $resultado=$resultado;
         endif;

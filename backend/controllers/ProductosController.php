@@ -151,7 +151,7 @@ class ProductosController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -384,7 +384,7 @@ class ProductosController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -437,7 +437,7 @@ class ProductosController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {

@@ -127,7 +127,7 @@ class UsuariosController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
 
@@ -168,7 +168,7 @@ class UsuariosController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
 

@@ -3,6 +3,7 @@ use backend\components\Objetos;
 use backend\components\Bloques;
 use backend\components\Botones;
 use backend\components\Iconos;
+use common\models\Menuadmin;
 use yii\helpers\Html;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -22,12 +23,16 @@ $div= new Bloques;
 
 ));
 
-$contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>Rol # </b>'.$menuadmin->id.'<br></div>';
+$superior= Menuadmin::find()->where(["id"=>$menuadmin->idparent])->one();
+if ($superior){ $menusup=$superior->nombre; }else{ $menusup="-"; }
+
+$contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>ID: </b>'.$menuadmin->id.'<br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Nombre:</b>&nbsp; '.$menuadmin->nombre.'</span><br></div>';
+$contenido.='<div class="col-3 col-md-6"><b>Superior:</b>&nbsp; '.$menusup.'</span><br></div>';
 $contenido.='<div class="col-3 col-md-3"><b>Icono:</b>&nbsp; '.$menuadmin->icono.'</span><br></div>';
-$contenido.='<div class="col-9 col-md-9"><b>Enlace:</b>&nbsp; '.$menuadmin->link.'</span><br></div>';
-$contenido.='<div class="col-6 col-md-6"><b>Orden:</b>&nbsp; '.$menuadmin->orden.'</span><br></div>';
+$contenido.='<div class="col-3 col-md-3"><b>Orden:</b>&nbsp; '.$menuadmin->orden.'</span><br></div>';
+$contenido.='<div class="col-9 col-md-12"><b>Enlace:</b>&nbsp; '.$menuadmin->link.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
 
@@ -47,8 +52,8 @@ $contenido.='</div>';
 
  echo $div->getBloqueArray(
     array(
-        array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$botonC),
-        array('tipo'=>'bloquediv','nombre'=>'rr','id'=>'ee','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
+        array('tipo'=>'bloquediv','nombre'=>'dvcontent','id'=>'dvcontent','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$botonC),
+        array('tipo'=>'bloquediv','nombre'=>'dvcontent','id'=>'dvcontent','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
     )
 );
 

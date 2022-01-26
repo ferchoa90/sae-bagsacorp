@@ -76,7 +76,7 @@ class ContabilidadController extends Controller
         $cuentasArray=array();
         $cont=0;
         foreach ($cuentas as $key => $value) {
-            if ($cont==0){ $cuentasArray[$cont]["value"]="Seleccione una cuenta"; $cuentasArray[$cont]["id"]=-1; $cont++; } 
+            if ($cont==0){ $cuentasArray[$cont]["value"]="Seleccione una cuenta"; $cuentasArray[$cont]["id"]=-1; $cont++; }
             $cuentasArray[$cont]["value"]=$value->codigoant.' -> '.$value->nombre;
             $cuentasArray[$cont]["id"]=$value->id;
             $cont++;
@@ -121,7 +121,7 @@ class ContabilidadController extends Controller
         $clientesArray=array();
         $cont=0;
         foreach ($clientes as $key => $value) {
-            if ($cont==0){ $clientesArray[$cont]["value"]="Seleccione un cliente"; $clientesArray[$cont]["id"]=-1; $cont++; } 
+            if ($cont==0){ $clientesArray[$cont]["value"]="Seleccione un cliente"; $clientesArray[$cont]["id"]=-1; $cont++; }
             $clientesArray[$cont]["value"]=$value->razonsocial;
             $clientesArray[$cont]["id"]=$value->id;
             $cont++;
@@ -140,22 +140,22 @@ class ContabilidadController extends Controller
         $bancos=Bancos::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombre" => SORT_ASC])->all();
         $cont=0;
         foreach ($bancos as $key => $value) {
-            if ($cont==0){ $bancosArray[$cont]["value"]="Seleccione un banco"; $bancosArray[$cont]["id"]=-1; $cont++; } 
+            if ($cont==0){ $bancosArray[$cont]["value"]="Seleccione un banco"; $bancosArray[$cont]["id"]=-1; $cont++; }
             $bancosArray[$cont]["value"]=$value->nombre;
             $bancosArray[$cont]["id"]=$value->id;
             $cont++;
-        }    
+        }
 
-        
+
         $bancos=Formapagocuentas::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombre" => SORT_ASC])->all();
         $formacobroArray=array();
         $cont=0;
         foreach ($bancos as $key => $value) {
-            if ($cont==0){ $formacobroArray[$cont]["value"]="Seleccione una forma de cobro"; $formacobroArray[$cont]["id"]=-1; $cont++; } 
+            if ($cont==0){ $formacobroArray[$cont]["value"]="Seleccione una forma de cobro"; $formacobroArray[$cont]["id"]=-1; $cont++; }
             $formacobroArray[$cont]["value"]=$value->nombre;
             $formacobroArray[$cont]["id"]=$value->id;
             $cont++;
-        }    
+        }
 
         return $this->render('nuevacuentapc', [
             'tipocuenta' => $cuentasArray,
@@ -200,7 +200,7 @@ class ContabilidadController extends Controller
     public function actionVercuentapc($id)
     {
         $cuenta= Cuentasporcobrar::find()->where(['id' => $id, "isDeleted" => 0])->one();
-        
+
         return $this->render('vercuentapc', [
             'cuenta' =>$cuenta,
             'cuentadetalle' => Cuentasporcobrardet::find()->where(['numero' => $cuenta->id, "isDeleted" => 0])->all(),
@@ -260,7 +260,7 @@ class ContabilidadController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -304,7 +304,7 @@ class ContabilidadController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>';
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -348,7 +348,7 @@ class ContabilidadController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>';
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -394,7 +394,7 @@ class ContabilidadController extends Controller
                           //array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -439,7 +439,7 @@ class ContabilidadController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -483,7 +483,7 @@ class ContabilidadController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -528,7 +528,7 @@ class ContabilidadController extends Controller
                           //array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {

@@ -124,14 +124,14 @@ class InventarioController extends Controller
     {
         $sucursalactual=Yii::$app->user->identity->idsucursal;
         $usuario = User::find()->where(['estatus' => 'Activo'])->andWhere(["<>","id","10002"])->orderBy(["username" => SORT_ASC])->all();
-           
+
         //die(var_dump($sucursalactual));
         $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->andWhere(["<> ","id",$sucursalactual])->orderBy(["nombre" => SORT_ASC])->all();
         return $this->render('nuevatransferencia', [
             'sucursal' => $sucursal,
             'usuario' => $usuario,
         ]);
-   
+
     }
 
     public function actionTransferencia()
@@ -168,9 +168,9 @@ class InventarioController extends Controller
 
         $count = 1;
 
-        
 
-        
+
+
 
             $modelInventario = Productos::find()->where(['id' => $model[0]->idproducto ])->orderBy(["fechacreacion" => SORT_DESC])->all();
 
@@ -186,13 +186,13 @@ class InventarioController extends Controller
 
             }
 
-            
+
 
             foreach ($modelInventario as $keyI => $dataI) {
 
-            
 
-                   
+
+
 
                 $arrayResp[$keyI]['titulo'] = $dataI->nombreproducto;
 
@@ -228,23 +228,23 @@ class InventarioController extends Controller
 
                 $arrayResp[$keyI]['imagen'] = $dataI->imagen;
 
-                 
 
-            
 
-        
 
-                $count++;       
+
+
+
+                $count++;
 
             }
 
 
 
-            
 
-        
 
-        
+
+
+
 
         return json_encode($arrayResp);
 
@@ -337,7 +337,7 @@ class InventarioController extends Controller
 
         }
 
-     
+
 
         $nombrep=$_REQUEST["nombrep"];
 
@@ -353,11 +353,11 @@ class InventarioController extends Controller
 
         $count = 1;
 
-        
+
 
         //die(var_dump($model));
 
- 
+
 
 
 
@@ -377,11 +377,11 @@ class InventarioController extends Controller
 
             }*/
 
-              
+
 
             foreach ($model as $keyI => $dataI) {
 
-            
+
 
                 $arrayResp[$keyI]['titulo'] = $dataI->nombreproducto;
 
@@ -394,7 +394,7 @@ class InventarioController extends Controller
                 $arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$dataI->imagen.'"/>';
 
                 //$arrayResp[$keyI]['imagen'] = '-';
- 
+
 
                 $arrayResp[$keyI]['usuariocreacion'] = $dataI->usuariocreacion0->username;
 
@@ -404,21 +404,21 @@ class InventarioController extends Controller
 
                 $arrayResp[$keyI]['imagen'] = $dataI->imagen;
 
-            
 
-        
 
-                $count++;       
+
+
+                $count++;
 
             }
 
 
 
-            
+
 
         //die(var_dump($arrayResp));
 
-        
+
 
         return json_encode($arrayResp);
     }
@@ -435,7 +435,7 @@ class InventarioController extends Controller
 
         }
 
-     
+
 
         $nombrep=$_REQUEST["nombrep"];
 
@@ -451,11 +451,11 @@ class InventarioController extends Controller
 
         $count = 1;
 
-        
+
 
         //die(var_dump($model));
 
- 
+
 
 
 
@@ -475,11 +475,11 @@ class InventarioController extends Controller
 
             }*/
 
-              
+
 
             foreach ($model as $keyI => $dataI) {
 
-            
+
 
                 $arrayResp[$keyI]['titulo'] = $dataI->producto->nombreproducto;
 
@@ -519,21 +519,21 @@ class InventarioController extends Controller
 
                 $arrayResp[$keyI]['imagen'] = $dataI->producto->imagen;
 
-            
 
-        
 
-                $count++;       
+
+
+                $count++;
 
             }
 
 
 
-            
+
 
         //die(var_dump($arrayResp));
 
-        
+
 
         return json_encode($arrayResp);
     }
@@ -578,7 +578,7 @@ class InventarioController extends Controller
                 //$arrayResp[$keyI]['fechacreacion'] = "-";
                 $arrayResp[$keyI]['id'] = $dataI->id;
                 $arrayResp[$keyI]['imagen'] = $dataI->producto->imagen;
-                $count++;       
+                $count++;
             }
 
         //die(var_dump($arrayResp));
@@ -586,7 +586,7 @@ class InventarioController extends Controller
     }
 
 
-     
+
 
     public function actionStock()
 
@@ -606,9 +606,9 @@ class InventarioController extends Controller
 
         if (isset($_POST) and !empty($_POST)) {
 
-            
 
-            
+
+
 
             $data = $_POST;
 
@@ -636,7 +636,7 @@ class InventarioController extends Controller
 
         $page = "inventario";
 
-         
+
 
         return json_encode($return);
 
@@ -668,15 +668,15 @@ class InventarioController extends Controller
 
             $model = $this->findModel($id);
 
- 
 
-            
+
+
 
                     $data = $_POST;
 
                     $model->stock =$model->stock+ $data['stock'];
 
-    
+
 
                     if ($model->save()) {
 
@@ -688,9 +688,9 @@ class InventarioController extends Controller
 
                     }
 
-     
 
-                    
+
+
 
         }  else{
 
@@ -698,7 +698,7 @@ class InventarioController extends Controller
 
         }
 
-        return json_encode($return); 
+        return json_encode($return);
 
     }
 
@@ -730,7 +730,7 @@ class InventarioController extends Controller
 
             $contProd=0;
 
-           
+
 
 
 
@@ -738,7 +738,7 @@ class InventarioController extends Controller
 
             foreach ($modelInventario as $keyI => $dataI) {
 
-            
+
 
                     $arrayResp[$count]['num'] = $count+1;
 
@@ -780,7 +780,7 @@ class InventarioController extends Controller
 
                     }
 
-             
+
 
                     $botones= new Botones;
 
@@ -791,23 +791,23 @@ class InventarioController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                      $arrayResp[$count]['acciones'] = $botonC ;
+                      $arrayResp[$count]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
 
-            
 
-        
 
-                $count++;       
+
+
+                $count++;
 
             }
 
 
 
-            
+
 
         }
 
-        
+
 
         return json_encode($arrayResp);
 
@@ -821,29 +821,29 @@ class InventarioController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
         $page = "inventario";
-    
+
             $modelInventario = Inventariotransfer::find()->orderBy(["fechacreacion" => SORT_DESC])->all();
             foreach ($modelInventario as $keyI => $dataI) {
                     $arrayResp[$keyI]['num'] = $count+1;
                     $arrayResp[$keyI]['titulo'] = $dataI->producto->nombreproducto;
                     //$arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
                     $arrayResp[$keyI]['imagen'] = '-';
-                     
+
                     $arrayResp[$keyI]['sucursalo'] = $dataI->sucursalo->nombre;
                     $arrayResp[$keyI]['sucursald'] = $dataI->sucursald->nombre;
-                    
+
                     $arrayResp[$keyI]['usuariocreacion'] = $dataI->usuariocreacion0->username;
                     $arrayResp[$keyI]['usuariorec'] = $dataI->usuariorec0->username;
                     $arrayResp[$keyI]['fechacreacion'] = $dataI->fechacreacion;
-  
+
                     //$arrayResp[$keyI]['button'] = '<a href="' . URL::base() . '/' . $page . '/view?id=' . $dataI->id . '" title="Ver" class="btn btn-xs btn-primary btnedit"><i class="glyphicon glyphicon-eye-open"></i></a>'
                       //  . '&nbsp;<a href="' . URL::base() . '/' . $page . '/update?id=' . $dataI->id . '" title="Actualizar" class="btn btn-xs btn-info btnedit"><span class="glyphicon glyphicon-pencil"></span></a>'
                        // . '&nbsp;<button type="submit" alt="Eliminar" title="Eliminar" data-id="' . $dataI->id . '" data-name="' . $data->nombreproducto . '" onclick="deleteReg(this)" class="btn btn-xs btn-danger btnhapus">'
                        // . '<i class="glyphicon glyphicon-trash"></i></button>';
                     $arrayResp[$keyI]['button'] = '-';
-                $count++;       
+                $count++;
             }
-        
+
         return json_encode($arrayResp);
     }
 
@@ -881,17 +881,17 @@ class InventarioController extends Controller
 
         }
 
-        
 
-         
+
+
 
         return $this->render('view', [
 
             'model' => $this->findModel($id),
 
-            
 
-           
+
+
 
         ]);
 
@@ -1055,7 +1055,7 @@ class InventarioController extends Controller
 
         if (isset($_POST) and !empty($_POST)) {
 
-         
+
 
                 //echo 'OK';
 
@@ -1073,9 +1073,9 @@ class InventarioController extends Controller
 
                 $model->idsucursal = $data['sucursal'];
 
-                $model->idcalidad = $data['calidad']; 
+                $model->idcalidad = $data['calidad'];
 
-                $model->idclasificacion = $data['clasificacion']; 
+                $model->idclasificacion = $data['clasificacion'];
 
                 $model->cantidadini = $data['stocki'];
 
@@ -1083,23 +1083,23 @@ class InventarioController extends Controller
 
                 $model->stock =   $data['stock'];
 
-                $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi'])); 
+                $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi']));
 
-                $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1'])); 
+                $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1']));
 
-                $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2'])); 
+                $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2']));
 
-                $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp'])); 
+                $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp']));
 
 
 
-                
 
-                    
 
-                    
 
-                    
+
+
+
+
 
                 $model->codigobarras =  $data['codigob'];
 
@@ -1123,9 +1123,9 @@ class InventarioController extends Controller
 
                 }
 
-           
 
-           
+
+
 
             return json_encode($return);
 
@@ -1171,7 +1171,7 @@ class InventarioController extends Controller
 
         if (isset($_POST) and !empty($_POST)) {
 
-         
+
 
                 //echo 'OK';
 
@@ -1191,23 +1191,23 @@ class InventarioController extends Controller
 
                 $model->stock =   $data['stock'];
 
-                $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi'])); 
+                $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi']));
 
-                $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1'])); 
+                $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1']));
 
-                $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2'])); 
+                $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2']));
 
-                $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp'])); 
+                $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp']));
 
 
 
-                
 
-                    
 
-                    
 
-                    
+
+
+
+
 
                 $model->codigobarras =  $data['codigob'];
 
@@ -1231,9 +1231,9 @@ class InventarioController extends Controller
 
                 }
 
-           
 
-           
+
+
 
             return json_encode($return);
 
@@ -1289,7 +1289,7 @@ class InventarioController extends Controller
         }
 
         $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
-                  
+
         if (isset($_POST) and !empty($_POST)) {
             $model = $this->findModel($_POST['producto']);
             $data = $_POST;
@@ -1381,10 +1381,10 @@ class InventarioController extends Controller
                 }else{
                     $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
                 }
-                
+
             }
-            
-            
+
+
              return json_encode($return);
 
         } else {
@@ -1394,7 +1394,7 @@ class InventarioController extends Controller
 
     }
 
-     
+
 
 
     public function actionUpdate($id)
@@ -1403,7 +1403,7 @@ class InventarioController extends Controller
 
     {
 
-        
+
 
         if (Yii::$app->user->isGuest) {
 
@@ -1429,15 +1429,15 @@ class InventarioController extends Controller
 
             $model = $this->findModel($id);
 
- 
 
-            
+
+
 
                     $data = $_POST;
 
-                    
 
-                    
+
+
 
                 $model->idpresentacion = $data['presentacion'];
 
@@ -1455,29 +1455,29 @@ class InventarioController extends Controller
 
                 $model->stock =   $data['stock'];
 
-                $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi'])); 
+                $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi']));
 
-                $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1'])); 
+                $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1']));
 
-                $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2'])); 
+                $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2']));
 
-                $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp'])); 
+                $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp']));
 
 
 
-                
 
-                    
 
-                    
 
-                    
+
+
+
+
 
                 $model->codigobarras =  $data['codigob'];
 
                 $model->codigocaja =  $data['codigoc'];
 
-                    
+
 
                     $model->estatus =  $data['estado'];
 
@@ -1491,7 +1491,7 @@ class InventarioController extends Controller
 
                     }
 
-     
+
 
              return json_encode($return);
 
@@ -1507,7 +1507,7 @@ class InventarioController extends Controller
 
             return $this->render('update', [
 
-                 
+
 
                 'model' => $model,
 
@@ -1529,7 +1529,7 @@ class InventarioController extends Controller
 
 
 
-   
+
 
 
 
@@ -1612,10 +1612,3 @@ class InventarioController extends Controller
 
 
 }
-
-
-
-
-
-
-

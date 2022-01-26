@@ -335,9 +335,7 @@ class FacturacionController extends Controller
                 $arrayResp[$key]['num'] = $count+1;
 
                 //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
-
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
-
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
                 $arrayResp[$key]['cliente'] = $data->cliente->razonsocial;
                 $view='factura';
@@ -349,7 +347,7 @@ class FacturacionController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -418,7 +416,7 @@ class FacturacionController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {

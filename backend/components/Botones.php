@@ -27,7 +27,7 @@ class Botones extends Component
 
             switch ($obj['tipo']) {
                 case 'link':
-                    $return.=$this->getBoton($obj['subtipo'],$obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['adicional']);
+                    $return.=$this->getBoton($obj['subtipo'],$obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['adicional']).'&nbsp;';
                     break;
 
                 case 'separador':

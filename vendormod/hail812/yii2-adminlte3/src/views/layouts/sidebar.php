@@ -1,11 +1,12 @@
-<?php 
+<?php
 use yii\helpers\Url;
-use backend\models\Menuadmin;
+use backend\components\Menu_admin;
+
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 <a class="logo" href="/backend/web/"><span class="logo-lg">SAE</span></a>
     <section class="sidebar">
-    
+
         <!-- Sidebar user panel -->
         <div class="user-panel  mt-3 pb-3 mb-3 d-flex">
             <div class="text-center image">
@@ -14,36 +15,14 @@ use backend\models\Menuadmin;
             <div class="text-center info">
                 <p><?= Yii::$app->user->identity->nombres.' '.Yii::$app->user->identity->apellidos ?></p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-             
+
             </div>
         </div>
 
         <?php
-            //$menu=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
-            $menuModel= Menuadmin::find()->where(["tipo"=>"WEB","idparent"=>"0","estatus"=>"ACTIVO"])->orderBy(["orden"=>SORT_ASC])->all();
-            foreach ($menuModel as $key => $data) {
-                
-                $subMenuModel= Menuadmin::find()->where(["tipo"=>"WEB","idparent"=>$data->id,"estatus"=>"ACTIVO"])->orderBy(["orden"=>SORT_ASC])->all();
-                if ($subMenuModel)
-                {
-                    $subMenu= array();
-                    foreach ($subMenuModel as $key => $data2) {
-                        //if ($data2->nombre=="Mensajes"){ $template='<a href="{url}">{icon} {label}<span class="pull-right-container"><small class="label pull-right bg-yellow">123</small></span></a>'; }
-                        if ($data2->nombre=="Mensajes"){
-                            $template='<a href="{url}">{icon} {label}<span class="pull-right-container"><small class="label pull-right bg-green">0</small></span></a>';
-                            $subMenu[]=array('label' => $data2->nombre, 'icon' => $data2->icono, 'url' => [$data2->link],'active' => '/'.$this->context->route == $data2->link,'template'=>$template);  
-                        }else{
-                            $subMenu[]=array('label' => $data2->nombre, 'icon' => $data2->icono, 'url' => [$data2->link],'active' => '/'.$this->context->route == $data2->link);  
-                        }
-                    }
-                    $menu[]= array('label' => $data->nombre, 'icon' => $data->icono, 'items' => $subMenu);            
-                }else{
-                    $menu[]= array('label' => $data->nombre, 'icon' => $data->icono, 'url' => [$data->link]);            
-                }
-            }
-            //$menu[]= array('label' => 'Gii2', 'icon' => 'file-code-o', 'url' => ['/gii']);
-//
-            //$menu= array_push($menu,'label' => 'Gii2');
+            $menu= New Menu_admin;
+            $menu= $menu->getMenuadmin(0,$this->context->route);
+            //echo $menu;
         ?>
         <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="padding-left:0px;">

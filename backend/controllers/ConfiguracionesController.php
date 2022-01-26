@@ -111,7 +111,8 @@ class ConfiguracionesController extends Controller
                         $arrayResp[$key]['superior'] =" - ";
                         //$arrayMenu[$text]=;
                     }else{
-                        $modelParent = Menuadmin::find()->where(['idparent' => $text])->one();
+                        //echo ' P: '.$text;
+                        $modelParent = Menuadmin::find()->where(['id' => $text])->one();
                         $arrayResp[$key]['superior'] = $modelParent->nombre;
                     }
 
@@ -125,7 +126,7 @@ class ConfiguracionesController extends Controller
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                    $arrayResp[$key]['acciones'] = $botonC ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>';
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -135,7 +136,7 @@ class ConfiguracionesController extends Controller
                 } else {
                     if (($id == "nombre") || ($id == "icono") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "link") ) { $arrayResp[$key][$id] = $text; }
-                    
+
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
 
                 }
@@ -166,7 +167,7 @@ class ConfiguracionesController extends Controller
             'menuadmin' => $menuadminArray,
         ]);
     }
-    
+
 
     public function actionReimpresion()
     {
@@ -191,7 +192,7 @@ class ConfiguracionesController extends Controller
         //return $this->redirect(['index']);
     }
 
-      
+
     protected function findModel($id)
     {
         if (($model = Inventario::findOne($id)) !== null) {
@@ -205,10 +206,3 @@ class ConfiguracionesController extends Controller
 
 
 }
-
-
-
-
-
-
-
