@@ -97,8 +97,8 @@ class MantenimientosController extends Controller
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
-                    if (($id == "cedula") || ($id == "nombres") ) { $arrayResp[$key][$id] = $text; }
-                    if (($id == "apellidos") || ($id == "direccion") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "cedula") || ($id == "razonsocial") ) { $arrayResp[$key][$id] = $text; }
+                    if (  ($id == "direccion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "correo") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "telefono") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }

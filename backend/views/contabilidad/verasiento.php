@@ -8,6 +8,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 
 $this->title = "Ver asiento";
+$this->params['breadcrumbs'][] = ['label' => 'Administración de Asientos', 'url' => ['asientos']];
 $this->params['breadcrumbs'][] = $this->title;
 
 

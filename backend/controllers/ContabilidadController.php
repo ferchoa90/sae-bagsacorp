@@ -12,6 +12,7 @@ use backend\models\User;
 use common\models\Bancos;
 use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
+use common\models\Cuentasporcobrardet;
 use common\models\Cuentasporpagar;
 use common\models\Cuentasparametros;
 use common\models\Periodofiscal;
@@ -185,6 +186,39 @@ class ContabilidadController extends Controller
 
     }
 
+    public function actionVerbancos($id)
+    {
+        $bancos= Bancos::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verbancos', [
+            'bancos' =>$bancos,
+            //'bancosdetalle' => Diariodetalle::find()->where(['diario' => $bancos->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
+    public function actionVercuentapc($id)
+    {
+        $cuenta= Cuentasporcobrar::find()->where(['id' => $id, "isDeleted" => 0])->one();
+        
+        return $this->render('vercuentapc', [
+            'cuenta' =>$cuenta,
+            'cuentadetalle' => Cuentasporcobrardet::find()->where(['numero' => $cuenta->id, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
+    public function actionVercuenta($id)
+    {
+        $cuenta= Cuentas::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('vercuenta', [
+            'cuenta' =>$cuenta,
+            //'asientodetalle' => Diariodetalle::find()->where(['diario' => $asiento->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
     public function actionEditarperiodofiscal($id)
     {
 
@@ -208,7 +242,7 @@ class ContabilidadController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
-        $page = "eliminarbanco";
+        $page = "bancos";
         $model = Bancos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
         $count = 0;
@@ -221,8 +255,8 @@ class ContabilidadController extends Controller
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verfactura?='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarfactura?='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verbancos?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarbancos?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -387,7 +421,7 @@ class ContabilidadController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
-        $page = "eliminarbanco";
+        $page = "cuentasporcobrar";
         $model = Cuentasporcobrar::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1500)->all();
         $arrayResp = array();
         $count = 0;
@@ -400,8 +434,8 @@ class ContabilidadController extends Controller
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verfactura?='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarfactura?='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'vercuentapc?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarcuentapc?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -476,7 +510,7 @@ class ContabilidadController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
-        $page = "eliminarfactura";
+        $page = "cuentas";
         $model = Cuentas::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
         $count = 0;
@@ -489,8 +523,8 @@ class ContabilidadController extends Controller
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verfactura?='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarfactura?='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'vercuenta?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarcuenta?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           //array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño', 'adicional'=>''),
                         )
                       );

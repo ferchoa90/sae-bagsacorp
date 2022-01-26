@@ -18,8 +18,7 @@ $botones= new Botones;
 $columnas= array(
     array('columna'=>'#', 'datareg' => 'num', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Cédula.', 'datareg' => 'cedula', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
-    array('columna'=>'Nombres', 'datareg' => 'nombres', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
-    array('columna'=>'Apellidos', 'datareg' => 'apellidos', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
+    array('columna'=>'Razon social', 'datareg' => 'razonsocial', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Dirección', 'datareg' => 'direccion', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Teléfono', 'datareg' => 'telefono', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Correo', 'datareg' => 'correo', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),

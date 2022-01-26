@@ -24,6 +24,7 @@ use Yii;
  * @property string $fechacreacion
  * @property string $estatus
  *
+ * @property Clientes $idcliente0
  * @property User $usuariocreacion0
  */
 class Cuentasporcobrar extends \yii\db\ActiveRecord
@@ -48,6 +49,7 @@ class Cuentasporcobrar extends \yii\db\ActiveRecord
             [['fecha', 'fechacreacion'], 'safe'],
             [['valor', 'abono', 'saldo'], 'number'],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
+            [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Clientes::className(), 'targetAttribute' => ['idcliente' => 'id']],
         ];
     }
 
@@ -74,6 +76,16 @@ class Cuentasporcobrar extends \yii\db\ActiveRecord
             'fechacreacion' => 'Fechacreacion',
             'estatus' => 'Estatus',
         ];
+    }
+
+    /**
+     * Gets query for [[Idcliente0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdcliente0()
+    {
+        return $this->hasOne(Clientes::className(), ['id' => 'idcliente']);
     }
 
     /**

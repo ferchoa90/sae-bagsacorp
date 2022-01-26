@@ -103,7 +103,6 @@ class Usuarios_sistema extends Component
                 $log= new Log_errores;
                 $observacion="ID: ".$id;
                 $log->Nuevo("USUARIO ",$error,$observacion,0,Yii::$app->user->identity->id);
-
                 //return true;
                 break;
             

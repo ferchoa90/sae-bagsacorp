@@ -9,7 +9,7 @@ use yii\web\View;
 use backend\assets\AppAsset;
 /* @var $this yii\web\View */
 
-$this->title = "Administración de Cuentas";
+$this->title = "Administración de Bancos";
 $this->params['breadcrumbs'][] = $this->title;
 
 $grid= new Grid;

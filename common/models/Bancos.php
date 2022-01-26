@@ -51,4 +51,9 @@ class Bancos extends \yii\db\ActiveRecord
             'estatus' => 'Estatus',
         ];
     }
+
+    public function getUsuariocreacion0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
 }

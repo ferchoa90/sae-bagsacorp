@@ -40,10 +40,10 @@ class Menu_admin extends Component
             
         }
         //$menu=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
-        $menuModel= Menuadmin::find()->where(["tipo"=>"WEB","idparent"=>"0","estatus"=>"ACTIVO"])->orderBy(["orden"=>SORT_ASC])->all();
+        $menuModel= Menuadmin::find()->where(["tipo"=>"WEB","idparent"=>"0","estatus"=>"ACTIVO","isDeleted"=>0])->orderBy(["orden"=>SORT_ASC])->all();
         foreach ($menuModel as $key => $data) {
             
-            $subMenuModel= Menuadmin::find()->where(["tipo"=>"WEB","idparent"=>$data->id,"estatus"=>"ACTIVO"])->orderBy(["orden"=>SORT_ASC])->all();
+            $subMenuModel= Menuadmin::find()->where(["tipo"=>"WEB","idparent"=>$data->id,"estatus"=>"ACTIVO","isDeleted"=>0])->orderBy(["orden"=>SORT_ASC])->all();
             if ($subMenuModel)
             {
                 $subMenu= array();
@@ -104,27 +104,56 @@ class Menu_admin extends Component
                 $error=false;
                 return array("response" => true, "id" => $modelMenu->id, "mensaje"=> "Registro agregado","tipo"=>"success", "success"=>true);
             else:
-                $this->callback(1,$idmenu,$modelMenu->errors);
+                $this->callback(1,$idmenu,$modelMenu->errors,"Menu_admin -> Nuevo");
                 //var_dump($modelRol->errors);
                 return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
             endif;
         else:
+            $this->callback(1,0,"NO POST","Menu_admin -> Nuevo");
             return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
         endif;
         return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
     }
 
-    public function callback($tipo,$id,$error)
+    public function Actualizar($id,$roles)
+    {
+        //$date = date("Y-m-d H:i:s");
+        $idmenu=0;
+        $modelMenu= Menuadmin::find()->where(["id"=>$id])->one();
+        $result=false;
+        if ($roles):
+            if ($modelMenu):
+                $modelMenu->nombre=$roles["nombre"];
+                $modelMenu->icono=$roles["icono"];
+                $modelMenu->link=$roles["link"];
+                $modelMenu->orden=$roles["orden"];
+                $modelMenu->idparent=$roles["superior"];
+                $modelMenu->usuariom=Yii::$app->user->identity->id;
+                //$modelMenu->fechacreacion=$roles->idfactura;
+                //var_dump($roles);
+                $error=false;
+                if ($modelMenu->save()):
+                    $error=false;
+                    return array("response" => true, "id" => $modelMenu->id, "mensaje"=> "Registro actualizado","tipo"=>"success", "success"=>true);
+                else:
+                    $this->callback(1,$idmenu,$modelMenu->errors,"Menu_admin -> Actualizar");
+                    //var_dump($modelRol->errors);
+                    return array("response" => true, "id" => 0, "mensaje"=> "Error al actualizar el registro","tipo"=>"error", "success"=>false);
+                endif;
+            else:
+
+            endif;
+        else:
+            $this->callback(1,0,"NO POST","Menu_admin -> Actualizar");
+            return array("response" => true, "id" => 0, "mensaje"=> "Error al actualizar el registro","tipo"=>"error", "success"=>false);
+        endif;
+        return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
+    }
+
+    public function callback($tipo,$id,$error,$funcion)
     {
         switch ($tipo) {
             case 1:
-                // callback para la función nuevo
-                //$modelRolpermiso= Rolespermisos::deleteAll(["idrol"=>$id]);
-                //$modelRolpermiso->delete();
-                
-                //$modelRol= Roles::find()->where(["id"=>$id])->one();
-                //$modelRol->delete();
-
                 $log= new Log_errores;
                 $observacion="ID: ".$id;
                 $log->Nuevo("MENU ADMIN",$error,$observacion,0,Yii::$app->user->identity->id);
