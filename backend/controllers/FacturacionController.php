@@ -353,7 +353,7 @@ class FacturacionController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
                     if (($id == "nfactura") || ($id == "subtotal") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "total") || ($id == "descuento") ) { $arrayResp[$key][$id] = $text; }

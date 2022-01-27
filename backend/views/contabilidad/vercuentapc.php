@@ -4,6 +4,7 @@ use backend\components\Bloques;
 use backend\components\Botones;
 use backend\components\Iconos;
 use common\models\Factura;
+use common\models\Banco;
 use yii\helpers\Html;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
@@ -34,6 +35,26 @@ $div= new Bloques;
 
 $tipo=($cuenta->tipo=='D')? 'DÉBITO' : 'CRÉDITO';
 
+$cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
+$banco=Banco::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","diario"=>$cuenta->diario])->one();
+
+ foreach ($cuentadetalle as $key => $value) {
+     $factura=Factura::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","nfactura"=>$value->cheque])->orderBy(["id" => SORT_DESC])->all();
+     //var_dump($factura);
+     foreach ($factura as $key => $valueFac) {
+        $scope= ($con==1)? $scope='scope="row"' : $scope='';
+        //if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
+        $tablacontent.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$valueFac->nfactura.'</td><td>-</td><td class="text-right">'.$valueFac->tipomov.'</td><td class="text-right">'.$valueFac->fecha.'</td>';
+        $tablacontent.=' <td '.$scope.'>'.$valueFac->vencimiento.'</td><td>'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format(0,2).'</td>';
+        $tablacontent.=' <td '.$scope.'></td><td></td></tr>';
+        $cont++; $cont2++;
+        ($con==2)? $cont=0 : $cont=$cont;
+    }
+    
+ }
+//$tablacontent.='<tr><td colspan="2"></td><td class="text-right"><b>'.number_format($sumdebe,2).'</b></td><td class="text-right"><b>'.number_format($sumhaber,2).'</b></td> </tr>';
+$tablacontent.='</tbody></table>';
+
 $contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>Diario # </b>'.$cuenta->diario.'<br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Fecha:</b>&nbsp; '.$cuenta->fecha.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Cliente:</b>&nbsp; '.$cuenta->idcliente0->razonsocial.'</span><br></div>';
@@ -42,8 +63,14 @@ $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Concepto:</b>&nbsp; '.$cuenta->concepto.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Tipo:</b>&nbsp; '.$tipo .'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Valor:</b>&nbsp;$ '.$cuenta->valor.'</span><br></div>';
-$contenido.='<div class="col-6 col-md-6"><b>Factura:</b>&nbsp;$ '.$cuenta->valor.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
+$contenido.='<div class="col-12 col-md-12"><b>Cuenta #</b>&nbsp; '.$cuenta->concepto.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-6"><b>Forma de cobro:</b>&nbsp; '.$tipo .'</span><br></div>';
+$contenido.='<div class="col-6 col-md-6"><b>Comprobante # </b>&nbsp;$ '.$banco->referencia.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-6"><b>Movimiento Bancos # </b>&nbsp; '.$banco->id.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-6"><b>Disponibilidad: </b>&nbsp;'.$banco->disponible.'</span><br></div>';
+$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
+
 $contenido.='</div>';
 
  $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
@@ -73,25 +100,9 @@ $contenido.='</div>';
    </tr>
  </thead>
  <tbody>';
-$cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
- foreach ($cuentadetalle as $key => $value) {
-     $factura=Factura::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","nfactura"=>$cuentadetalle->numerofactura])->orderBy(["id" => SORT_DESC])->all();
-     foreach ($factura as $key => $value) {
-        $scope= ($con==1)? $scope='scope="row"' : $scope='';
-        //if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
-        $tabla.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$value->concepto.'</td><td class="text-right">'.number_format($debe,2).'</td><td class="text-right">'.number_format($haber,2).'</td>';
-        $tabla.=' <td '.$scope.'>'.$cont2.'</td><td>'.$value->concepto.'</td><td class="text-right">'.number_format($debe,2).'</td><td class="text-right">'.number_format($haber,2).'</td></tr>';
-        $cont++; $cont2++;
-        ($con==2)? $cont=0 : $cont=$cont;
-    }
-    
- }
-$tabla.='<tr><td colspan="2"></td><td class="text-right"><b>'.number_format($sumdebe,2).'</b></td><td class="text-right"><b>'.number_format($sumhaber,2).'</b></td> </tr>';
 
-   $tabla.='</tbody>
-</table>';
 
-    $contenido.=$tabla;
+    $contenido.=$tabla.$tablacontent;
 
  echo $div->getBloqueArray(
     array(
