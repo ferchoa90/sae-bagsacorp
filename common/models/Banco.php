@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "Banco".
+ * This is the model class for table "banco".
  *
  * @property int $id
  * @property string $referencia
@@ -65,7 +65,7 @@ class Banco extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'Banco';
+        return 'banco';
     }
 
     /**
