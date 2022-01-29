@@ -74,4 +74,11 @@ class Diariodetalle extends \yii\db\ActiveRecord
             'estatus' => 'Estatus',
         ];
     }
+
+    public function getCuentas0()
+    {
+        return $this->hasMany(Cuentas::className(), ['codigoant' => 'cuenta']);
+    }
+
+
 }
