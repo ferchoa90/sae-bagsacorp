@@ -120,4 +120,23 @@ class Factura extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Facturadetalle::className(), ['idfactura' => 'id']);
     }
+
+    public function getdiario0()
+    {
+        //echo '2021-'.$this->nfactura;
+
+        //var_dump(Diario::find()->where(['auxiliar' => $this->nfactura,'anio'=>'2021'])->one());
+        return Diario::find()->where(['auxiliar' =>$this->nfactura,'anio'=> substr($this->fecha,0,4)])->one();
+        //return $this->hasOne(Diario::className(), ['auxiliar' => 'nfactura']);
+    }
+
+    public function getcpc0()
+    {
+        //echo '2021-'.$this->nfactura;
+
+        //var_dump(Cuentasporcobrar::find()->where(['idfactura' => $this->nfactura,'tipo'=>'D'])->one());
+        return Cuentasporcobrar::find()->where(['idfactura' =>$this->nfactura,'tipo'=>'D'])->one();
+        //return $this->hasOne(Diario::className(), ['auxiliar' => 'nfactura']);
+    }
+
 }

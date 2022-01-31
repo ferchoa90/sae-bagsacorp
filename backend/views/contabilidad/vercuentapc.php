@@ -43,15 +43,16 @@ $cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
 $banco=Banco::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","id"=>$cuenta->movimientobanco])->one();
 
  foreach ($cuentadetalle as $key => $value) {
+
      $factura=Factura::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","nfactura"=>$value->cheque])->orderBy(["id" => SORT_DESC])->all();
      //var_dump($factura);
      foreach ($factura as $key => $valueFac) {
-        
+
         $scope= ($con==1)? $scope='scope="row"' : $scope='';
         //if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
-        $tablacontent.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$valueFac->nfactura.'</td><td>-</td><td class="text-right">'.$valueFac->tipomov.'</td><td class="text-right">'.$valueFac->fecha.'</td>';
+        $tablacontent.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$valueFac->nfactura.'</td><td>'.$value->numerofactura.'</td><td class="text-right">'.$valueFac->diario0->tipoaux.'</td><td class="text-right">'.$valueFac->fecha.'</td>';
         $tablacontent.=' <td '.$scope.'>'.$valueFac->vencimiento.'</td><td>'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td>';
-        $tablacontent.=' <td '.$scope.'></td><td>'.$valueFac->diario.'</td></tr>';
+        $tablacontent.=' <td '.$valueFac->cpc0->concepto.'></td><td>'.$valueFac->diario.'</td></tr>';
         $cont++; $cont2++;
         ($con==2)? $cont=0 : $cont=$cont;
     }
