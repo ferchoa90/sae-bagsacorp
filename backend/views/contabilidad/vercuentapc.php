@@ -37,19 +37,21 @@ $div= new Bloques;
 ));
 
 $tipo=($cuenta->tipo=='D')? 'DÉBITO' : 'CRÉDITO';
+$formapago=($cuenta->formapago)? $cuenta->formacobro0->nombre : '';
 
 $cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
-$banco=Banco::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","diario"=>$cuenta->diario])->one();
+$banco=Banco::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","id"=>$cuenta->movimientobanco])->one();
 
  foreach ($cuentadetalle as $key => $value) {
      $factura=Factura::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","nfactura"=>$value->cheque])->orderBy(["id" => SORT_DESC])->all();
      //var_dump($factura);
      foreach ($factura as $key => $valueFac) {
+        
         $scope= ($con==1)? $scope='scope="row"' : $scope='';
         //if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
         $tablacontent.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$valueFac->nfactura.'</td><td>-</td><td class="text-right">'.$valueFac->tipomov.'</td><td class="text-right">'.$valueFac->fecha.'</td>';
-        $tablacontent.=' <td '.$scope.'>'.$valueFac->vencimiento.'</td><td>'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format(0,2).'</td>';
-        $tablacontent.=' <td '.$scope.'></td><td></td></tr>';
+        $tablacontent.=' <td '.$scope.'>'.$valueFac->vencimiento.'</td><td>'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td>';
+        $tablacontent.=' <td '.$scope.'></td><td>'.$valueFac->diario.'</td></tr>';
         $cont++; $cont2++;
         ($con==2)? $cont=0 : $cont=$cont;
     }
@@ -75,6 +77,10 @@ foreach ($diariodet as $key => $valueDia) {
 $tablacontent.='</tbody></table></div>';
 $tablacontent2.='</tbody></table></div>';
 
+$tablacontent.='<div class="row p-2"><div class="col-12 col-md-3 ">&nbsp;</div><div class="col-12 col-md-3 ">&nbsp;</div>';
+$tablacontent.='<div class="col-12 col-md-6 row bg-light"><div class="col-12 col-md-6  ">&nbsp;</div><div class="col-12 col-md-6  "><b>ABONO: </b>$ '.$cuenta->abono.'</div></div></div>';
+
+
 $contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>Diario # </b>'.$cuenta->diario.'<br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Fecha:</b>&nbsp; '.$cuenta->fecha.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Cliente:</b>&nbsp; '.$cuenta->idcliente0->razonsocial.'</span><br></div>';
@@ -85,23 +91,27 @@ $contenido.='<div class="col-6 col-md-6"><b>Tipo:</b>&nbsp; '.$tipo .'</span><br
 $contenido.='<div class="col-6 col-md-6"><b>Valor:</b>&nbsp;$ '.$cuenta->valor.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Cuenta #</b>&nbsp; '.$cuentabanco.'</span><br></div>';
-$contenido.='<div class="col-6 col-md-6"><b>Forma de cobro:</b>&nbsp; '.$tipo .'</span><br></div>';
+$contenido.='<div class="col-6 col-md-6"><b>Forma de cobro:</b>&nbsp; '.$formapago .'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Comprobante # </b>&nbsp; '.$banco->referencia.'</span><br></div>';
-$contenido.='<div class="col-6 col-md-6"><b>Movimiento Bancos # </b>&nbsp; '.$banco->id.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-6"><b>Movimiento Bancos # </b>&nbsp; '.$cuenta->movimientobanco.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Disponibilidad: </b>&nbsp;'.$banco->disponible.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
-
 $contenido.='</div>';
 
- $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+if(@$cuenta->usuarioact){ $usuariomod=$cuenta->usuariomodificacion0->username; } else{ $usuariomod=" - "; }
+if(@$cuenta->fechaact){ $fechamod=$cuenta->fechaact; } else{ $fechamod=" - ";  }
+
+if ($cuenta->estatus=="ACTIVO"){ $stylestatus="badge-success"; }else{ $stylestatus="badge-secondary" ; }
+ $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge '.$stylestatus.'"><i class="fa fa-circle"></i>&nbsp;&nbsp;'.$cuenta->estatus.'</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='<b>Fecha C.:</b>&nbsp; '.$cuenta->fechacreacion.'</span><br>';
  $contenido2.='<b>Usuario C.:</b>&nbsp; '.$cuenta->usuariocreacion0->username. '</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
- $contenido2.='<b>Fecha M.:</b>&nbsp; - </span><br>';
- $contenido2.='<b>Usuario M.:</b>&nbsp; - </span><br>';
+ $contenido2.='<b>Fecha M.:</b>&nbsp;'.$usuariomod.'</span><br>';
+ $contenido2.='<b>Usuario M.:</b>&nbsp;'.$fechamod.'</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='</div>';
+
 
  $tabla='<div style="overflow-x: scroll;"><table class="table table-striped">
  <thead>
