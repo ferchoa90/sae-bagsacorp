@@ -100,5 +100,9 @@ class Cuentasporcobrardet extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
 
+    public function getfactura0()
+    {
+        return $this->hasOne(User::className(), ['nfactura' => 'cheque']);
+    }
 
 }
