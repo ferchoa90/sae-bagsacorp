@@ -134,7 +134,7 @@ class Factura extends \yii\db\ActiveRecord
     {
         //echo '2021-'.$this->nfactura;
 
-        //var_dump(Cuentasporcobrar::find()->where(['idfactura' => $this->nfactura,'tipo'=>'D'])->one());
+        //echo (Cuentasporcobrar::find()->where(['idfactura' => $this->nfactura,'tipo'=>'D'])->one()->concepto);
         return Cuentasporcobrar::find()->where(['idfactura' =>$this->nfactura,'tipo'=>'D'])->one();
         //return $this->hasOne(Diario::className(), ['auxiliar' => 'nfactura']);
     }

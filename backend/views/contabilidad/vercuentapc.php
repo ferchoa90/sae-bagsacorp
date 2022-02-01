@@ -42,17 +42,24 @@ $formapago=($cuenta->formapago)? $cuenta->formacobro0->nombre : '';
 $cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
 $banco=Banco::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","id"=>$cuenta->movimientobanco])->one();
 
+$length = 7;
+$char = 0;
+$type = 'd';
+$format = "%{$char}{$length}{$type}"; // or "$010d";
+$abono=0;
+
  foreach ($cuentadetalle as $key => $value) {
 
      $factura=Factura::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO","nfactura"=>$value->cheque])->orderBy(["id" => SORT_DESC])->all();
      //var_dump($factura);
      foreach ($factura as $key => $valueFac) {
-
+        //var_dump($valueFac->cpc0->concepto);
         $scope= ($con==1)? $scope='scope="row"' : $scope='';
         //if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
-        $tablacontent.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$valueFac->nfactura.'</td><td>'.$value->numerofactura.'</td><td class="text-right">'.$valueFac->diario0->tipoaux.'</td><td class="text-right">'.$valueFac->fecha.'</td>';
-        $tablacontent.=' <td '.$scope.'>'.$valueFac->vencimiento.'</td><td>'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td>';
-        $tablacontent.=' <td '.$valueFac->cpc0->concepto.'></td><td>'.$valueFac->diario.'</td></tr>';
+        $tablacontent.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$valueFac->canal.'-'.sprintf($format, $valueFac->nfactura).'</td><td>'.$value->numerofactura.'</td><td class="text-right">'.$valueFac->diario0->tipoaux.'</td><td>'.$valueFac->fecha.'</td>';
+        $tablacontent.=' <td '.$scope.'>'.$valueFac->vencimiento.'</td><td>'.number_format($valueFac->total,2).'</td><td class="text-right">'.number_format($value->valor,2).'</td><td class="text-right">-</td>';
+        $tablacontent.=' <td >'.$valueFac->cpc0->concepto.'</td><td>'.$valueFac->diario.'</td></tr>';
+        $abono+=$value->valor;
         $cont++; $cont2++;
         ($con==2)? $cont=0 : $cont=$cont;
     }
@@ -79,7 +86,7 @@ $tablacontent.='</tbody></table></div>';
 $tablacontent2.='</tbody></table></div>';
 
 $tablacontent.='<div class="row p-2"><div class="col-12 col-md-3 ">&nbsp;</div><div class="col-12 col-md-3 ">&nbsp;</div>';
-$tablacontent.='<div class="col-12 col-md-6 row bg-light"><div class="col-12 col-md-6  ">&nbsp;</div><div class="col-12 col-md-6  "><b>ABONO: </b>$ '.$cuenta->abono.'</div></div></div>';
+$tablacontent.='<div class="col-12 col-md-6 row bg-light"><div class="col-12 col-md-6  ">&nbsp;</div><div class="col-12 col-md-6  "><b>ABONO: </b>$ '.number_format($abono,2).'</div></div></div>';
 
 
 $contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>Diario # </b>'.$cuenta->diario.'<br></div>';
