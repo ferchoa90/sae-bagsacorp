@@ -31,13 +31,27 @@ $this->title = "Nueva Factura";
             </div>
           </div>
           <!-- Content Row -->
+          <?php 
+            $objeto= new Objetos;
+            $div= new Bloques;
+            
+              $contenido=$objeto->getObjetosArray(
+                array(
+                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipoprecio', 'id'=>'tipoprecio', 'valor'=>$tiproprecio, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Precio: ', 'col'=>'col-12 col-md-2', 'adicional'=>''),
+                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'formapago', 'id'=>'formapago', 'valor'=>$formaspago, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Forma de pago: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'vendedor', 'id'=>'vendedor', 'valor'=>$vendedores, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Vendedor: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+                    array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'vencimiento', 'id'=>'vencimiento', 'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Vencimiento: ', 'col'=>'col-12 col-md-2', 'adicional'=>' min="1" max="30" '),
+                ),true
+            );
+          ?>
+
           <div class="row">
             <!-- Area Chart -->
             <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header d-flex flex-row align-items-center justify-content-between align-middle">
-                  <!-- <h6 class="m-0 font-weight-bold text-primary">Contenido</h6> -->
+                
+                <div class="row card-header d-flex flex-row align-items-center justify-content-between align-middle col-12" style="border-bottom: none;">
+                  
                   <h6 class="m-0 font-weight-bold text-primary col-5 col-xs-5 d-table-cell vertical-center  align-middle">
                         <div class="input-group vertical-center align-middle">
                                                       <input id="cliente" type="number" class="form-control bg-light border-0 small" placeholder="Cédula o Ruc del Cliente" aria-label="Search" aria-describedby="basic-addon1">
@@ -64,7 +78,13 @@ $this->title = "Nueva Factura";
                             </div>
                         </div>
                   </h6>
+                  <div class=" card-header align-items-center justify-content-between align-middle col-12">
+                    <?= $contenido; ?>
                 </div>
+                 
+                </div>
+                
+                
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-area">

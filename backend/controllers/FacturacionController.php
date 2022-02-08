@@ -9,6 +9,9 @@ use common\models\LoginForm;
 use common\models\Productos;
 use common\models\Factura;
 use common\models\Facturadetalle;
+use common\models\Tipopreciofactura;
+use common\models\Vendedores;
+use common\models\Formaspago;
 use common\models\Inventario;
 use backend\components\Botones;
 use common\models\Clientes;
@@ -47,6 +50,28 @@ class FacturacionController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionVerentregas($id)
+    {
+        $entregas= Entregas::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verentregas', [
+            'entregas' =>$entregas,
+           // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
+    public function actionVervendedor($id)
+    {
+        $vendedor= Vendedores::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('vervendedor', [
+            'vendedor' =>$vendedor,
+           // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
+        ]);
+
     }
 
     public function actionObtenercliente()
@@ -376,38 +401,24 @@ class FacturacionController extends Controller
 
 
     public function actionEntregasreg()
-
     {
-
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
-        $page = "facturacion";
-
+        $page = "entregas";
         $model = Entregas::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
         $arrayResp = array();
-
         $count = 1;
-
         foreach ($model as $key => $data) {
-
             foreach ($data as $id => $text) {
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
-
                 //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
-
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
-
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
 
-                $view='factura';
+                $view='entregas';
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
@@ -424,9 +435,9 @@ class FacturacionController extends Controller
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
-                    if (($id == "nfactura") || ($id == "fecha") || ($id == "hora") || ($id == "guiaremision")  || ($id == "observacion") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "nfactura") || ($id == "fecha") || ($id == "hora") || ($id == "guiaremision")  || ($id == "notas") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechaintraslado") || ($id == "fechafintraslado") || ($id == "puntopartida") || ($id == "puntollegada") ) { $arrayResp[$key][$id] = $text; }
-                    if ( ($id == "usuariocreacion")  || ($id == "fechacreacion")) { $arrayResp[$key][$id] = $text; }
+                    if (  ($id == "fechacreacion")) { $arrayResp[$key][$id] = $text; }
 
 
                 }
@@ -470,13 +481,96 @@ class FacturacionController extends Controller
         return $this->render('modaltest');
     }
 
+    public function actionVendedores()
+    {
+        return $this->render('vendedores');
+    }
+
+
+    
     public function actionNuevafactura()
     {
         $clientes = new Clientes;
+        $tipofactura = Tipopreciofactura::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $tipofacturaArray=array();
+        $cont=0;
+        foreach ($tipofactura as $key => $value) {
+            //if ($cont==0){ $tipofacturaArray[$cont]["value"]="Seleccione / Ninguno"; $tipofacturaArray[$cont]["id"]=0; $cont++; }
+            $tipofacturaArray[$cont]["value"]=$value->nombre;
+            $tipofacturaArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+        $formaspago = Formaspago::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $formaspagoArray=array();
+        $cont=0;
+        foreach ($formaspago as $key => $value) {
+            $formaspagoArray[$cont]["value"]=$value->nombre;
+            $formaspagoArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+        $vendedores = Vendedores::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $vendedoresArray=array();
+        $cont=0;
+        foreach ($vendedores as $key => $value) {
+            $vendedoresArray[$cont]["value"]=$value->nombre;
+            $vendedoresArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
         return $this->render('nuevafactura', [
             'clientes' => $clientes,
+            'tiproprecio' => $tipofacturaArray,
+            'formaspago' => $formaspagoArray,
+            'vendedores' => $vendedoresArray,
         ]);
 
+    }
+
+    public function actionVendedoresreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "vendedores";
+        $model = Vendedores::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1000)->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'vervendedor?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarvendedor?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                      $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                      //$arrayResp[$key]['acciones'] = '' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    //$arrayResp[$key][$id] = '';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    //$arrayResp[$key][$id] = '';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "nombre") || ($id == "ingreso") || ($id == "direccion")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") || ($id == "telefono")  || ($id == "correo")   ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechanac") || ($id == "identificacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
     }
 
     public function actionFacturas()

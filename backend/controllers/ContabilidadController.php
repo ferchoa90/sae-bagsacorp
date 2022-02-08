@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\db\Query;
 use backend\models\User;
 use common\models\Bancos;
+use common\models\Caja;
 use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporcobrardet;
@@ -88,6 +89,10 @@ class ContabilidadController extends Controller
         ]);
     }
 
+    public function actionBancosmov()
+    {
+        return $this->render('bancosmov');
+    }
     public function actionPeriodofiscal()
     {
         return $this->render('periodofiscal');
@@ -106,6 +111,11 @@ class ContabilidadController extends Controller
     public function actionBancos()
     {
         return $this->render('bancos');
+    }
+
+    public function actionCaja()
+    {
+        return $this->render('caja');
     }
 
     public function actionAsientos()
@@ -232,6 +242,104 @@ class ContabilidadController extends Controller
    public function actionInteracciones()
     {
         return $this->render('interacciones');
+    }
+
+    public function actionCajareg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "caja";
+        $model = Caja::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1000)->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['tipopago'] = $data->tipopagocaja0->nombre;
+                $arrayResp[$key]['proveedor'] = $data->proveedor0->nombre;
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verbancos?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarbancos?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                      $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                      //$arrayResp[$key]['acciones'] = '' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    //$arrayResp[$key][$id] = '';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    //$arrayResp[$key][$id] = '';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "referencia") || ($id == "fecha") || ($id == "valor")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") || ($id == "concepto")  || ($id == "cuenta")   ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "comprobante") || ($id == "diario")  || ($id == "beneficiario")  ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+    public function actionBancosmovreg()
+    {
+
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "caja";
+        $model = Banco::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1000)->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['tipopago'] = $data->tipopagocaja0->nombre;
+                $arrayResp[$key]['tipobanco'] = $data->proveedor0->nombre;
+                //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verbancos?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarbancos?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                      $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                      //$arrayResp[$key]['acciones'] = '' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    //$arrayResp[$key][$id] = '';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    //$arrayResp[$key][$id] = '';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "referencia") || ($id == "fecha") || ($id == "valor")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") || ($id == "concepto")  || ($id == "cuenta")   ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "comprobante") || ($id == "diario")  || ($id == "beneficiario")  ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
     }
 
 

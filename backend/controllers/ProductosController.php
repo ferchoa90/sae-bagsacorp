@@ -334,14 +334,54 @@ class ProductosController extends Controller
             $count++;
 
         }
-
-
-
         return json_encode($arrayResp);
 
     }
 
+    public function actionCategoriasreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "categorias";
+        $model = Presentacion::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 1;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
+                //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $view='categorias';
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
 
+                    if (($id == "nombre")  || ($id == "descripcion") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "persona") || ($id == "usuariocreacion") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
 
     public function actionPresentacionesreg()
 

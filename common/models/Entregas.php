@@ -90,4 +90,19 @@ class Entregas extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
+
+    public function getUsuarioactualizacion0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usuarioact']);
+    }
+
+    public function getCliente0()
+    {
+        return $this->hasOne(Clientes::className(), ['id' => 'idcliente']);
+    }
+
+    public function getTransporte0()
+    {
+        return $this->hasOne(Transporte::className(), ['id' => 'transporte']);
+    }
 }

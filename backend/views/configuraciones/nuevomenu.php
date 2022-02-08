@@ -32,7 +32,7 @@ $botones= new Botones;
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'icono', 'id'=>'icono', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Ícono','leyenda'=>'Nombre del ícono', 'col'=>'col-12 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'link', 'id'=>'link', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Enlace (link)','leyenda'=>'Ingrese el enlace', 'col'=>'col-12 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'orden', 'id'=>'orden', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'tarjeta','boxbody'=>false,'etiqueta'=>'Órden','leyenda'=>'Ingrese posición ', 'col'=>'col-12 col-md-6', 'adicional'=>'max="25"  maxlength="2" onKeyPress="if(this.value.length==2) return false;" '),
-        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'superior', 'id'=>'superior', 'valor'=>$menuadmin, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Tipo de usuario: ', 'col'=>'col-6 col-md-6', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'superior', 'id'=>'superior', 'valor'=>$menuadmin, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Superior: ', 'col'=>'col-6 col-md-6', 'adicional'=>''),
         
        // array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
     ),true

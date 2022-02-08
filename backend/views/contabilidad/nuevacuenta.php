@@ -14,10 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 $objeto= new Objetos;
 $div= new Bloques;
 
-//var_dump($clientes);
-
-
-
  $contenido=$objeto->getObjetosArray(
     array(
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$cuentas, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Categoria: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),

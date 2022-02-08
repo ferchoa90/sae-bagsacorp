@@ -156,7 +156,7 @@ class ConfiguracionesController extends Controller
         $menuadminArray=array();
         $cont=0;
         foreach ($menuadmin as $key => $value) {
-            if ($cont==0){ $menuadminArray[$cont]["value"]="Seleccione / Ninguno"; $menuadminArray[$cont]["id"]=-1; $cont++; }
+            if ($cont==0){ $menuadminArray[$cont]["value"]="Seleccione / Ninguno"; $menuadminArray[$cont]["id"]=0; $cont++; }
             $menuadminArray[$cont]["value"]=$value->nombre;
             $menuadminArray[$cont]["id"]=$value->id;
             $cont++;
@@ -167,6 +167,8 @@ class ConfiguracionesController extends Controller
             'menuadmin' => $menuadminArray,
         ]);
     }
+
+    
 
 
     public function actionReimpresion()
