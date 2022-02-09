@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\db\Query;
 use backend\models\User;
 use common\models\Bancos;
+use common\models\Banco;
 use common\models\Caja;
 use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
@@ -198,8 +199,8 @@ class ContabilidadController extends Controller
 
     public function actionVerbancos($id)
     {
-        $bancos= Bancos::find()->where(['id' => $id, "isDeleted" => 0])->one();
-
+        $bancos= Banco::find()->where(['id' => $id, "isDeleted" => 0])->one();
+        //var_dump($bancos);
         return $this->render('verbancos', [
             'bancos' =>$bancos,
             //'bancosdetalle' => Diariodetalle::find()->where(['diario' => $bancos->diario, "isDeleted" => 0])->all(),
@@ -309,8 +310,8 @@ class ContabilidadController extends Controller
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
-                $arrayResp[$key]['tipopago'] = $data->tipopagocaja0->nombre;
-                $arrayResp[$key]['tipobanco'] = $data->proveedor0->nombre;
+                $arrayResp[$key]['tipopago'] = $data->tipopagobanco0->nombre;
+                $arrayResp[$key]['proveedor'] = $data->proveedor0->nombre;
                 //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(

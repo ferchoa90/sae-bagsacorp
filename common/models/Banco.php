@@ -141,4 +141,27 @@ class Banco extends \yii\db\ActiveRecord
             'estatus' => 'Estatus',
         ];
     }
+
+    public function getUsuariocreacion0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
+
+    public function getUsuarioactualizacion0()
+    {
+        $response=$this->hasOne(User::className(), ['id' => 'usuarioact']);
+        if (!$this->usuarioact){ $response=(object) $array; $response->username="No registra";}
+        return $response;
+    }
+
+    public function getProveedor0()
+    {
+        return $this->hasOne(Proveedores::className(), ['id' => 'idproveedor']);
+    }
+
+    public function getTipopagobanco0()
+    {
+        return $this->hasOne(Tipopagobanco::className(), ['id' => 'tipopago']);
+    }
+    
 }

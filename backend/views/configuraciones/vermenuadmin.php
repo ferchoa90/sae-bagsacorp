@@ -36,7 +36,8 @@ $contenido.='<div class="col-9 col-md-12"><b>Enlace:</b>&nbsp; '.$menuadmin->lin
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
 
- $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+ if ($menuadmin->estatus=="ACTIVO"){ $stylestatus="badge-success"; }else{ $stylestatus="badge-secondary" ; }
+ $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge '.$stylestatus.'"><i class="fa fa-circle"></i>&nbsp;&nbsp;'.$menuadmin->estatus.'</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='<b>Fecha C.:</b>&nbsp; '.$menuadmin->fechacreacion.'</span><br>';
  $contenido2.='<b>Usuario C.:</b>&nbsp; '.$menuadmin->usuariocreacion0->username. '</span><br>';

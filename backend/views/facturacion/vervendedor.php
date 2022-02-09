@@ -34,7 +34,8 @@ $contenido.='<div class="col-6 col-md-6"><b>Identificación:</b>&nbsp; '.$vended
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
 
- $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+ if ($vendedor->estatus=="ACTIVO"){ $stylestatus="badge-success"; }else{ $stylestatus="badge-secondary" ; }
+ $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge '.$stylestatus.'"><i class="fa fa-circle"></i>&nbsp;&nbsp;'.$vendedor->estatus.'</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='<b>Fecha C.:</b>&nbsp; '.$vendedor->fechacreacion.'</span><br>';
  $contenido2.='<b>Usuario C.:</b>&nbsp; '.$vendedor->usuariocreacion0->username. '</span><br>';

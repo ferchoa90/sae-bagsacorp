@@ -23,19 +23,29 @@ $div= new Bloques;
 
 ));
 
-$contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>ID:  </b>'.$bancos->id.'<br></div>';
+$contenido='<div style="line-height:30px;" class="row"><div class="col-4 col-md-4"><b>ID:  </b>'.$bancos->id.'</div>';
+$contenido.='<div class="col-4 col-md-4"><b>Referencia:  </b>'.$bancos->referencia.'</div>';
+$contenido.='<div class="col-4 col-md-4"><b>Fecha:  </b>'.$bancos->fecha.'<br></div>';
+$contenido.='<div class="col-4 col-md-4"><b>Cuenta:  </b>'.$bancos->cuenta.'</div>';
+$contenido.='<div class="col-4 col-md-4"><b>Diario:  </b>'.$bancos->diario.'</div>';
+$contenido.='<div class="col-4 col-md-4"><b>N. Retención:  </b>'.$bancos->numeroretencion.'</div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
-$contenido.='<div class="col-12 col-md-12"><b>Nombre:</b>&nbsp; '.$bancos->nombre.'</span><br></div>';
+$contenido.='<div class="col-12 col-md-12"><b>Beneficiario:</b>&nbsp; '.$bancos->beneficiario.'</span><br></div>';
+$contenido.='<div class="col-12 col-md-12"><b>Concepto:</b>&nbsp; '.$bancos->concepto.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-4"><b>Valor:</b>&nbsp; '.$bancos->valor.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-4"><b>Tipo de pago:</b>&nbsp; '.$bancos->tipopagobanco0->nombre.'</span><br></div>';
+
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
 
- $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+ if ($bancos->estatus=="ACTIVO"){ $stylestatus="badge-success"; }else{ $stylestatus="badge-secondary" ; }
+ $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge '.$stylestatus.'"><i class="fa fa-circle"></i>&nbsp;&nbsp;'.$bancos->estatus.'</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='<b>Fecha C.:</b>&nbsp; '.$bancos->fechacreacion.'</span><br>';
  $contenido2.='<b>Usuario C.:</b>&nbsp; '.$bancos->usuariocreacion0->username. '</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
- $contenido2.='<b>Fecha M.:</b>&nbsp; - </span><br>';
- $contenido2.='<b>Usuario M.:</b>&nbsp; - </span><br>';
+ $contenido2.='<b>Fecha M.:</b>&nbsp; '.$bancos->fechaact.' </span><br>';
+ $contenido2.='<b>Usuario M.:</b>&nbsp; '.$bancos->usuarioactualizacion0->username. ' </span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='</div>';
 

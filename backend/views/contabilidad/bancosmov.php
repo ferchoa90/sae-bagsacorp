@@ -46,7 +46,7 @@ $columnas= array(
 
 echo $grid->getGrid(
         array(
-            array('tipo'=>'datagrid','nombre'=>'table','id'=>'table','columnas'=>$columnas,'clase'=>'','style'=>'','col'=>'','adicional'=>'','url'=>'cajareg')
+            array('tipo'=>'datagrid','nombre'=>'table','id'=>'table','columnas'=>$columnas,'clase'=>'','style'=>'','col'=>'','adicional'=>'','url'=>'bancosmovreg')
         )
 );
 
