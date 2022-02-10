@@ -108,6 +108,11 @@ class Productos extends \yii\db\ActiveRecord
         return $this->hasOne(Empresa::className(), ['id' => 'idempresa']);
     }
 
+    public function getColor0()
+    {
+        return $this->hasOne(Color::className(), ['id' => 'color']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -135,8 +140,32 @@ class Productos extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    
+    public function getPresentacion0()
+    {
+        return $this->hasOne(Presentacion::className(), ['id' => 'idpresentacion']);
+    }
+
+    public function getTipounidad0()
+    {
+        return $this->hasOne(Tipounidad::className(), ['id' => 'idpresentacionsec']);
+    }
+
+    public function getCaracteristica0()
+    {
+        return $this->hasOne(Caracteristica::className(), ['id' => 'caracteristica']);
+    }
+
+
     public function getUsuariocreacion0()
     {
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
+
+    public function getUsuarioactualizacion0()
+    {
+        $response=$this->hasOne(User::className(), ['id' => 'usuarioact']);
+        if (!$this->usuarioact){ $response=(object) $array; $response->username="No registra";}
+        return $response;
     }
 }

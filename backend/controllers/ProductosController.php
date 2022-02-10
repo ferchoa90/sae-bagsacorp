@@ -126,7 +126,7 @@ class ProductosController extends Controller
 
         $arrayResp = array();
 
-        $count = 1;
+        $count = 0;
 
         foreach ($model as $key => $data) {
 
@@ -157,7 +157,7 @@ class ProductosController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
                     if (($id == "nombreproducto") || ($id == "descripcion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "imagen") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
@@ -197,7 +197,7 @@ class ProductosController extends Controller
 
         $arrayResp = array();
 
-        $count = 1;
+        $count = 0;
 
         foreach ($model as $key => $data) {
 
@@ -283,7 +283,7 @@ class ProductosController extends Controller
 
         $arrayResp = array();
 
-        $count = 1;
+        $count = 0;
 
         foreach ($model as $key => $data) {
 
@@ -347,7 +347,7 @@ class ProductosController extends Controller
         $page = "categorias";
         $model = Presentacion::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
-        $count = 1;
+        $count = 0;
         foreach ($model as $key => $data) {
             foreach ($data as $id => $text) {
                 $botones= new Botones;
@@ -370,7 +370,7 @@ class ProductosController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
 
                     if (($id == "nombre")  || ($id == "descripcion") ) { $arrayResp[$key][$id] = $text; }
@@ -401,7 +401,7 @@ class ProductosController extends Controller
 
         $arrayResp = array();
 
-        $count = 1;
+        $count = 0;
 
         foreach ($model as $key => $data) {
 
@@ -430,7 +430,7 @@ class ProductosController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
 
                     if (($id == "nombre")  || ($id == "descripcion") ) { $arrayResp[$key][$id] = $text; }
@@ -455,7 +455,7 @@ class ProductosController extends Controller
         $page = "productos";
         $model = Tipoproducto::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
-        $count = 1;
+        $count = 0;
         foreach ($model as $key => $data) {
 
             foreach ($data as $id => $text) {
@@ -483,7 +483,7 @@ class ProductosController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
                     if (($id == "nombre")  || ($id == "descripcion") || ($id == "cuentainv") || ($id == "cuentaventas") || ($id == "cuentaventasdes") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "persona") || ($id == "usuariocreacion") || ($id == "cuentaventasdev") || ($id == "cuentacostos") || ($id == "cuentacostosdes") || ($id == "cuentacostosdev") ) { $arrayResp[$key][$id] = $text; }
@@ -662,29 +662,15 @@ class ProductosController extends Controller
 
 
     public function actionVerproducto($id)
-
-
-
     {
 
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
-
-
         return $this->render('verproducto', [
-
-            'model' => $this->findModel($id),
-
-            'modelTeam' => Productos::find()->all(),
-
+            'producto' => Productos::find()->where(['id'=>$id])->one(),
+            //'modelTeam' => Productos::find()->all(),
         ]);
-
-
-
     }
 
 

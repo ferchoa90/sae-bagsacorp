@@ -67,13 +67,14 @@ $contenido.='<div class="col-12 col-md-12"><b>Cuenta Salida Muestras:</b>&nbsp;'
 
 $contenido.='</div>';
 
- $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+if ($model->estatus=="ACTIVO"){ $stylestatus="badge-success"; }else{ $stylestatus="badge-secondary" ; }
+ $contenido2='<div style="line-height:30px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge '.$stylestatus.'"><i class="fa fa-circle"></i>&nbsp;&nbsp;'.$model->estatus.'</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='<b>Fecha C.:</b>&nbsp; '.$model->fechacreacion.'</span><br>';
  $contenido2.='<b>Usuario C.:</b>&nbsp; '.$model->usuariocreacion0->username. '</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
- $contenido2.='<b>Fecha M.:</b>&nbsp; - </span><br>';
- $contenido2.='<b>Usuario M.:</b>&nbsp; - </span><br>';
+ $contenido2.='<b>Fecha M.:</b>&nbsp;'.$model->usuarioactualizacion0->username. '</span><br>';
+ $contenido2.='<b>Usuario M.:</b>&nbsp;'.$model->fechaact. '</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='</div>';
 

@@ -28,7 +28,6 @@ $columnas= array(
     array('columna'=>'#', 'datareg' => 'num', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Codigo', 'datareg' => 'codigo', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Nombres', 'datareg' => 'nombreproducto', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
-    array('columna'=>'Descripcion', 'datareg' => 'descripcion', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Tipo P.', 'datareg' => 'tipop', 'clase'=>'', 'estilo'=>'', 'ancho'=>''),
     array('columna'=>'Fecha C.', 'datareg' => 'fechacreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
     array('columna'=>'Usuario C.', 'datareg' => 'usuariocreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
