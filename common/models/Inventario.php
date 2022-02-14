@@ -100,6 +100,13 @@ class Inventario extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+
+    public function getInventariodetalle0()
+    {
+        return $this->hasMany(Inventariodetalle::className(), ['numero' => 'id']);
+    }
+
+
     public function getProducto()
     {
         return $this->hasOne(Productos::className(), ['id' => 'idproducto']);
@@ -119,6 +126,13 @@ class Inventario extends \yii\db\ActiveRecord
     public function getUsuariocreacion0()
     {
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
+
+    public function getUsuarioactualizacion0()
+    {
+        $response=$this->hasOne(User::className(), ['id' => 'usuarioact']);
+        if (!$this->usuarioact){ $response=(object) $array; $response->username="No registra";}
+        return $response;
     }
 
     /**

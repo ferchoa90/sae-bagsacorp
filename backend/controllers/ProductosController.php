@@ -16,10 +16,14 @@ use common\models\Proveedores;
 use common\models\Productos;
 use common\models\Provincias;
 use common\models\Tipoproducto;
+use common\models\Tipounidad;
+use common\models\Color;
+use common\models\Caracteristica;
 use common\models\Cuentas;
 use backend\components\Contabilidad_cuentas;
 use backend\models\User;
 use backend\components\Botones;
+use backend\components\Modulo_productos;
 
 
 
@@ -87,11 +91,13 @@ class ProductosController extends Controller
      */
 
     public function actionIndex()
-
     {
-
         return $this->render('index');
+    }
 
+    public function actionProductos()
+    {
+        return $this->render('productos');
     }
 
 
@@ -147,7 +153,7 @@ class ProductosController extends Controller
                     $botonC=$botones->getBotongridArray(
                         array(
                           array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                         // array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -640,26 +646,11 @@ class ProductosController extends Controller
         }
 
     }
-
     /**
-
-
-
      * Displays a single QuinielaHead model.
-
-
-
      * @param integer $id
-
-
-
      * @return mixed
-
-
-
      */
-
-
 
     public function actionVerproducto($id)
     {
@@ -712,128 +703,61 @@ class ProductosController extends Controller
         ]);
     }
 
-
-
     public function actionVermarca($id)
-
-
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
 
-
-
         return $this->render('vermarca', [
-
             'model' =>  Marca::find()->where(['id'=>$id])->one()
 
-
-
         ]);
-
-
-
     }
 
 
 
     public function actionVerpresentacion($id)
-
-
-
     {
-
         if (Yii::$app->user->isGuest) {
 
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
 
 
         return $this->render('verpresentacion', [
-
             'model' =>  Presentacion::find()->where(['id'=>$id])->one()
-
-
 
         ]);
 
-
-
     }
-
-
-
 
 
     public function actionVerproveedor($id)
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
 
-
-
         return $this->render('verproveedor', [
-
             'model' =>  Proveedores::find()->where(['id'=>$id])->one()
-
-
-
         ]);
-
-
 
     }
 
-    /**
-
-
-
-     * Creates a new QuinielaHead model.
-
-
-
-     * If creation is successful, the browser will be redirected to the 'view' page.
-
-
-
-     * @return mixed
-
-
-
-     */
 
     private function subirImagen($imagen)
 
     {
 
         //$target_dir = '/xampp/htdocs/saenew/frontend/web/images/articulos/';
-
         $target_dir = '/home/agtecnologyec/public_html/facturacion/frontend/web/images/articulos/';
-
         $tmpdir=date("YmdHis");
-
         $imagen["name"]=$tmpdir.'-'.$imagen["name"];
-
         $target_file = $target_dir . basename($imagen["name"]);
-
         $nombreArchivo=basename($imagen["name"]);
-
         $uploadOk = 0;
-
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
         // Check if image file is a actual image or fake image
 
             $check = getimagesize($imagen["tmp_name"]);
@@ -931,116 +855,87 @@ class ProductosController extends Controller
 
 
     public function actionNuevo()
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $return=array();
-
-        $model = new Productos();
-
-        $marca = Marca::find()->where(['isDeleted'=>0])->orderBy(["nombre" => SORT_ASC])->all();
-
         $proveedores = Proveedores::find()->where(['isDeleted'=>0])->all();
-
-        $tipoproducto = Tipoproducto::find()->where(['isDeleted'=>0])->all();
-
-        if (isset($_POST) and !empty($_POST)) {
-
-            $uploadFile= $this->subirImagen($_FILES["imagen"]);
-
-            //die(var_dump($_FILES["imagen"]));
-
-            if ($uploadFile["success"])
-
-            {
-
-                //echo 'OK';
-
-                $data = $_POST;
-
-                //Model header
-
-                $model = new Productos();
-
-                $model->nombreproducto = $data['nombre'];
-
-                $model->descripcion = $data['descripcion'];
-
-                $model->imagen = $uploadFile["Nombrearchivo"];
-
-                $model->idempresa = 1;
-
-                $model->idproveedor = $data['proveedor'];
-
-                $model->tipoproducto = $data['tipoproducto'];
-
-                $model->marca = $data['marca'];
-
-                $model->usuariocreacion = Yii::$app->user->identity->id;
-
-                $model->modelo = 1;
-
-                $model->color = 0;
-
-                $model->isDeleted = 0;
-
-
-
-                $model->estatus =  $data['estado'];
-
-                $saveModel=$model->save();
-
-                //var_dump($_POST);
-
-                $flagHeader = true;
-
-                if ($saveModel) {
-
-                    $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $model->id);
-
-                }else{
-
-                    //var_dump($model->errors);
-
-                    $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el producto.","resp" => false, "id" => "");
-
-                }
-
-            }else{
-
-                $return=array("success"=>false,"Mensaje"=>"Error al subir la imagen, Mensaje: ".$uploadFile["Mensaje"],"resp" => false, "id" => "");
-
-            }
-
-
-
-            return json_encode($return);
-
-        } else {
-
-            return $this->render('nuevo', [
-
-                'marca' => $marca,
-
-                'proveedores' => $proveedores,
-
-                'tipoproducto' => $tipoproducto,
-
-                'model' => $model,
-
-            ]);
-
+        
+        $lineasArray=array();$unidadArray=array();$caracteristicaArray=array();$marcaArray=array();$colorArray=array();
+        $lineas=Tipoproducto::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["id" => SORT_ASC])->all();
+        $unidad=Tipounidad::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["id" => SORT_ASC])->all();
+        $marca=Marca::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["nombre" => SORT_ASC])->all();
+        $color=Color::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["id" => SORT_ASC])->all();
+        $caracteristica=Caracteristica::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["id" => SORT_ASC])->all();
+        $cont=0;
+        //die(var_dump($lineas));
+        foreach ($lineas as $key => $value) {
+            if ($cont==0){ $lineasArray[$cont]["value"]="Seleccione un tipo"; $lineasArray[$cont]["id"]=-1; $cont++; }
+            $lineasArray[$cont]["value"]=$value->nombre;
+            $lineasArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+        $cont=0;
+        foreach ($unidad as $key => $value) {
+            if ($cont==0){ $unidadArray[$cont]["value"]="Seleccione una unidad"; $unidadArray[$cont]["id"]=-1; $cont++; }
+            $unidadArray[$cont]["value"]=$value->nombre;
+            $unidadArray[$cont]["id"]=$value->id;
+            $cont++;
         }
 
+        $cont=0;
+        foreach ($caracteristica as $key => $value) {
+            if ($cont==0){ $caracteristicaArray[$cont]["value"]="Seleccione una caracteristica"; $caracteristicaArray[$cont]["id"]=-1; $cont++; }
+            $caracteristicaArray[$cont]["value"]=$value->nombre;
+            $caracteristicaArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $cont=0;
+        foreach ($marca as $key => $value) {
+            if ($cont==0){ $marcaArray[$cont]["value"]="Seleccione una marca"; $marcaArray[$cont]["id"]=-1; $cont++; }
+            $marcaArray[$cont]["value"]=$value->nombre;
+            $marcaArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $cont=0;
+        foreach ($color as $key => $value) {
+            if ($cont==0){ $colorArray[$cont]["value"]="Seleccione un color"; $colorArray[$cont]["id"]=-1; $cont++; }
+            $colorArray[$cont]["value"]=$value->nombre;
+            $colorArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+
+        return $this->render('nuevo', [
+            'marca' => $marcaArray,
+            'color' => $colorArray,
+            'proveedores' => $proveedores,
+            'caracteristica' => $caracteristicaArray,
+            'lineas' => $lineasArray,
+            'tipounidad' => $unidadArray,
+            'model' => $model, 
+        ]);
+        
     }
 
+    public function actionFormproducto()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        extract($_POST);
+        $productos= new Modulo_productos;
+        $productos= $productos->Nuevo($_POST);
+        //die(var_dump($_POST));
+        $response=$productos;
 
+        //return $this->render('formrol');
+        return json_encode($response);
+
+    }
 
     public function actionMarcanueva()
 
@@ -1568,34 +1463,22 @@ class ProductosController extends Controller
 
 
 
-    public function actionDelete($id)
-
-
-
+    public function actionProductoseliminar($id)
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
 
-        $model = $this->findModel($id);
-
+        $model = Productos::findOne($id);
         $model->isDeleted = 1;
 
         if ($model->save())
-
         {
-
-            return $this->redirect(['index']);
-
+            return true;
         }else{
-
-            var_dump($model->errors);
-
+            return false;
         }
-
+        //return $this->redirect(['index']);
     }
 
 

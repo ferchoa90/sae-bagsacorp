@@ -1,169 +1,172 @@
 <?php
-
-
-
+use yii\widgets\ActiveForm;
+use backend\components\Objetos;
+use backend\components\Bloques;
+use backend\components\Botones;
+use backend\components\Iconos;
+use backend\components\Grid;
 use yii\helpers\Html;
-
 use yii\helpers\Url;
-
-use yii\web\View;
 /* @var $this yii\web\View */
-/* @var $model app\models\TriviaHead */
 
-$this->title = 'Crear Producto';
-$this->params['breadcrumbs'][] = ['label' => 'Administración de Productos', 'url' => ['index']];
+
+$this->title = "Nuevo Producto";
+$this->params['breadcrumbs'][] = ['label' => 'Productos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$objeto= new Objetos;
+$div= new Bloques;
+
+$urlpost='formproducto';
+
+$tipo[1]["id"]=1;$tipo[1]["value"]="PRODUCTOS";
+$tipo[2]["id"]=2;$tipo[2]["value"]="SERVICIOS";
+//$tipo[2]="SERVICIOS";
+
+ $contenido=$objeto->getObjetosArray(
+    array(
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'codigo', 'id'=>'codigo', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Código: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'codigon', 'id'=>'codigon', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Código N: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipo', 'id'=>'tipo', 'valor'=>$tipo, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Tipo: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'descripcion', 'id'=>'descripcion', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Descripcion: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'codigop', 'id'=>'codigop', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Código Proveedor: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipolinea', 'id'=>'tipolinea', 'valor'=>$lineas, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Línea: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipounidad', 'id'=>'tipounidad', 'valor'=>$tipounidad, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Unidad: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        //array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'fechaemision', 'id'=>'fechaemision', 'valor'=>date("Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,'etiqueta'=>'Fecha emisión: ', 'col'=>'col-12 col-md-5', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'unidades', 'id'=>'unidades', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Unidades por bulto: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'descuento', 'id'=>'descuento', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Descuento (%): ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costofob', 'id'=>'costofob', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo F.O.B: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costou', 'id'=>'costou', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo Un.: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costopm', 'id'=>'costopm', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo x Mayor.: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costodis', 'id'=>'costodis', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo Dist.: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costodis1', 'id'=>'costodis1', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo Dist. 1: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costodis2', 'id'=>'costodis2', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo Dist. 2: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'costopvp', 'id'=>'costopvp', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Costo PVP: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'descuentocosto', 'id'=>'descuentocosto', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Desc. Costo: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'caracteristica', 'id'=>'caracteristica', 'valor'=>$caracteristica, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Caracteristica: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'marca', 'id'=>'marca', 'valor'=>$marca, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Marca: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'color', 'id'=>'color', 'valor'=>$color, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Color: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'unidadsec', 'id'=>'unidadsec', 'valor'=>$tipounidad, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Unidad Facturas: ', 'col'=>'col-12 col-md-6', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'unidadesfactura', 'id'=>'unidadesfactura', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Unidades por bulto F.: ', 'col'=>'col-6 col-md-3', 'adicional'=>''),
+        //array('tipo'=>'input','subtipo'=>'textarea', 'nombre'=>'concepto', 'id'=>'concepto', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Concepto: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        //array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cuenta', 'id'=>'cuenta', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cuenta N: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        //array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cheque', 'id'=>'cheque', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cheque N: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        //array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'fechaemision', 'id'=>'fechaemision', 'valor'=>date("Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,'etiqueta'=>'Fecha vencimiento: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        //array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+ 
+    ),true
+);
+ //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-9 col-xs-12 ','','','','');
+ //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-3 col-xs-12 ','','','','');
+ //echo $contenido;
+ $botones= new Botones; $botonC=$botones->getBotongridArray(
+    array(
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        array('tipo'=>'link','nombre'=>'guardar', 'id' => 'guardar', 'titulo'=>'&nbsp;Guardar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'guardar','tamanio'=>'pequeño',  'adicional'=>''),
+        array('tipo'=>'link','nombre'=>'regresar', 'id' => 'guardar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>'')
+
+));
+
+ 
+$contenido2='<div style="line-height:25px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
+$contenido2.='<hr style="color: #0056b2;"></div>';
+ 
+
+$form = ActiveForm::begin(['id'=>'frmDatos']);
+ echo $div->getBloqueArray(
+    array(
+        array('tipo'=>'bloquediv','nombre'=>'bloque1','id'=>'bloque1','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$botonC),
+        array('tipo'=>'bloquediv','nombre'=>'bloque2','id'=>'bloque2','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
+    )
+);
+ActiveForm::end();
+//var_dump($objeto);
 ?>
-    <input type="hidden" id="action" value="nuevo">
-    
-    <input type="hidden" id="id" value="0">
-    <div class="trivia-head-create">
-        <div class="box-body">
-            <a class="btn btn-success" id="btn_save"><i class="fa fa-save"></i>&nbsp; Guardar</a>
-        </div>
-        <div class="box-body" id="messages" style="display:none;"></div>
-        <form class="" method="POST" id="formSlider" enctype="multipart/form-data">
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-7 col-xs-7">
-                    <div class="box box-success">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Configuración de Producto</h3>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Estado</label>
-                                        <select class="form-control select2" style="width: 100%;" id="estado">
-                                            <option selected="selected" value="ACTIVO">ACTIVO</option>
-                                            <option value="INACTIVO">INACTIVO</option>
-                                        </select>
-                                    </div><!-- /.form-group -->
-                                </div><!-- /.col -->
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label>Proveedor</label>
-                                        <select class="form-control select2" style="width: 100%;" id="proveedor" name="proveedor">
-                                            <option >Seleccione el proveedor</option>
-                                            <?php foreach ($proveedores as $key => $value) { ?>
-                                                <option value="<?=$value->id ?>"><?=$value->nombre ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div><!-- /.form-group -->
-                                </div><!-- /.col -->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Tipo de Producto</label>
-                                        <select class="form-control select2" style="width: 100%;" id="tipoproducto" name="tipoproducto">
-                                            <option >Tipo de Producto</option>
-                                            <?php foreach ($tipoproducto as $key => $value) { ?>
-                                                <option value="<?=$value->id ?>"><?=$value->nombre ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div><!-- /.form-group -->
-                                </div><!-- /.col -->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Marca</label>
-                                        <select class="form-control select2" style="width: 100%;" id="marca" name="marca">
-                                            <option >Marca</option>
-                                            <?php foreach ($marca as $key => $value) { ?>
-                                                <option value="<?=$value->id ?>"><?=$value->nombre ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div><!-- /.form-group -->
-                                </div><!-- /.col -->
-                            </div><!-- /.row -->
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
 
-                <div class="col-md-5 col-xs-5">
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Información</h3>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                            <dl class="dl-horizontal">
-                                <dt>Imagen</dt>
-                                <dd><!-- <img src="/app/web/images/teams/default.png" /> --></dd>
-                            </dl>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-xs-12">
-                    <div class="box box-default">
-                        <div class="box-body">
-                            <!-- Date and time range -->
-                            
-                            <div class="form-group col-md-6 col-xs-6">
-                                <label>Nombre:</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-pencil"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" id="nombre" name="nombre">
-                                </div><!-- /.input group -->
-                            </div><!-- /.form group -->
-                            <div class="form-group col-md-6 col-xs-6">
-                                <label>Descripcion:</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-pencil"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" id="descripcion" name="descripcion">
-                                </div><!-- /.input group -->
-                            </div><!-- /.form group -->
-                            <div class="form-group  col-md-6 col-xs-6">
-                                <label>Imagen:</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-image"></i>
-                                    </div>
-                                    <input type="file" class="form-control pull-right" id="imagen" name="imagen">
-                                    
-                                    <!-- value="QTZXVHFuMDUEAAUxSVZhYShwEzobL1NDFk5gYTUIWE1xDyADA0NRAQ==" -->
-                                    <div class="input-group-addon">
-                                        <span class="info-text">*Tamaño: 454 x 566</span><br>
-                                    </div>
-                                </div><!-- /.input group -->
-                            </div><!-- /.form group -->
-                            
-                           
-                            
-                            <input type="hidden" id="token" name="_csrf-backend" value="<?= Yii::$app->request->getCsrfToken() ?>">
-                            
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
-            </div>
-        </div>
-        </form>
-        <!--<div class="box-body">
-            <a class="btn btn-success"><i class="fa fa-save"></i>&nbsp; Guardar</a>
-        </div>-->
-    </div>
-<?php
-$this->registerCssFile(URL::base() . "/js/plugins/daterangepicker/daterangepicker-bs3.css", [
-   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
-]);
-
-$this->registerJsFile(URL::base() . "/js/plugins/moment.min.js", [
-   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
-]);
-
-$this->registerJsFile(URL::base() . "/js/plugins/daterangepicker/daterangepicker.js", [
-   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
-
-]);
-
-$this->registerJsFile(URL::base() . "/js/class/productosNew.js", [
-   /* 'depends' => [\yii\bootstrap\BootstrapPluginAsset::className()]*/
-]);
-
-
-
+<script>
+       $(document).ready(function(){
+        //$("#frmDatos").find(':input').each(function() {
+        // var elemento= this;
+         //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value);
+        //});
+        $("#guardar").on('click', function() {
+            if (validardatos()==true){
+                var form    = $('#frmDatos');
+                $.ajax({
+                    url: '<?= $urlpost ?>',
+                    async: 'false',
+                    cache: 'false',
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function(response){
+                    data=JSON.parse(response);
+                    console.log(response);
+                    console.log(data.success);
+                    if ( data.success == true ) {
+                        // ============================ Not here, this would be too late
+                        notificacion(data.mensaje,data.tipo);
+                        //$this.data().isSubmitted = true;
+                        $('#frmDatos')[0].reset();
+                        return true;
+                    }else{
+                        notificacion(data.mensaje,data.tipo);
+                    }
+                }
+            });
+            }else{
+                notificacion("Faltan campos obligatorios","error");
+                //e.preventDefault(); // <=================== Here
+                return false;
+            }
+        });
+        $('#frmDatos').on('submit', function(e){
+            e.preventDefault(); // <=================== Here
+            $this = $(this);
+            if ($this.data().isSubmitted) {
+                return false;
+            }
+        });
+       });
+       function validardatos()
+       {
+           console.log("validardatos");
+            if ($('#codigo').val()!=""){
+                if ($('#tipolinea').val()!=-1){
+                    if ($('#tipounidad').val()!=-1){
+                        if ($('#descripcion').val()!=""){
+                            if ($('#caracteristica').val()!=-1){
+                                if ($('#marca').val()!=-1){
+                                    if ($('#color').val()!=-1){
+                                        return true;                            
+                                    }else{
+                                        $('#color').focus();
+                                        return false;
+                                    }
+                                }else{
+                                    $('#marca').focus();
+                                    return false;
+                                }                            
+                            }else{
+                                $('#caracteristica').focus();
+                                return false;
+                            }
+                        }else{
+                            $('#descripcion').focus();
+                            return false;
+                        }
+                    }else{
+                        $('#tipounidad').focus();
+                        return false;
+                    }
+                }else{
+                    $('#tipolinea').focus();
+                    return false;
+                }
+            }else{
+                $('#codigo').focus();
+                return false;
+            }
+       }
+  </script>

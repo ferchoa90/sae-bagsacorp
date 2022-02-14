@@ -1,70 +1,41 @@
 <?php
 
 namespace backend\controllers;
-
 use backend\components\Globaldata;
-
 use Yii;
-
 use yii\web\Controller;
-
 use yii\web\NotFoundHttpException;
-
 use yii\filters\VerbFilter;
-
 use yii\filters\AccessControl;
-
 use yii\helpers\Url;
-
 use yii\db\Query;
-
 use common\models\Inventario;
 use common\models\Inventariotransfer;
-
 use common\models\Factura;
-
 use common\models\Presentacion;
-
 use common\models\Color;
-
 use common\models\Calidad;
-
 use common\models\Clasificacion;
-
 use common\models\Sucursal;
-
 use common\models\Productos;
-
 use backend\models\User;
 use backend\components\Botones;
 
 
 class InventarioController extends Controller
-
 {
-
     public function behaviors()
-
     {
-
         return [
-
             'access' => [
-
                 'class' => AccessControl::className(),
-
                 'only' => ['create', 'update', 'view', 'delete', 'index'],
-
                 'rules' => [
-
                     [
 
                         'actions' => ['create', 'update', 'view', 'delete', 'index'],
-
                         'allow' => true,
-
                         'roles' => ['@'],
-
                         'matchCallback' => function ($rule, $action) {
 
                             return User::isUserAdmin(Yii::$app->user->identity->username);
@@ -84,13 +55,9 @@ class InventarioController extends Controller
                 'actions' => [
 
                     'delete' => ['post'],
-
                 ],
-
             ],
-
         ];
-
     }
 
     /**
@@ -100,27 +67,36 @@ class InventarioController extends Controller
      * @return string
 
      */
-
-    public function actionIndex()
-
+    public function actionInventario()
     {
-
-        return $this->render('index');
-
+        return $this->render('inventario');
     }
 
+    public function actionNuevoinventario()
+    {
+        return $this->render('nuevoinventario');
+    }
 
+    public function actionVerinventario($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $inventario=Inventario::find()->where(['id'=>$id])->one();
+        //var_dump($inventario);
+        return $this->render('verinventario', [
+            'inventario' => Inventario::find()->where(['id'=>$id])->one(),
+            //'modelTeam' => Productos::find()->all(),
+        ]);
+    
+    }
 
     public function actionAgregarstockex()
-
     {
-
         return $this->render('agregarstockex');
-
     }
 
     public function actionNuevatransferencia()
-
     {
         $sucursalactual=Yii::$app->user->identity->idsucursal;
         $usuario = User::find()->where(['estatus' => 'Activo'])->andWhere(["<>","id","10002"])->orderBy(["username" => SORT_ASC])->all();
@@ -705,112 +681,48 @@ class InventarioController extends Controller
 
 
     public function actionRegistros()
-
     {
-
-        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-        if (Yii::$app->user->isGuest) {
-
+         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $page = "inventario";
-
-        $model = Productos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
+        $model = Inventario::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1000)->all();
         $arrayResp = array();
-
         $count = 0;
-
         foreach ($model as $key => $data) {
-
-            $idProducto=0;
-
-            $contProd=0;
-
-
-
-
-
-            $modelInventario = Inventario::find()->where(['idproducto' => $data->id,'isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
-            foreach ($modelInventario as $keyI => $dataI) {
-
-
-
-                    $arrayResp[$count]['num'] = $count+1;
-
-                    $arrayResp[$count]['titulo'] = $data->nombreproducto;
-
-                    $arrayResp[$count]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
-
-                    //$arrayResp[$count]['imagen'] = '-';
-
-                    $arrayResp[$count]['stock'] = $dataI->stock;
-
-                    $arrayResp[$count]['preciovp'] = $dataI->preciovp;
-
-                    $arrayResp[$count]['preciov2'] = $dataI->preciov2;
-
-                    $arrayResp[$count]['codigobarras'] = $dataI->codigobarras;
-
-                   // $arrayResp[$count]['sucursal'] = $dataI->sucursal->nombre;
-
-                    $arrayResp[$count]['tipod'] = $dataI->clasificacion->nombre;
-
-                    $arrayResp[$count]['presentacion'] = $dataI->presentacion->nombre;
-
-                    $arrayResp[$count]['color'] = $dataI->color->nombre;
-
-                    $arrayResp[$count]['calidad'] = $dataI->calidad->nombre;
-
-                    $arrayResp[$count]['usuariocreacion'] = $dataI->usuariocreacion0->username;
-
-                    $arrayResp[$count]['fechacreacion'] = $dataI->fechacreacion;
-
-                    if ( $dataI->estatus  == 'ACTIVO') {
-
-                        $arrayResp[$count]["estatus"] =  '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $dataI->estatus . '</small>';
-
-                    } elseif ($dataI->estatus == 'INACTIVO') {
-
-                        $arrayResp[$count]["estatus"]  = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' .$dataI->estatus . '</small>';
-
-                    }
-
-
-
-                    $botones= new Botones;
-
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                //$arrayResp[$key]['tipop'] = $data->tipoproducto0->nombre;
+                $view='inventario';
+                if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'view'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'update'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                         // array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
-                      $arrayResp[$count]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                    if (($id == "numero") || ($id == "fecha") || ($id == "costo") || ($id == "total") || ($id == "comprobante") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "diasplazo") || ($id == "ivatotal") || ($id == "referencia") || ($id == "usuariocreacion")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") || ($id == "diario") || ($id == "totaliva") || ($id == "totalivaice") ) { $arrayResp[$key][$id] = $text; }
 
-
-
-
-
-                $count++;
+                }
 
             }
-
-
-
-
-
+            $count++;
         }
-
-
-
         return json_encode($arrayResp);
-
     }
 
 
