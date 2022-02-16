@@ -9,6 +9,7 @@ use common\models\LoginForm;
 use common\models\Productos;
 use common\models\Clientes;
 use common\models\Proveedores;
+use common\models\Operarios;
 use backend\components\Botones;
 
 
@@ -95,7 +96,7 @@ class MantenimientosController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
                     if (($id == "cedula") || ($id == "razonsocial") ) { $arrayResp[$key][$id] = $text; }
                     if (  ($id == "direccion") ) { $arrayResp[$key][$id] = $text; }
@@ -114,38 +115,53 @@ class MantenimientosController extends Controller
 
     }
 
-    public function actionProveedoresreg()
-
+    public function actionOperarios()
     {
+        return $this->render('operarios');
+    }
 
-        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
+    public function actionVeroperarios($id)
+    {
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
+        //var_dump($inventario);
+        return $this->render('veroperarios', [
+            'operario' => Operarios::find()->where(['id'=>$id])->orderBy(["nombres"=>SORT_ASC])->one(),
+            //'modelTeam' => Productos::find()->all(),
+        ]);
+    
+    }
 
+    public function actionVerproveedor($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+ 
+        return $this->render('verproveedor', [
+            'proveedor' => Proveedores::find()->where(['id'=>$id])->orderBy(["nombre"=>SORT_ASC])->one(),
+            //'modelTeam' => Productos::find()->all(),
+        ]);
+    
+    }
+
+    public function actionProveedoresreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
         $page = "Proveedores";
-
         $model = Proveedores::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
         $arrayResp = array();
-
-        $count = 1;
-
+        $count = 0;
         foreach ($model as $key => $data) {
-
             foreach ($data as $id => $text) {
-
-
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
-
                 //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
-
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
-
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
               //  $arrayResp[$key]['cliente'] = $data->cliente->nombres;
                 $view='proveedor';
@@ -153,7 +169,7 @@ class MantenimientosController extends Controller
                     $botonC=$botones->getBotongridArray(
                         array(
                           array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                        //  array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -163,13 +179,59 @@ class MantenimientosController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
-                    if (($id == "nombre") || ($id == "ruc") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "nombre") || ($id == "identificacion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "contacto") || ($id == "telefono") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "direccion") || ($id == "credito") ) { $arrayResp[$key][$id] = $text; }
-                    if (($id == "correo")  || ($id == "persona") ) { $arrayResp[$key][$id] = $text; }
-                    if (($id == "telefono") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "correo")  ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "debito") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+    public function actionOperariosreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "Operarios";
+        $model = Operarios::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 1;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
+                //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+              //  $arrayResp[$key]['cliente'] = $data->cliente->nombres;
+                $view='operarios';
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                    if (($id == "nombres")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "usuariocreacion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
 
                 }
@@ -216,6 +278,42 @@ class MantenimientosController extends Controller
     public function actionProveedores()
     {
         return $this->render('proveedores');
+    }
+
+    public function actionOperarioseliminar($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $model = Operarios::findOne($id);
+        $model->isDeleted = 1;
+
+        if ($model->save())
+        {
+            return true;
+        }else{
+            return false;
+        }
+        //return $this->redirect(['index']);
+    }
+
+    public function actionProveedoreliminar($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $model = Proveedores::findOne($id);
+        $model->isDeleted = 1;
+
+        if ($model->save())
+        {
+            return true;
+        }else{
+            return false;
+        }
+        //return $this->redirect(['index']);
     }
 
 

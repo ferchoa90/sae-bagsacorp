@@ -18,6 +18,7 @@ use common\models\Calidad;
 use common\models\Clasificacion;
 use common\models\Sucursal;
 use common\models\Productos;
+use common\models\Produccion;
 use backend\models\User;
 use backend\components\Botones;
 
@@ -72,6 +73,11 @@ class InventarioController extends Controller
         return $this->render('inventario');
     }
 
+    public function actionProduccion()
+    {
+        return $this->render('produccion');
+    }
+
     public function actionNuevoinventario()
     {
         return $this->render('nuevoinventario');
@@ -86,6 +92,20 @@ class InventarioController extends Controller
         //var_dump($inventario);
         return $this->render('verinventario', [
             'inventario' => Inventario::find()->where(['id'=>$id])->one(),
+            //'modelTeam' => Productos::find()->all(),
+        ]);
+    
+    }
+
+    public function actionVerproduccion($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $inventario=Inventario::find()->where(['id'=>$id])->one();
+        //var_dump($inventario);
+        return $this->render('verproduccion', [
+            'produccion' => Produccion::find()->where(['id'=>$id])->one(),
             //'modelTeam' => Productos::find()->all(),
         ]);
     
@@ -111,158 +131,69 @@ class InventarioController extends Controller
     }
 
     public function actionTransferencia()
-
     {
-
         return $this->render('transferencia');
-
     }
 
     public function actionProductoindividualc()
-
     {
-
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
         if (Yii::$app->user->isGuest) {
-
             //return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $codigo=$_REQUEST["codigo"];
-
         //$nombrep=explode(" -",$_REQUEST["nombrep"]);
-
         //$nombrep[0]="167";
-
         $page = "site";
-
         $model = Inventario::find()->where(['codigobarras' => $codigo])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
         $arrayResp = array();
-
         $count = 1;
-
-
-
-
-
-            $modelInventario = Productos::find()->where(['id' => $model[0]->idproducto ])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
-
-
+        $modelInventario = Productos::find()->where(['id' => $model[0]->idproducto ])->orderBy(["fechacreacion" => SORT_DESC])->all();
             //var_dump($modelInventario);
-
             if (!$modelInventario){
-
                 $arrayResp[0]['id'] = $model[0]->id;
-
                 $arrayResp[0]['imagen'] = $model[0]->imagen;
-
             }
-
-
 
             foreach ($modelInventario as $keyI => $dataI) {
-
-
-
-
-
                 $arrayResp[$keyI]['titulo'] = $dataI->nombreproducto;
-
                 $arrayResp[$keyI]['descripcion'] = $dataI->descripcion;
-
                 $arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$dataI->imagen.'"/>';
-
                 //$arrayResp[$keyI]['imagen'] = '-';
-
                 $arrayResp[$keyI]['stock'] = $model[0]->stock;
-
                 $arrayResp[$keyI]['cantidadini'] = $model[0]->cantidadini;
-
                 $arrayResp[$keyI]['cantidadcaja'] = $model[0]->cantidadcaja;
-
                 $arrayResp[$keyI]['precioint'] = $model[0]->precioint;
-
                 $arrayResp[$keyI]['preciov1'] = $model[0]->preciov1;
-
                 $arrayResp[$keyI]['preciov2'] = $model[0]->preciov2;
-
                 $arrayResp[$keyI]['preciovp'] = $model[0]->preciovp;
-
                 $arrayResp[$keyI]['codigobarras'] = $model[0]->codigobarras;
-
                 $arrayResp[$keyI]['codigocaja'] = $model[0]->codigocaja;
-
                 $arrayResp[$keyI]['usuariocreacion'] = $dataI->usuariocreacion0->username;
-
                 //$arrayResp[$keyI]['fechacreacion'] = "-";
-
                 $arrayResp[$keyI]['id'] = $model[0]->id;
-
                 $arrayResp[$keyI]['imagen'] = $dataI->imagen;
-
-
-
-
-
-
-
                 $count++;
-
             }
-
-
-
-
-
-
-
-
-
         return json_encode($arrayResp);
-
     }
-
-
-
-
 
    public function actionInteracciones()
-
     {
-
         return $this->render('interacciones');
-
     }
-
-
 
     public function actionViewpronostico($id)
-
     {
-
          if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
 
-
-
         return $this->render('viewpronostico', ['model' => $this->findModel($id),
-
            // 'modelDetail' => TriviaDetail::find()->where(['id_header' => $id, "deleted" => 0])->orderBy(["orden" => SORT_ASC])->all(),
-
         ]);
 
-
-
     }
-
-
 
     public function actionProductoskardex()
     {
@@ -304,212 +235,76 @@ class InventarioController extends Controller
     public function actionProductoindividual()
     {
         if (Yii::$app->user->isGuest) {
-
-
-
             return $this->redirect(URL::base() . "/site/login");
-
-
-
         }
-
-
-
         $nombrep=$_REQUEST["nombrep"];
-
         $nombrep=explode(" -",$_REQUEST["nombrep"]);
-
         //$nombrep[0]="167";
-
-
-
         $page = "site";
-
-               $arrayResp = array();
-
+        $arrayResp = array();
         $count = 1;
-
-
-
         //die(var_dump($model));
-
-
-
-
-
-            $model = Productos::find()->where(['id' => str_replace("-","",$nombrep[0]) ])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
-            //$model =  Inventario::find()->where(['id' =>  str_replace("-","",$nombrep[0])])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
-
-
-            //var_dump($modelInventario);
-
-           /* if (!$modelInventario){
-
-                $arrayResp[0]['id'] = $model->id;
-
-                $arrayResp[0]['imagen'] = $model>imagen;
-
-            }*/
-
-
-
+        $model = Productos::find()->where(['id' => str_replace("-","",$nombrep[0]) ])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        //$model =  Inventario::find()->where(['id' =>  str_replace("-","",$nombrep[0])])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        //var_dump($modelInventario);
+        /* if (!$modelInventario){
+            $arrayResp[0]['id'] = $model->id;
+            $arrayResp[0]['imagen'] = $model>imagen;
+        }*/
             foreach ($model as $keyI => $dataI) {
-
-
-
                 $arrayResp[$keyI]['titulo'] = $dataI->nombreproducto;
-
                 $arrayResp[$keyI]['descripcion'] = $dataI->descripcion;
-
                 //$arrayResp[$keyI]['color'] = $dataI->color->nombre;
-
                 //$arrayResp[$keyI]['clasificacion'] = $dataI->clasificacion->nombre;
-
                 $arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$dataI->imagen.'"/>';
-
                 //$arrayResp[$keyI]['imagen'] = '-';
-
-
                 $arrayResp[$keyI]['usuariocreacion'] = $dataI->usuariocreacion0->username;
-
                 //$arrayResp[$keyI]['fechacreacion'] = "-";
-
                 $arrayResp[$keyI]['id'] = $dataI->id;
-
                 $arrayResp[$keyI]['imagen'] = $dataI->imagen;
-
-
-
-
-
                 $count++;
 
             }
-
-
-
-
-
         //die(var_dump($arrayResp));
-
-
-
         return json_encode($arrayResp);
     }
 
     public function actionProductoindividuale()
     {
         if (Yii::$app->user->isGuest) {
-
-
-
             return $this->redirect(URL::base() . "/site/login");
-
-
-
         }
 
-
-
         $nombrep=$_REQUEST["nombrep"];
-
         $nombrep=explode(" -",$_REQUEST["nombrep"]);
-
-        //$nombrep[0]="167";
-
-
-
         $page = "site";
-
-               $arrayResp = array();
-
+        $arrayResp = array();
         $count = 1;
-
-
-
-        //die(var_dump($model));
-
-
-
-
-
             //$modelInventario = Productos::find()->where(['id' => str_replace("-","",$nombrep[0]) ])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
             $model =  Inventario::find()->where(['id' =>  str_replace("-","",$nombrep[0])])->orderBy(["fechacreacion" => SORT_DESC])->all();
 
-
-
-            //var_dump($modelInventario);
-
-           /* if (!$modelInventario){
-
-                $arrayResp[0]['id'] = $model->id;
-
-                $arrayResp[0]['imagen'] = $model>imagen;
-
-            }*/
-
-
-
             foreach ($model as $keyI => $dataI) {
-
-
-
                 $arrayResp[$keyI]['titulo'] = $dataI->producto->nombreproducto;
-
                 $arrayResp[$keyI]['descripcion'] = $dataI->producto->descripcion;
-
                 $arrayResp[$keyI]['color'] = $dataI->color->nombre;
-
                 $arrayResp[$keyI]['clasificacion'] = $dataI->clasificacion->nombre;
-
                 $arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$dataI->producto->imagen.'"/>';
-
                 //$arrayResp[$keyI]['imagen'] = '-';
-
                 $arrayResp[$keyI]['stock'] = $dataI->stock;
-
                 $arrayResp[$keyI]['cantidadini'] = $dataI->cantidadini;
-
                 $arrayResp[$keyI]['cantidadcaja'] = $dataI->cantidadcaja;
-
                 $arrayResp[$keyI]['precioint'] = $dataI->precioint;
-
                 $arrayResp[$keyI]['preciov1'] = $dataI->preciov1;
-
                 $arrayResp[$keyI]['preciov2'] = $dataI->preciov2;
-
                 $arrayResp[$keyI]['preciovp'] = $dataI->preciovp;
-
                 $arrayResp[$keyI]['codigobarras'] = $dataI->codigobarras;
-
                 $arrayResp[$keyI]['codigocaja'] = $dataI->codigocaja;
-
                 $arrayResp[$keyI]['usuariocreacion'] = $dataI->producto->usuariocreacion0->username;
-
                 //$arrayResp[$keyI]['fechacreacion'] = "-";
-
                 $arrayResp[$keyI]['id'] = $dataI->id;
-
                 $arrayResp[$keyI]['imagen'] = $dataI->producto->imagen;
-
-
-
-
-
                 $count++;
-
             }
-
-
-
-
-
-        //die(var_dump($arrayResp));
-
-
 
         return json_encode($arrayResp);
     }
@@ -561,121 +356,50 @@ class InventarioController extends Controller
         return json_encode($arrayResp);
     }
 
-
-
-
     public function actionStock()
-
     {
-
-
-
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $return=array();
-
         if (isset($_POST) and !empty($_POST)) {
-
-
-
-
-
             $data = $_POST;
-
             $model = Inventario::find()->where(['id' => $data['producto']])->one();
-
             $model->stock =$model->stock+ $data['stock'];
-
-
-
             if ($model->save()) {
-
                 $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $model->id);
-
             }else{
-
                 $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
             }
-
         }else{
-
             $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
         }
-
         $page = "inventario";
-
-
-
         return json_encode($return);
-
     }
 
-
-
     public function actionStock2()
-
-
-
     {
-
         //echo 1;
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $return=[];
-
-
-
         $model = new Inventario();
-
         if (isset($_POST) and !empty($_POST)) {
-
             $model = $this->findModel($id);
-
-
-
-
-
                     $data = $_POST;
-
                     $model->stock =$model->stock+ $data['stock'];
-
-
-
                     if ($model->save()) {
-
                         $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $model->id);
-
                     }else{
-
                         $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
                     }
-
-
-
-
-
         }  else{
-
             $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
         }
-
         return json_encode($return);
-
     }
 
 
@@ -725,6 +449,52 @@ class InventarioController extends Controller
         return json_encode($arrayResp);
     }
 
+    public function actionProduccionreg()
+    {
+         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+         if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "produccion";
+        $model = Produccion::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1000)->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['turno'] = $data->turno0->nombre;
+                //$arrayResp[$key]['tipop'] = $data->tipoproducto0->nombre;
+                $view='produccion';
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                         // array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                    if (($id == "referencia") || ($id == "concepto")|| ($id == "cuenta")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "desperdicio")  || ($id == "materialprep") || ($id == "costoproduccion") || ($id == "unidadesprod") || ($id == "rangodefadicional") || ($id == "diferencia") ) { $arrayResp[$key][$id] = number_format($text,2); }
+                    if (($id == "fechacreacion") || ($id == "fecha") || ($id == "usuariocreacion") ) { $arrayResp[$key][$id] = $text; }
+ 
+                }
+
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
 
     public function actionTransferenciaregistros()
     {
@@ -759,78 +529,19 @@ class InventarioController extends Controller
         return json_encode($arrayResp);
     }
 
-
-
-    /**
-
-
-
-     * Displays a single QuinielaHead model.
-
-
-
-     * @param integer $id
-
-
-
-     * @return mixed
-
-
-
-     */
-
-
-
     public function actionView($id)
-
-
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
-
-
-
-
         return $this->render('view', [
-
             'model' => $this->findModel($id),
-
-
-
-
-
         ]);
-
-
-
     }
 
-    /**
-
-
-
-     * Creates a new QuinielaHead model.
-
-
-
-     * If creation is successful, the browser will be redirected to the 'view' page.
-
-
-
-     * @return mixed
-
-
-
-     */
+ 
 
     private function subirImagen($imagen)
-
     {
 
         //$target_dir = '/xampp-new/htdocs/cpn2/frontend/web/images/';
@@ -939,260 +650,103 @@ class InventarioController extends Controller
 
     }
 
-
-
     public function actionNuevo()
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $return=array();
-
         $presentaciones = Presentacion::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $color = Color::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $calidad = Calidad::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
-
         $clasificacion = Clasificacion::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $model = new Inventario();
-
         if (isset($_POST) and !empty($_POST)) {
-
-
-
                 //echo 'OK';
-
                 $data = $_POST;
-
                 //Model header
-
                 $model = new Inventario();
-
                 $model->idproducto = $data['producto'];
-
                 $model->idpresentacion = $data['presentacion'];
-
                 $model->idcolor = $data['color'];
-
                 $model->idsucursal = $data['sucursal'];
-
                 $model->idcalidad = $data['calidad'];
-
                 $model->idclasificacion = $data['clasificacion'];
-
                 $model->cantidadini = $data['stocki'];
-
                 $model->cantidadcaja =  $data['stockf'];
-
                 $model->stock =   $data['stock'];
-
                 $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi']));
-
                 $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1']));
-
                 $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2']));
-
                 $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp']));
-
-
-
-
-
-
-
-
-
-
-
                 $model->codigobarras =  $data['codigob'];
-
                 $model->codigocaja =  $data['codigoc'];
-
                 $model->usuariocreacion =   Yii::$app->user->identity->id;
-
                 $saveModel=$model->save();
-
                 //var_dump($_POST);
-
                 $flagHeader = true;
-
                 if ($saveModel) {
-
                     $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $model->id);
-
                 }else{
-
                     $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
                 }
-
-
-
-
-
             return json_encode($return);
-
         } else {
-
             return $this->render('nuevo', [
-
                 'presentaciones' => $presentaciones,
-
                 'color' => $color,
-
                 'calidad' => $calidad,
-
                 'sucursal' => $sucursal,
-
                 'clasificacion' => $clasificacion,
-
                 //'flagDetail' => $flagDetail,
-
             ]);
-
         }
-
     }
 
 
 
     public function actionNuevounidad()
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $return=array();
-
         $presentaciones = Presentacion::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
-
         $model = new Inventario();
-
         if (isset($_POST) and !empty($_POST)) {
-
-
-
                 //echo 'OK';
-
                 $data = $_POST;
-
                 //Model header
-
                 $model = new Inventario();
-
                 $model->idproducto = $data['producto'];
-
                 $model->idpresentacion = $data['presentacion'];
-
                 $model->cantidadini = $data['stocki'];
-
                 $model->cantidadcaja =  $data['stockf'];
-
                 $model->stock =   $data['stock'];
-
                 $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi']));
-
                 $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1']));
-
                 $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2']));
-
                 $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp']));
-
-
-
-
-
-
-
-
-
-
-
                 $model->codigobarras =  $data['codigob'];
-
                 $model->codigocaja =  $data['codigoc'];
-
                 $model->usuariocreacion =   Yii::$app->user->identity->id;
-
                 $saveModel=$model->save();
-
                 //var_dump($_POST);
-
                 $flagHeader = true;
-
                 if ($saveModel) {
-
                     $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $model->id);
-
                 }else{
-
                     $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
                 }
-
-
-
-
-
             return json_encode($return);
-
         } else {
-
             return $this->render('nuevounidad', [
-
                 'presentaciones' => $presentaciones,
-
                 //'flagDetail' => $flagDetail,
-
             ]);
-
         }
-
     }
-
-
-
-
-
-
-
-    /**
-
-
-
-     * Updates an existing QuinielaHead model.
-
-
-
-     * If update is successful, the browser will be redirected to the 'view' page.
-
-
-
-     * @param integer $id
-
-
-
-     * @return mixed
-
-
-
-     */
-
-
-
 
     public function actionInventariotransfer()
     {

@@ -1,0 +1,85 @@
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInventarios()
+    {
+        return $this->hasMany(Inventario::className(), ['idproducto' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoproducto0()
+    {
+        return $this->hasOne(Tipoproducto::className(), ['id' => 'tipoproducto']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmpresa()
+    {
+        return $this->hasOne(Empresa::className(), ['id' => 'idempresa']);
+    }
+
+    public function getColor0()
+    {
+        return $this->hasOne(Color::className(), ['id' => 'color']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProveedor()
+    {
+        return $this->hasOne(Proveedores::className(), ['id' => 'idproveedor']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMarca0()
+    {
+        return $this->hasOne(Marca::className(), ['id' => 'marca']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getModelo0()
+    {
+        return $this->hasOne(Modelo::className(), ['id' => 'modelo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    
+    public function getPresentacion0()
+    {
+        return $this->hasOne(Presentacion::className(), ['id' => 'idpresentacion']);
+    }
+
+    public function getTipounidad0()
+    {
+        return $this->hasOne(Tipounidad::className(), ['id' => 'idpresentacionsec']);
+    }
+
+    public function getCaracteristica0()
+    {
+        return $this->hasOne(Caracteristica::className(), ['id' => 'caracteristica']);
+    }
+
+
+    public function getUsuariocreacion0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
+
+    public function getUsuarioactualizacion0()
+    {
+        $response=$this->hasOne(User::className(), ['id' => 'usuarioact']);
+        if (!$this->usuarioact){ $response=(object) $array; $response->username="No registra";}
+        return $response;
+    }

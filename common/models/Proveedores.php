@@ -8,25 +8,43 @@ use Yii;
  * This is the model class for table "proveedores".
  *
  * @property int $id
- * @property string $nombre
- * @property string $descripcion
- * @property string $ruc
- * @property string $contacto
- * @property string $cargocontacto
- * @property string $telefono
- * @property int $provincia
- * @property string $ciudad
- * @property string $direccion
- * @property string $correo
- * @property int $credito
- * @property string $persona
- * @property string $fechacreacion
+ * @property resource|null $nombre
+ * @property string|null $direccion
+ * @property string|null $telefono
+ * @property string|null $fechaingreso
+ * @property int|null $extranjero
+ * @property int|null $natural
+ * @property int|null $tipoiden
+ * @property string|null $identificacion
+ * @property resource|null $contacto
+ * @property string|null $fax
+ * @property resource|null $correo
+ * @property int|null $ciudad
+ * @property int|null $pais
+ * @property resource|null $notas
+ * @property float|null $debito
+ * @property float|null $credito
+ * @property string|null $ultimopago
+ * @property string|null $ultimafactura
+ * @property resource|null $cuentacontable
+ * @property resource|null $autorizacion
+ * @property string|null $validez
  * @property int $usuariocreacion
+ * @property string $fechacreacion
+ * @property int|null $usuarioact
+ * @property string|null $fechaact
+ * @property int|null $usuarioan
+ * @property string|null $fechaan
+ * @property int|null $comprobanteelec
+ * @property resource|null $cuentaanticipo
+ * @property resource|null $razoncomercial
+ * @property int|null $barrio
+ * @property int|null $obligadoconta
+ * @property int $provincia
  * @property int $isDeleted
  * @property string $estatus
  *
- * @property Productos[] $productos
- * @property Provincias $provincia0
+ * @property User $usuariocreacion0
  */
 class Proveedores extends \yii\db\ActiveRecord
 {
@@ -44,16 +62,15 @@ class Proveedores extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'nombre', 'descripcion', 'ruc', 'contacto', 'cargocontacto', 'telefono', 'provincia', 'ciudad', 'direccion', 'correo', 'persona'], 'required'],
-            [['id', 'provincia', 'credito', 'usuariocreacion', 'isDeleted'], 'integer'],
-            [['persona', 'estatus'], 'string'],
-            [['fechacreacion'], 'safe'],
-            [['nombre', 'descripcion', 'contacto', 'cargocontacto', 'direccion', 'correo'], 'string', 'max' => 200],
-            [['ruc'], 'string', 'max' => 13],
-            [['telefono'], 'string', 'max' => 20],
-            [['ciudad'], 'string', 'max' => 50],
-            [['id'], 'unique'],
-            [['provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincias::className(), 'targetAttribute' => ['provincia' => 'id']],
+            [['nombre', 'contacto', 'correo', 'notas', 'cuentacontable', 'autorizacion', 'cuentaanticipo', 'razoncomercial', 'estatus'], 'string'],
+            [['fechaingreso', 'ultimopago', 'ultimafactura', 'validez', 'fechacreacion', 'fechaact', 'fechaan'], 'safe'],
+            [['extranjero', 'natural', 'tipoiden', 'ciudad', 'pais', 'usuariocreacion', 'usuarioact', 'usuarioan', 'comprobanteelec', 'barrio', 'obligadoconta', 'provincia', 'isDeleted'], 'integer'],
+            [['debito', 'credito'], 'number'],
+            [['direccion'], 'string', 'max' => 200],
+            [['telefono'], 'string', 'max' => 60],
+            [['identificacion'], 'string', 'max' => 13],
+            [['fax'], 'string', 'max' => 30],
+            [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
         ];
     }
 
@@ -65,42 +82,57 @@ class Proveedores extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nombre' => 'Nombre',
-            'descripcion' => 'Descripcion',
-            'ruc' => 'Ruc',
-            'contacto' => 'Contacto',
-            'cargocontacto' => 'Cargocontacto',
-            'telefono' => 'Telefono',
-            'provincia' => 'Provincia',
-            'ciudad' => 'Ciudad',
             'direccion' => 'Direccion',
+            'telefono' => 'Telefono',
+            'fechaingreso' => 'Fechaingreso',
+            'extranjero' => 'Extranjero',
+            'natural' => 'Natural',
+            'tipoiden' => 'Tipoiden',
+            'identificacion' => 'Identificacion',
+            'contacto' => 'Contacto',
+            'fax' => 'Fax',
             'correo' => 'Correo',
+            'ciudad' => 'Ciudad',
+            'pais' => 'Pais',
+            'notas' => 'Notas',
+            'debito' => 'Debito',
             'credito' => 'Credito',
-            'persona' => 'Persona',
-            'fechacreacion' => 'Fechacreacion',
+            'ultimopago' => 'Ultimopago',
+            'ultimafactura' => 'Ultimafactura',
+            'cuentacontable' => 'Cuentacontable',
+            'autorizacion' => 'Autorizacion',
+            'validez' => 'Validez',
             'usuariocreacion' => 'Usuariocreacion',
+            'fechacreacion' => 'Fechacreacion',
+            'usuarioact' => 'Usuarioact',
+            'fechaact' => 'Fechaact',
+            'usuarioan' => 'Usuarioan',
+            'fechaan' => 'Fechaan',
+            'comprobanteelec' => 'Comprobanteelec',
+            'cuentaanticipo' => 'Cuentaanticipo',
+            'razoncomercial' => 'Razoncomercial',
+            'barrio' => 'Barrio',
+            'obligadoconta' => 'Obligadoconta',
+            'provincia' => 'Provincia',
             'isDeleted' => 'Is Deleted',
             'estatus' => 'Estatus',
         ];
     }
 
     /**
+     * Gets query for [[Usuariocreacion0]].
+     *
      * @return \yii\db\ActiveQuery
      */
-    public function getProductos()
-    {
-        return $this->hasMany(Productos::className(), ['idproveedor' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProvincia0()
-    {
-        return $this->hasOne(Provincias::className(), ['id' => 'provincia']);
-    }
-
     public function getUsuariocreacion0()
     {
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
+    }
+
+    public function getUsuarioactualizacion0()
+    {
+        $response=$this->hasOne(User::className(), ['id' => 'usuarioact']);
+        if (!$this->usuarioact){ $response=(object) $array; $response->username="No registra";}
+        return $response;
     }
 }
