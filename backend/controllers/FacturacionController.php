@@ -334,25 +334,15 @@ class FacturacionController extends Controller
     }
 
     public function actionFacturasreg()
-
     {
-
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $page = "facturacion";
-
         $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(500)->all();
-
         $arrayResp = array();
-
-        $count = 1;
-
+        $count = 0;
         foreach ($model as $key => $data) {
 
             foreach ($data as $id => $text) {
@@ -384,9 +374,7 @@ class FacturacionController extends Controller
                     if (($id == "total") || ($id == "descuento") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "iva") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
-
                 }
-
             }
 
             $count++;
@@ -405,11 +393,11 @@ class FacturacionController extends Controller
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
-        }
+        }   
         $page = "entregas";
         $model = Entregas::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
-        $count = 1;
+        $count = 0;
         foreach ($model as $key => $data) {
             foreach ($data as $id => $text) {
                 $botones= new Botones;
@@ -487,7 +475,7 @@ class FacturacionController extends Controller
     }
 
 
-    
+
     public function actionNuevafactura()
     {
         $clientes = new Clientes;
@@ -541,7 +529,7 @@ class FacturacionController extends Controller
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
-                
+
                 //$arrayResp[$key]['departamento'] = $data->iddepartamento0->nombre;
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
