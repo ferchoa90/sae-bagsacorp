@@ -63,6 +63,17 @@ class FacturacionController extends Controller
 
     }
 
+    public function actionVerfactura($id)
+    {
+        $factura= Factura::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verfactura', [
+            'factura' =>$factura,
+           // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
     public function actionVervendedor($id)
     {
         $vendedor= Vendedores::find()->where(['id' => $id, "isDeleted" => 0])->one();
@@ -340,7 +351,7 @@ class FacturacionController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
         $page = "facturacion";
-        $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(500)->all();
+        $model = Factura::find()->where(['isDeleted' => '0'])->orderBy(["fecha" => SORT_DESC])->limit(1000)->all();
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {

@@ -112,13 +112,19 @@ class Factura extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Clientes::className(), ['id' => 'idcliente']);
     }
+    
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFacturadetalles()
+    public function getFacturadetalle()
     {
-        return $this->hasMany(Facturadetalle::className(), ['idfactura' => 'id']);
+        return $this->hasMany(Facturadetalle::className(), ['idfactura' => 'nfactura']);
+    }
+
+    public function getTipoprecio0()
+    {
+        return $this->hasOne(Tipopreciofactura::className(), ['id' => 'tipoprecio']);
     }
 
     public function getdiario0()
@@ -136,6 +142,14 @@ class Factura extends \yii\db\ActiveRecord
         //echo (Cuentasporcobrar::find()->where(['idfactura' => $this->nfactura,'tipo'=>'D'])->one()->concepto);
         return Cuentasporcobrar::find()->where(['idfactura' =>$this->nfactura,'tipo'=>'D'])->one();
         //return $this->hasOne(Diario::className(), ['auxiliar' => 'nfactura']);
+    }
+
+    
+    public function getUsuarioactualizacion0()
+    {
+        $response=$this->hasOne(User::className(), ['id' => 'usuarioact']);
+        if (!$this->usuarioact){ $response=(object) $array; $response->username="No registra";}
+        return $response;
     }
 
 }

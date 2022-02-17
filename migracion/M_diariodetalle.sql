@@ -1,0 +1,38 @@
+INSERT INTO `dbbagsacorp`.`diariodetalle` (
+  `id`,
+  `diario`,
+  `anio`,
+  `item`,
+  `fecha`,
+  `concepto`,
+  `cuenta`,
+  `cuenta_padre`,
+  `valor`,
+  `debito`,
+  `tipodiario`,
+  `auxiliar`,
+  `tipoauxiliar`,
+  `isDeleted`,
+  `fechacreacion`,
+  `estatus`
+)
+SELECT
+  NULL,
+  `DIARIO`,
+  `ANIO`,
+  `ITEM`,
+  `FECHA`,
+  `CONCEPTO`,
+  `CUENTA`,
+  `CUENTA_PADRE`,
+  `VALOR`,
+  `DEBITO`,
+  `TIPO_DIARIO`,
+  `AUXILIAR`,
+  `TIPO_AUXILIAR`,
+  1,
+  0,
+  NULL,
+  IF(`STATUS`=1, "ACTIVO", "INACTIVO") AS estatus
+FROM
+  `bagsacorp`.`diario_detalle`

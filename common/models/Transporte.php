@@ -17,8 +17,12 @@ use Yii;
  * @property string|null $placa
  * @property int|null $tipo
  * @property int|null $marca
+ * @property int $usuariocreacion
+ * @property string $fechacreacion
  * @property int $isDeleted
  * @property string $estatus
+ *
+ * @property User $usuariocreacion0
  */
 class Transporte extends \yii\db\ActiveRecord
 {
@@ -38,10 +42,12 @@ class Transporte extends \yii\db\ActiveRecord
         return [
             [['nombre'], 'required'],
             [['nombre', 'direccion', 'observaciones', 'contacto', 'estatus'], 'string'],
-            [['tipo', 'marca', 'isDeleted'], 'integer'],
+            [['tipo', 'marca', 'usuariocreacion', 'isDeleted'], 'integer'],
+            [['fechacreacion'], 'safe'],
             [['telefonos'], 'string', 'max' => 40],
             [['ruc'], 'string', 'max' => 13],
             [['placa'], 'string', 'max' => 20],
+            [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
         ];
     }
 
@@ -61,8 +67,20 @@ class Transporte extends \yii\db\ActiveRecord
             'placa' => 'Placa',
             'tipo' => 'Tipo',
             'marca' => 'Marca',
+            'usuariocreacion' => 'Usuariocreacion',
+            'fechacreacion' => 'Fechacreacion',
             'isDeleted' => 'Is Deleted',
             'estatus' => 'Estatus',
         ];
+    }
+
+    /**
+     * Gets query for [[Usuariocreacion0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuariocreacion0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
 }
