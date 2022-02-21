@@ -242,7 +242,17 @@ class ContabilidadController extends Controller
         ]);
 
     }
-    
+
+    public function actionVercaja($id)
+    {
+        $caja= Caja::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('vercaja', [
+            'caja' =>$caja,
+            //'rolpermisos' => Rolespermisos::find()->where(['idrol' => $rol->id])->all(),
+        ]);
+
+    }
 
     public function actionVerretencioncxc($id)
     {
@@ -253,7 +263,7 @@ class ContabilidadController extends Controller
             'retencion' =>$retencion,
             'retenciondetalle' =>$retenciondetalle,
         ]);
- 
+
     }
 
     public function actionVercuenta($id)
@@ -290,7 +300,8 @@ class ContabilidadController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
         $page = "caja";
-        $model = Caja::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1000)->all();
+        $view = "caja";
+        $model = Caja::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_DESC])->limit(1000)->all();
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {
@@ -304,8 +315,8 @@ class ContabilidadController extends Controller
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verbancos?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarbancos?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -891,7 +902,7 @@ class ContabilidadController extends Controller
      * @return mixed
 
      */
-  
+
 
     public function actionNuevadescarga()
     {
@@ -943,7 +954,7 @@ class ContabilidadController extends Controller
         }
     }
 
- 
+
     public function actionUpdate($id)
 
     {
@@ -1017,7 +1028,7 @@ class ContabilidadController extends Controller
             var_dump($model->errors);
         }
     }
- 
+
     protected function findModel($id)
     {
         if (($model = Descargables::findOne($id)) !== null) {

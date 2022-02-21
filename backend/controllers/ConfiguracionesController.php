@@ -89,6 +89,7 @@ class ConfiguracionesController extends Controller
 
     }
 
+
     public function actionMenuadminreg()
     {
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -144,7 +145,7 @@ class ConfiguracionesController extends Controller
             $count++;
         }
         return json_encode($arrayResp);
-    } 
+    }
 
     public function actionNuevomenu()
     {
@@ -168,13 +169,11 @@ class ConfiguracionesController extends Controller
         ]);
     }
 
-    
-
-
     public function actionReimpresion()
     {
         return $this->render('reimpresion');
     }
+
 
     public function actionMenuadmineliminar($id)
     {

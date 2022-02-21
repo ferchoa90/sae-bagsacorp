@@ -53,7 +53,7 @@ $contenido.='</div>';
  $tabla='<table class="table table-striped">
  <thead>
    <tr>
-     <th scope="col">Banse Imp.</th>
+     <th scope="col">Base Imp.</th>
      <th scope="col">Impuesto</th>
      <th scope="col" class="text-center">% retención</th>
      <th scope="col" class="text-center">Valor retenido</th>
@@ -66,7 +66,7 @@ $cont=0; $cont2=1; $tporcentaje=0; $tporcentaje=0;$tbaseimp=0;
     $tbaseimp+=$value->baseimponible;
     $tporcentaje+=$value->porcentaje;
     $tvalor+=$value->valorretenido;
- 
+
    // if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
     $tabla.=' <tr><td '.$scope.'>'.number_format($value->baseimponible,2).'</td><td>'.$value->concepto.'</td><td class="text-right">'.number_format($value->porcentaje,2).'</td>';
     $tabla.='<td class="text-right">'.number_format($value->valorretenido,2).'</td></tr>';
