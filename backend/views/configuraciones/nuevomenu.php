@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 $this->title = 'Crear Menu Administrador';
-$this->params['breadcrumbs'][] = ['label' => 'Configuraciones', 'url' => ['usuarios']];
+$this->params['breadcrumbs'][] = ['label' => 'Menu Admin', 'url' => ['menuadmin']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $urlpost='formmenuadmin';

@@ -97,5 +97,8 @@ class Retencioncxc extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
 
-   
+    public function getCliente0()
+    {
+        return $this->hasOne(Clientes::className(), ['id' => 'cliente']);
+    }
 }

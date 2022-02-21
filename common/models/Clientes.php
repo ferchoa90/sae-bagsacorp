@@ -84,6 +84,11 @@ class Clientes extends \yii\db\ActiveRecord
         return $this->hasOne(Vendedores::className(), ['id' => 'idvendedor']);
     }
 
+    public function getTipoidentificacion()
+    {
+        return $this->hasOne(Tipoidentificacion::className(), ['id' => 'tipoident']);
+    }
+
     
     public function getUsuarioactualizacion0()
     {

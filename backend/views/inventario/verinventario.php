@@ -89,9 +89,7 @@ $cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
 
     $contenido.=$tabla;
 
-var_dump($inventario->inventariodetalle0->id );
-
-
+//var_dump($inventario->inventariodetalle0->id );
  echo $div->getBloqueArray(
     array(
         array('tipo'=>'bloquediv','nombre'=>'div1','id'=>'div1','titulo'=>'Datos','clase'=>'col-md-9 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'','adicional'=>'','contenido'=>$contenido.$botonC),

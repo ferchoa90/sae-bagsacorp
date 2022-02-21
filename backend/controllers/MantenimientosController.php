@@ -165,6 +165,19 @@ class MantenimientosController extends Controller
     
     }
 
+    public function actionVercliente($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+ 
+        return $this->render('vercliente', [
+            'cliente' => Clientes::find()->where(['id'=>$id])->one(),
+            //'modelTeam' => Productos::find()->all(),
+        ]);
+    
+    }
+
     public function actionProveedoresreg()
     {
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

@@ -22,6 +22,8 @@ use common\models\Cuentastipo;
 use common\models\Clientes;
 use common\models\Diario;
 use common\models\Diariodetalle;
+use common\models\Retenciones;
+use common\models\Retencioncxc;
 use common\models\Formapagocuentas;
 use backend\components\Botones;
 
@@ -70,6 +72,16 @@ class ContabilidadController extends Controller
     public function actionCuentas()
     {
         return $this->render('cuentas');
+    }
+
+    public function actionRetenciones()
+    {
+        return $this->render('retenciones');
+    }
+
+    public function actionRetencionescxc()
+    {
+        return $this->render('retencionescxc');
     }
 
     public function actionNuevacuenta()
@@ -217,6 +229,31 @@ class ContabilidadController extends Controller
             'cuentadetalle' => Cuentasporcobrardet::find()->where(['numero' => $cuenta->id, "isDeleted" => 0])->all(),
         ]);
 
+    }
+
+    public function actionVerretencion($id)
+    {
+        $retencion= Retenciones::find()->where(['id' => $id, "isDeleted" => 0])->one();
+        $retenciondetalle= Retenciones::find()->where(['numero' => $retencion->numero, "isDeleted" => 0])->all();
+
+        return $this->render('verretencion', [
+            'retencion' =>$retencion,
+            'retenciondetalle' =>$retenciondetalle,
+        ]);
+
+    }
+    
+
+    public function actionVerretencioncxc($id)
+    {
+        $retencion= Retencioncxc::find()->where(['id' => $id, "isDeleted" => 0])->one();
+        $retenciondetalle= Retencioncxc::find()->where(['numero' => $retencion->numero, "isDeleted" => 0])->all();
+
+        return $this->render('verretencioncxc', [
+            'retencion' =>$retencion,
+            'retenciondetalle' =>$retenciondetalle,
+        ]);
+ 
     }
 
     public function actionVercuenta($id)
@@ -611,6 +648,95 @@ class ContabilidadController extends Controller
         return json_encode($arrayResp);
     }
 
+    public function actionRetencionesreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "retenciones";
+        $model = Retenciones::find()->select(["*,sum(baseimponible) as baseimponible,sum(valorretenido) as valorretenido"])->where(['isDeleted' => '0'])->orderBy(["fecha" => SORT_DESC])->groupBy(['numero'])->limit(1000)->all();
+        //die(var_dump($model));
+        $arrayResp = array();
+        $count = 0;
+        $view="retencion";
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['proveedor'] = $data->proveedor0->nombre;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "comprobante") || ($id == "fecha") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "valorretenido") || ($id == "baseimponible") || ($id == "serie") || ($id == "identificacion")   ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+    public function actionRetencionescxcreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "retencioncxc";
+        $model = Retencioncxc::find()->select(["*,sum(baseimponible) as baseimponible,sum(valorretenido) as valorretenido"])->where(['isDeleted' => '0'])->orderBy(["fecha" => SORT_DESC])->groupBy(['numero'])->limit(1000)->all();
+        //die(var_dump($model));
+        $arrayResp = array();
+        $count = 0;
+        $view="retencioncxc";
+        foreach ($model as $key => $data) {
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['cliente'] = $data->cliente0->razonsocial;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                   //if  ($id == "nombre"){ echo $text;}
+                    if (($id == "numero") || ($id == "fecha") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "valorretenido") || ($id == "baseimponible")    ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
 
     public function actionCuentasreg()
     {
@@ -765,61 +891,7 @@ class ContabilidadController extends Controller
      * @return mixed
 
      */
-    private function subirArchivo($imagen)
-    {
-        //$target_dir = '/xampp-new/htdocs/cpn2/frontend/web/pdf/';
-        $target_dir = '/var/www/html/frontend/web/pdf/';
-        $target_file = $target_dir . basename($imagen["name"]);
-        $nombreArchivo=basename($imagen["name"]);
-        $uploadOk = 1;
-        $imageFileType = $imagen['type'];
-        // Check if image file is a actual image or fake image
-           /*  $check = getimagesize($imagen["tmp_name"]);
-            if($check !== false) {
-                //echo "File is an image - " . $check["mime"] . ".";
-                $uploadOk = 1;
-            } else {
-                //echo "File is not an image.";
-                $return=array("success"=>false,"Mensaje"=>"El archivo no es una imagen.");
-                $uploadOk = 0;
-            } */
-        // Check if file already exists
-        if (file_exists($target_file)) {
-            //echo "Sorry, file already exists.";
-            $return=array("success"=>false,"Mensaje"=>"La imagen ya existe en el repositorio.");
-            $uploadOk = 0;
-        }
-        // Check file size
-        if ($imagen["size"] > 5000000) {
-            $return=array("success"=>false,"Mensaje"=>"El archivo subida excede el límite de tamaño. Tamaño: ".$imagen["size"]);
-            //echo "Sorry, your file is too large.";
-            $uploadOk = 0;
-        }
-        // Allow certain file formats
-        if($imageFileType != "application/vnd.ms-excel" && $imageFileType != "application/pdf" && $imageFileType != "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        && $imageFileType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ) {
-            //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            $return=array("success"=>false,"Mensaje"=>"El archivo debe se un archivo permitido. Tipo: ".$imageFileType);
-            $uploadOk = 0;
-        }
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            $return=array("success"=>false,"Mensaje"=>$return["Mensaje"]);
-            //echo "Sorry, your file was not uploaded.";
-        // if everything is ok, try to upload file
-        } else {
-            //echo move_uploaded_file($imagen["tmp_name"], $target_file);
-            if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
-                $return=array("success"=>true,"Mensaje"=>"Archivo subido.","Nombrearchivo"=>$nombreArchivo);
-                //$return=array("success"=>"true","Mensaje"=>"OK");
-                //echo json_encode($return);
-                //echo "The file ". basename( $imagen["name"]). " has been uploaded.";
-            } else {
-                $return=array("success"=>false,"Mensaje"=>"La imagen no se ha podido guardar.");
-            }
-        }
-        return $return;
-    }
+  
 
     public function actionNuevadescarga()
     {
@@ -871,20 +943,7 @@ class ContabilidadController extends Controller
         }
     }
 
-
-
-    /**
-
-     * Updates an existing QuinielaHead model.
-
-     * If update is successful, the browser will be redirected to the 'view' page.
-
-     * @param integer $id
-
-     * @return mixed
-
-     */
-
+ 
     public function actionUpdate($id)
 
     {
@@ -958,14 +1017,7 @@ class ContabilidadController extends Controller
             var_dump($model->errors);
         }
     }
-
-    /**
-     * Finds the QuinielaHead model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return QuinielaHead the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+ 
     protected function findModel($id)
     {
         if (($model = Descargables::findOne($id)) !== null) {

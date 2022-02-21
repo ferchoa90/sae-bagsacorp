@@ -144,7 +144,7 @@ class ConfiguracionesController extends Controller
             $count++;
         }
         return json_encode($arrayResp);
-    }
+    } 
 
     public function actionNuevomenu()
     {

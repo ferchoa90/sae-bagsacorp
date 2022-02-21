@@ -115,5 +115,15 @@ class Retenciones extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
 
+    public function getRubroretencion()
+    {
+        return $this->hasOne(Rubroretencion::className(), ['codigo' => 'rubro']);
+    }
+
+    public function getProveedor0()
+    {
+        return $this->hasOne(Proveedores::className(), ['id' => 'proveedor']);
+    }
+
   
 }

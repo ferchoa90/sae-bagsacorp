@@ -78,10 +78,70 @@ class InventarioController extends Controller
         return $this->render('produccion');
     }
 
+
     public function actionNuevoinventario()
     {
-        return $this->render('nuevoinventario');
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        //$menuadmin = Menuadmin::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $caracteristica = Menuadmin::find()->where(['isDeleted' => '0',"idparent"=>"0"])->orderBy(["nombre" => SORT_ASC])->all();
+        $marca = Marca::find()->where(['isDeleted' => '0',"idparent"=>"0"])->orderBy(["nombre" => SORT_ASC])->all();
+        $color = Color::find()->where(['isDeleted' => '0',"idparent"=>"0"])->orderBy(["nombre" => SORT_ASC])->all();
+        $unidadfacturas = Menuadmin::find()->where(['isDeleted' => '0',"idparent"=>"0"])->orderBy(["nombre" => SORT_ASC])->all();
+        $linea = Menuadmin::find()->where(['isDeleted' => '0',"idparent"=>"0"])->orderBy(["nombre" => SORT_ASC])->all();
+        $lineaArray=array(); $caracteristicaArray=array(); $marcaArray=array(); $colorArray=array();
+        $unidadfacturasArray=array(); 
+        $cont=0;
+        foreach ($caracteristica as $key => $value) {
+            if ($cont==0){ $caracteristicaArray[$cont]["value"]="Seleccione / Ninguno"; $caracteristicaArray[$cont]["id"]=0; $cont++; }
+            $caracteristicaArray[$cont]["value"]=$value->nombre;
+            $caracteristicaArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $cont=0;
+        foreach ($marca as $key => $value) {
+            if ($cont==0){ $marcaArray[$cont]["value"]="Seleccione / Ninguno"; $marcaArray[$cont]["id"]=0; $cont++; }
+            $marcaArray[$cont]["value"]=$value->nombre;
+            $marcaArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $cont=0;
+        foreach ($color as $key => $value) {
+            if ($cont==0){ $colorArray[$cont]["value"]="Seleccione / Ninguno"; $colorArray[$cont]["id"]=0; $cont++; }
+            $colorArray[$cont]["value"]=$value->nombre;
+            $colorArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $cont=0;
+        foreach ($unidadfacturas as $key => $value) {
+            if ($cont==0){ $unidadfacturasArray[$cont]["value"]="Seleccione / Ninguno"; $unidadfacturasArray[$cont]["id"]=0; $cont++; }
+            $unidadfacturasArray[$cont]["value"]=$value->nombre;
+            $unidadfacturasArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $cont=0;
+        foreach ($linea as $key => $value) {
+            if ($cont==0){ $lineaArray[$cont]["value"]="Seleccione / Ninguno"; $lineaArray[$cont]["id"]=0; $cont++; }
+            $lineaArray[$cont]["value"]=$value->nombre;
+            $lineaArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        return $this->render('nuevoinventario', [
+            //'sucursal' => $sucursal,
+            'caracteristica' => $caracteristicaArray,
+            'marca' => $marcaArray,
+            'color' => $colorArray,
+            'unidadfacturas' => $unidadfacturasArray,
+            'linea' => $lineaArray,
+        ]);
     }
+
 
     public function actionVerinventario($id)
     {
@@ -860,221 +920,78 @@ class InventarioController extends Controller
 
     }
 
-
-
-
     public function actionUpdate($id)
-
-
-
     {
-
-
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $presentaciones = Presentacion::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $color = Color::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $calidad = Calidad::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
         $sucursal = Sucursal::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
-
         $clasificacion = Clasificacion::find()->where(['isDeleted' => '0'])->orderBy(["id" => SORT_ASC])->all();
-
-
-
         $model = new Inventario();
-
         if (isset($_POST) and !empty($_POST)) {
-
             $model = $this->findModel($id);
-
-
-
-
-
                     $data = $_POST;
-
-
-
-
-
                 $model->idpresentacion = $data['presentacion'];
-
                 $model->idcalidad = $data['calidad'];
-
                 $model->idclasificacion = $data['clasificacion'];
-
                 $model->idcolor = $data['color'];
-
                 $model->idsucursal = $data['sucursal'];
-
                 $model->cantidadini = $data['stocki'];
-
                 $model->cantidadcaja =  $data['stockf'];
-
                 $model->stock =   $data['stock'];
-
                 $model->precioint =  str_replace("$","",str_replace(",",".", $data['precioi']));
-
                 $model->preciov1 =  str_replace("$","",str_replace(",",".",$data['preciov1']));
-
                 $model->preciov2 =  str_replace("$","",str_replace(",",".",$data['preciov2']));
-
                 $model->preciovp =  str_replace("$","",str_replace(",",".", $data['preciovp']));
-
-
-
-
-
-
-
-
-
-
-
                 $model->codigobarras =  $data['codigob'];
-
                 $model->codigocaja =  $data['codigoc'];
-
-
-
                     $model->estatus =  $data['estado'];
-
                     if ($model->save()) {
-
                         $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $model->id);
-
                     }else{
-
                         $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el registro.","resp" => false, "id" => "");
-
                     }
-
-
-
              return json_encode($return);
-
         } else {
-
             $model = $this->findModel($id);
-
             $flagDetail = false;
-
             $modelDetail = array();
 
-
-
             return $this->render('update', [
-
-
-
                 'model' => $model,
-
                 'presentaciones' => $presentaciones,
-
                 'color' => $color,
-
                 'calidad' => $calidad,
-
                 'sucursal' => $sucursal,
-
                 'clasificacion' => $clasificacion,
-
             ]);
-
         }
-
     }
-
-
-
-
-
-
-
-    /**
-
-     * Deletes an existing QuinielaHead model.
-
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-
-     * @param integer $id
-
-     * @return mixed
-
-     */
-
-
 
     public function actionDelete($id)
-
-
-
     {
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $model = $this->findModel($id);
-
         $model->isDeleted = 1;
-
         if ($model->save())
-
         {
-
             return $this->redirect(['index']);
-
         }else{
-
             var_dump($model->errors);
-
         }
-
     }
-
-
-
-    /**
-
-     * Finds the QuinielaHead model based on its primary key value.
-
-     * If the model is not found, a 404 HTTP exception will be thrown.
-
-     * @param integer $id
-
-     * @return QuinielaHead the loaded model
-
-     * @throws NotFoundHttpException if the model cannot be found
-
-     */
 
     protected function findModel($id)
-
     {
-
         if (($model = Inventario::findOne($id)) !== null) {
-
             return $model;
-
         } else {
-
             throw new NotFoundHttpException('The requested page does not exist.');
-
         }
-
     }
-
-
-
 }
