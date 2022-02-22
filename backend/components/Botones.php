@@ -27,7 +27,7 @@ class Botones extends Component
 
             switch ($obj['tipo']) {
                 case 'link':
-                    $return.=$this->getBoton($obj['subtipo'],$obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['adicional']).'&nbsp;';
+                    $return.=$this->getBoton($obj['subtipo'],$obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['target'],$obj['adicional']).'&nbsp;';
                     break;
 
                 case 'separador':
@@ -41,12 +41,14 @@ class Botones extends Component
         return $return;
     }
 
-    public function getBotones($nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional )
+    public function getBotones($tipo='',$nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional )
     {
         //$date = date("Y-m-d H:i:s");
+
+        $tipo='bloquediv';
         switch ($tipo) {
             case 'bloquediv':
-                return $this->getBoton($subtipo,$nombre, $id, $titulo, $link,$onclick ,$clase, $style, $col,$tipocolor,$icono,$tamanio='', $adicional);
+                return $this->getBoton($subtipo,$nombre, $id, $titulo, $link,$onclick ,$clase, $style, $col,$tipocolor,$icono,$tamanio='',$target='', $adicional);
                 break;
 
             default:
@@ -56,7 +58,7 @@ class Botones extends Component
         return $date;
     }
 
-    private function getBoton($tipo, $nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='', $adicional)
+    private function getBoton($tipo, $nombre='', $id='', $titulo='', $link='', $onclick='', $clase='', $style='', $col='',$tipocolor='',$icono='',$tamanio='',$target='', $adicional)
     {
         $classdefault=' ';
         $tipocolordefault='btn btn-primary';
@@ -81,7 +83,7 @@ class Botones extends Component
 
         $icon = new Iconos;
         $icono= $icon->getIconos($icono,'','','','','','','');
-    
+
 
         switch ($tipocolor) {
             case 'azul':
@@ -108,6 +110,10 @@ class Botones extends Component
                 $tipocolor='btn btn-secondary btnedit';
                 break;
 
+            case 'negro':
+                $tipocolor='btn btn-dark btnedit';
+                break;
+
             default:
                 $tipocolor=$tipocolordefault;
                 break;
@@ -123,10 +129,18 @@ class Botones extends Component
                 break;
         }
 
+        switch ($target) {
+            case 'blank':
+                $target=' target="_blank" ';
+                break;
 
+            default:
+                # code...
+                break;
+        }
 
         $div='
-         <a  '.$link.'  class="'.$clase.'" onclick="'.$onclick.'">
+         <a  '.$link.'  class="'.$clase.'" onclick="'.$onclick.'"  '.$target.'>
                     <button type="'.$tipoboton.'" id="'.$id.'" name="'.$nombre.'" alt="'.$titulo.'" title="'.$titulo.'" onclick="" class="'.$tipocolor.' '.$tamanio.'">
                     '.$icono.$titulo.'
                     </button>

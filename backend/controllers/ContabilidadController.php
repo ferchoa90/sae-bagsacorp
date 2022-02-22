@@ -152,33 +152,33 @@ class ContabilidadController extends Controller
     // setup kartik\mpdf\Pdf component
     $pdf = new Pdf([
         // set to use core fonts only
-        'mode' => Pdf::MODE_BLANK, 
+        'mode' => Pdf::MODE_BLANK,
         // A4 paper format
-        'format' => Pdf::FORMAT_A4, 
+        'format' => Pdf::FORMAT_A4,
         // portrait orientation
-        'orientation' => Pdf::ORIENT_PORTRAIT, 
+        'orientation' => Pdf::ORIENT_PORTRAIT,
         // stream to browser inline
-        'destination' => Pdf::DEST_BROWSER, 
+        'destination' => Pdf::DEST_BROWSER,
         // your html content input
 
-        'content' => $content,  
+        'content' => $content,
         // format content from your own css file if needed or use the
-        // enhanced bootstrap css built by Krajee for mPDF formatting 
+        // enhanced bootstrap css built by Krajee for mPDF formatting
         //'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
         'cssFile' => '@backend/web/css/sitepdf.css',
         // any css to be embedded if required
-        //'cssInline' => '.kv-heading-1{font-size:18px}', 
+        //'cssInline' => '.kv-heading-1{font-size:18px}',
          // set mPDF properties on the fly
         'options' => ['title' => 'Sistema SAE Empresarial'],
          // call mPDF methods on the fly
-        'methods' => [ 
-            'SetHeader'=>["SISTEMA SAE ($fecha)"], 
+        'methods' => [
+            'SetHeader'=>["SISTEMA SAE ($fecha)"],
             'SetFooter'=>['{PAGENO}'],
         ]
     ]);
     //$pdf->SetHTMLHeader('<img src="' .'/custom/Hederinvoice.jpg"/>');
     // return the pdf output as per the destination setting
-    return $pdf->render(); 
+    return $pdf->render();
     }
 
 
@@ -514,7 +514,7 @@ class ContabilidadController extends Controller
                     $botonC=$botones->getBotongridArray(
                         array(
                           array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verasiento?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarasiento?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                         // array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarasiento?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -649,7 +649,7 @@ class ContabilidadController extends Controller
                     $botonC=$botones->getBotongridArray(
                         array(
                           array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'vercuentapc?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarcuentapc?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                         // array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarcuentapc?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );

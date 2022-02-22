@@ -1,98 +1,57 @@
 <?php
 
 namespace backend\controllers;
-
 use backend\components\Globaldata;
-
 use Yii;
-
 use yii\web\Controller;
-
 use yii\web\NotFoundHttpException;
-
 use yii\filters\VerbFilter;
-
 use yii\filters\AccessControl;
-
 use yii\helpers\Url;
-
 use yii\db\Query;
-
 use common\models\Inventario;
-
 use common\models\Factura;
-
 use common\models\Presentacion;
-
 use common\models\Productos;
-
 use common\models\Gestioncatering;
 use common\models\Horariocomidas;
 use common\models\Departamentos;
-
+use common\models\Clientes;
+use backend\components\Contabilidad_clientes;
 use backend\models\User;
-
 use kartik\export\ExportMenu;
-
 use yii\data\ActiveDataProvider;
-
 use yii\db\ActiveRecord;
-
 use yii\data\ArrayDataProvider;
-
 
 class ReportesController extends Controller
 
 {
 
     public function behaviors()
-
     {
-
         return [
-
             'access' => [
-
                 'class' => AccessControl::className(),
-
                 'only' => ['create', 'update', 'view', 'delete', 'index'],
-
                 'rules' => [
-
                     [
-
                         'actions' => ['create', 'update', 'view', 'delete', 'index'],
-
                         'allow' => true,
-
                         'roles' => ['@'],
-
                         'matchCallback' => function ($rule, $action) {
-
                             return User::isUserAdmin(Yii::$app->user->identity->username);
-
                         }
-
                     ],
-
                 ],
-
             ],
-
             'verbs' => [
-
                 'class' => VerbFilter::className(),
-
                 'actions' => [
-
                     'delete' => ['post'],
-
                 ],
-
             ],
-
         ];
-
     }
 
     /**
@@ -102,40 +61,39 @@ class ReportesController extends Controller
      * @return string
 
      */
-
     public function actionIndex()
-
     {
+        return $this->render('index',[
 
-        return $this->render('index');
-
+        ]);
     }
 
-    
+    public function actionEstadocliente()
+    {
+        $clientes= new Contabilidad_clientes;
+        $clientes= $clientes->getSelect();
+        return $this->render('estadocliente',[
+            'clientes'=>$clientes,
+        ]);
+    }
+
     public function actionTickets()
     {
-      
         $departamentos = Departamentos::find()->select(['*'])->where("isDeleted = 0")->orderBy(["id" => SORT_ASC])->all();
         $horarios = Horariocomidas::find()->select(['*'])->where("isDeleted = 0")->orderBy(["id" => SORT_ASC])->all();
-        //$query = User::find(); 
-        
- 
-
+        //$query = User::find();
         $cookies = Yii::$app->request->cookies;
         if (Yii::$app->request->post())
         {
             //die(var_dump($_POST));
             //$request = Yii::$app->request;
-            //$post = $request->post(); 
+            //$post = $request->post();
             if ($_POST['fechadesde'])
             {
                 $fechadesde = substr($_POST['fechadesde'], 6, 4) . '-' . substr($_POST['fechadesde'], 3, 2) . '-' . substr($_POST['fechadesde'], 0, 2);
                 $fechahasta = substr($_POST['fechahasta'], 6, 4) . '-' . substr($_POST['fechahasta'], 3, 2) . '-' . substr($_POST['fechahasta'], 0, 2);
                 $fechadesdeB=substr($_POST['fechadesde'], 0, 2) . '-' . substr($_POST['fechadesde'], 3, 2) . '-' . substr($_POST['fechadesde'], 6, 4);
                 $fechahastaB=substr($_POST['fechahasta'], 0, 2) . '-' . substr($_POST['fechahasta'], 3, 2) . '-' . substr($_POST['fechahasta'], 6, 4);
-               
-                
-               
                 setcookie("fechadesde",$fechadesde, time()+3600,"/","saenewcontrol.local");
                 setcookie("fechahasta",$fechahasta, time()+3600,"/","saenewcontrol.local");
                 setcookie("departamento",$_POST['departamento'], time()+3600,"/","saenewcontrol.local");
@@ -165,15 +123,12 @@ class ReportesController extends Controller
                     $fechadesde=date("Y-m-d");
                     $fechahasta=date("Y-m-d");
                     $fechadesdeB=date("d-m-Y");
-                    $fechahastaB=date("d-m-Y"); 
+                    $fechahastaB=date("d-m-Y");
                 }
             }
-            
-            
-            
         }
-        //$fechadesde="20-07-2021"; 
-        //$fechahasta="20-07-2021"; 
+        //$fechadesde="20-07-2021";
+        //$fechahasta="20-07-2021";
         //echo $fechadesde;
         $sql = 'SELECT * FROM gestioncatering where fechacreacion="2021/07/17"';
         $query = Gestioncatering::find()->where(['between', 'fechacreacion', $fechadesde." 00:00:00", $fechahasta." 23:59:59" ])->orderBy(["iduser" => SORT_ASC])->all();
@@ -184,8 +139,8 @@ class ReportesController extends Controller
             $query = Gestioncatering::find()->where(['between', 'fechacreacion', $fechadesde." 00:00:00", $fechahasta." 23:59:59" ])->andfilterWhere(['idhorarioc' => $_COOKIE["servicio"]])->orderBy(["iduser" => SORT_ASC])->all();
         }
         //die(var_dump($query));
-      
-        //$fechahastaB="20-07-2021"; 
+
+        //$fechahastaB="20-07-2021";
         if(@$_COOKIE["departamento"]>0)
         {
             foreach ($query as $key => $value) {      // Recorrer los elementos del array
@@ -195,47 +150,31 @@ class ReportesController extends Controller
                 }
             }
         }
- 
- 
+
+
         //die(var_dump($_SESSION["fechadesde"]));
         $dataProvider = new ArrayDataProvider([
             'pagination' => ['pageSize' =>500],
             'allModels' => $query
         ]);
-        //(var_dump($dataProvider));
-/*
-        $dataProvider->setSort([
-            
-            'defaultOrder' => [
-                'iduser0' => SORT_ASC
-            ]
-        ]);
-*/
+
         $gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
-            
+
             [
 
                 'attribute' => 'nombreempleado',
-
                 'label' => 'Nombre Empleado',
-
                 'value' => 'nombreempleado'
             ],
             [
-
                 'attribute' => 'nombreempresa',
-
                 'label' => 'Empresa',
-
                 'value' => 'nombreempresa'
             ],
             [
-
                 'attribute' => 'nombretiposer',
-
                 'label' => 'Servicio',
-
                 'value' => 'nombretiposer'
             ],
             'fechacreacion',
@@ -255,7 +194,7 @@ class ReportesController extends Controller
             ],
             'filename' => 'exportado-data_' . date('Y-m-d_H-i-s'),
         ]);
-        
+
         // You can choose to render your own GridView separately
         $gridview= \kartik\grid\GridView::widget([
             'dataProvider' => $dataProvider,
@@ -276,68 +215,38 @@ class ReportesController extends Controller
 
     }
 
-
-
     public function actionReimpresion()
     {
         return $this->render('reimpresion');
     }
 
-
-
     public function actionVentasdiarias()
-
     {
-
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
         if (Yii::$app->user->isGuest) {
-
             return $this->redirect(URL::base() . "/site/login");
-
         }
-
         $page = "reportes";
 
-
-
         $model = Factura::find()
-
         ->select(['DAY(fechacreacion) AS fechacreacion,SUM(total) AS total,MONTH(fechacreacion) AS nfactura,YEAR(fechacreacion) AS idcliente'])
-
         ->where("estatus = 'ACTIVA'")
-
         ->groupBy(['DAY(fechacreacion)'])
-
         ->all();
 
         //var_dump($model);
-
         //$model = Productos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
-
         $arrayResp = array();
-
         $count = 1;
-
         foreach ($model as $key => $data) {
-
                     $arrayResp[$key]["mes"] = $data->nfactura;
-
                     $arrayResp[$key]["anio"] = $data->idcliente;
-
                     $arrayResp[$key]["fecha"] = $data->fechacreacion;
-
                     $arrayResp[$key]["total"] = $data->total;
-
         }
-
-        
-
         return json_encode($arrayResp);
-
     }
 
-    
     public function actionReimpresionregistros()
     {
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -367,9 +276,9 @@ class ReportesController extends Controller
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
                     $arrayResp[$key][$id] = '<small class="label label-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
-                    
-                   
- 
+
+
+
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
                 }
             }
@@ -378,7 +287,7 @@ class ReportesController extends Controller
         return json_encode($arrayResp);
     }
 
- 
+
     public function actionTicketreimpresion($id)
     {
         if (Yii::$app->user->isGuest) {
@@ -391,46 +300,4 @@ class ReportesController extends Controller
         ]);
     }
 
-
-
-
-    /**
-
-     * Finds the QuinielaHead model based on its primary key value.
-
-     * If the model is not found, a 404 HTTP exception will be thrown.
-
-     * @param integer $id
-
-     * @return QuinielaHead the loaded model
-
-     * @throws NotFoundHttpException if the model cannot be found
-
-     */
-
-    protected function findModel($id)
-
-    {
-
-        if (($model = Inventario::findOne($id)) !== null) {
-
-            return $model;
-
-        } else {
-
-            throw new NotFoundHttpException('The requested page does not exist.');
-
-        }
-
-    }
-
-
-
 }
-
-
-
-
-
-
-

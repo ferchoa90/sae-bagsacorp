@@ -1,8 +1,8 @@
 <?php
 namespace backend\components;
 use Yii;
+use common\models\Clientes;
 use backend\models\Configuracion;
-use backend\models\Cuentasporcobrar;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
@@ -20,6 +20,22 @@ class Contabilidad_clientes extends Component
     public function getCuentasporcobrar($objetos)
     {
 
+
+    }
+
+    public function getSelect()
+    {
+        $clientes = Clientes::find()->where("isDeleted = 0")->orderBy(["razonsocial" => SORT_ASC])->all();
+        //var_dump($clientes);
+        $clientesArray=array();
+        $cont=0;
+        foreach ($clientes as $key => $value) {
+            if ($cont==0){ $clientesArray[$cont]["value"]="Seleccione un cliente"; $clientesArray[$cont]["id"]=-1; $cont++; }
+            $clientesArray[$cont]["value"]=$value->razonsocial;
+            $clientesArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+        return $clientesArray;
 
     }
 

@@ -12,6 +12,20 @@
     border-top: 1px solid black;
 }
 
+.lh-30
+{
+    line-height: 30px;
+}
+
+.lh-25
+{
+    line-height: 25px;
+}
+
+.lh-20
+{
+    line-height: 20px;
+}
 
 .font-10
 {

@@ -11,6 +11,7 @@ use yii\base\Component;
 use backend\models\User;
 use backend\models\Configuracion;
 use backend\components\Iconos;
+use backend\components\Botones;
 
 /**
  * Created by VSCODE.
@@ -25,11 +26,12 @@ class Objetos extends Component
     public function getObjetosArray($objetos,$return=false,$form=false,$id='',$method='',$url='')
     {
         $resultado;
+
         foreach($objetos as $obj):
           //  var_dump($objetos);
 
             switch ($obj['tipo']) {
-                case 'input':
+            case 'input':
                     $resultado.= $this->getInput($obj['subtipo'],$obj['nombre'], $obj['id'], $obj['valor'], $obj['onchange'], $obj['clase'], $obj['estilo'], $obj['icono'],$obj['boxbody'],$obj['etiqueta'],$obj['leyenda'], $obj['col'], $obj['adicional']);
                     break;
 
@@ -43,7 +45,17 @@ class Objetos extends Component
                 default:
 
                     break;
+
+            case 'boton':
+                //echo $obj['link'];
+                $botones= new Botones; $botonC=$botones->getBotones(
+                    $obj['tipo'],$obj['nombre'],$obj['id'],$obj['titulo'],$obj['link'],$obj['onclick'],$obj['clase'],$obj['style'],$obj['col'],$obj['tipocolor'],$obj['icono'],$obj['tamanio'],$obj['adicional']);
+                //echo $botonC;
+                    $resultado.= '<div class="col-4 col-md-4 align-self-center"><div class="form-group"><label>&nbsp;</label><br>'.$botonC.'</div></div>';
+                break;
             }
+
+
         endforeach;
         if ($form){
             $token='<input type="hidden" name="_csrf-frontend" value="F3IuJ0WqAIDRbOjq1RlBFIpaxB7lSZJhS5T5otDBKLc6MXFeM9Iw0atVvIOhLSl24CiwLJcc8A0-2JT2oIxx8w==">';

@@ -24,8 +24,8 @@ $div= new Bloques;
 ));
 
 $botonP=$botones->getBotongridArray(
-   array( 
-      array('tipo'=>'link','nombre'=>'pdf', 'id' => 'pdf', 'titulo'=>'&nbsp;PDF', 'link'=>'pdfasiento?id='.$asiento->id, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'pdf','tamanio'=>'pequeño',  'adicional'=>'')
+   array(
+      array('tipo'=>'link','nombre'=>'pdf', 'id' => 'pdf', 'titulo'=>'&nbsp;PDF', 'link'=>'pdfasiento?id='.$asiento->id, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'pdf','tamanio'=>'pequeño','target'=>'blank',  'adicional'=>'')
 
 ));
 
@@ -64,7 +64,7 @@ $contenido.='</div>';
  <tbody>';
 $cont=0; $cont2=1; $sumdebe=0; $sumhaber=0;
  foreach ($asientodetalle as $key => $value) {
-    
+
     $scope= ($con==1)? $scope='scope="row"' : $scope='';
     if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
     $tabla.=' <tr><td '.$scope.'>'.$cont2.'</td><td>'.$value->concepto.'</td><td class="text-right">'.number_format($debe,2).'</td><td class="text-right">'.number_format($haber,2).'</td></tr>';
