@@ -1,0 +1,20 @@
+/*tr:nth-of-type(1)> th{
+    
+    background-color: deepskyblue;
+    text-align:center;
+    padding-top: 10px;
+}
+*/
+.num {
+   text-align: center;
+}
+
+
+.nume {
+    text-align: left;
+ }
+
+
+ .numes {
+    text-align: right;
+ }

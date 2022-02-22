@@ -102,4 +102,10 @@ class Cuentasporpagar extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
+
+    public function getproveedor()
+    {
+        return $this->hasOne(Proveedores::className(), ['id' => 'idproveedor']);
+    }
+
 }

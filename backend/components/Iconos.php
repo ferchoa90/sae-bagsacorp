@@ -16,6 +16,7 @@ class Iconos extends Component
 {
     public function getIconos($tipo,$nombre='', $id='', $titulo='', $clase='', $style='', $col='',$adicional )
     {
+    
                 return $this->getIcono($tipo,$nombre, $id, $titulo, $clase, $style, $col,$adicional);
     }
 
@@ -26,7 +27,12 @@ class Iconos extends Component
 
     private function getFaicono($icono='')
     {
+        
         switch ($icono) {
+            case 'pdf':
+                $tipo='file-pdf-o';
+                break;   
+                
             case 'lapiz':
                 $tipo='fas fa-pencil-alt';
                 break;
@@ -89,8 +95,9 @@ class Iconos extends Component
 
             case 'llave':
                 $tipo='fas fa-key';
-                break;    
+                break;  
                 
+            
             
             
             default:
@@ -107,6 +114,10 @@ class Iconos extends Component
         $tipodefault='fas fa-pencil-alt';
         $tamaniodefault='';
         switch ($tipo) {
+
+            case 'pdf':
+                $tipo='fa fa-file-pdf-o';
+                break;   
             case 'lapiz':
                 $tipo='fas fa-pencil-alt';
                 break;

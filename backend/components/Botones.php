@@ -80,9 +80,8 @@ class Botones extends Component
         ($onclick=='') ? $onclick=$onclickdefault : $link='' ;
 
         $icon = new Iconos;
-        //var_dump($icono);
         $icono= $icon->getIconos($icono,'','','','','','','');
-
+    
 
         switch ($tipocolor) {
             case 'azul':

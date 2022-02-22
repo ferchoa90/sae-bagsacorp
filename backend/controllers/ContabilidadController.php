@@ -16,6 +16,7 @@ use common\models\Cuentas;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporcobrardet;
 use common\models\Cuentasporpagar;
+use common\models\Cuentasporpagardet;
 use common\models\Cuentasparametros;
 use common\models\Periodofiscal;
 use common\models\Cuentastipo;
@@ -26,6 +27,7 @@ use common\models\Retenciones;
 use common\models\Retencioncxc;
 use common\models\Formapagocuentas;
 use backend\components\Botones;
+use kartik\mpdf\Pdf;
 
 
 class ContabilidadController extends Controller
@@ -136,6 +138,50 @@ class ContabilidadController extends Controller
         return $this->render('asiento');
     }
 
+    public function actionPdfasiento($id)
+    {
+        date_default_timezone_set('America/Guayaquil');
+        $asiento= Diario::find()->where(['id' => $id, "isDeleted" => 0])->one();
+        $asientodetalle=Diariodetalle::find()->where(['diario' => $asiento->diario, "isDeleted" => 0])->all();
+        $content = $this->renderPartial('pdfasiento', [
+            'asiento' =>$asiento,
+            'asientodetalle' => $asientodetalle,
+        ]);
+        //$fecha=date('d-m-Y');
+        $fecha=date('d-m-Y H:i:s');
+    // setup kartik\mpdf\Pdf component
+    $pdf = new Pdf([
+        // set to use core fonts only
+        'mode' => Pdf::MODE_BLANK, 
+        // A4 paper format
+        'format' => Pdf::FORMAT_A4, 
+        // portrait orientation
+        'orientation' => Pdf::ORIENT_PORTRAIT, 
+        // stream to browser inline
+        'destination' => Pdf::DEST_BROWSER, 
+        // your html content input
+
+        'content' => $content,  
+        // format content from your own css file if needed or use the
+        // enhanced bootstrap css built by Krajee for mPDF formatting 
+        //'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+        'cssFile' => '@backend/web/css/sitepdf.css',
+        // any css to be embedded if required
+        //'cssInline' => '.kv-heading-1{font-size:18px}', 
+         // set mPDF properties on the fly
+        'options' => ['title' => 'Sistema SAE Empresarial'],
+         // call mPDF methods on the fly
+        'methods' => [ 
+            'SetHeader'=>["SISTEMA SAE ($fecha)"], 
+            'SetFooter'=>['{PAGENO}'],
+        ]
+    ]);
+    //$pdf->SetHTMLHeader('<img src="' .'/custom/Hederinvoice.jpg"/>');
+    // return the pdf output as per the destination setting
+    return $pdf->render(); 
+    }
+
+
     public function actionNuevacuentapc()
     {
         $clientes2=Clientes::find()->where(["isDeleted" => 0,"estatus" => "ACTIVO"])->orderBy(["razonsocial" => SORT_ASC])->all();
@@ -227,6 +273,17 @@ class ContabilidadController extends Controller
         return $this->render('vercuentapc', [
             'cuenta' =>$cuenta,
             'cuentadetalle' => Cuentasporcobrardet::find()->where(['numero' => $cuenta->id, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
+    public function actionVercuentapp($id)
+    {
+        $cuenta= Cuentasporpagar::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('vercuentapp', [
+            'cuenta' =>$cuenta,
+            'cuentadetalle' => Cuentasporpagardet::find()->where(['numero' => $cuenta->id, "isDeleted" => 0])->all(),
         ]);
 
     }
@@ -444,7 +501,7 @@ class ContabilidadController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
         $page = "eliminarbanco";
-        $model = Diario::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(1500)->all();
+        $model = Diario::find()->where(['isDeleted' => '0'])->orderBy(["anio" => SORT_DESC,"diario" => SORT_DESC])->limit(2000)->all();
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {
@@ -622,8 +679,9 @@ class ContabilidadController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
         }
-        $page = "eliminarbanco";
-        $model = Cuentasporpagar::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(10000)->all();
+        $page = "cuentapp";
+        $view = "cuentapp";
+        $model = Cuentasporpagar::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->limit(2000)->all();
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {
@@ -635,8 +693,8 @@ class ContabilidadController extends Controller
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'verfactura?='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editarfactura?='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -646,7 +704,7 @@ class ContabilidadController extends Controller
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
-                    $arrayResp[$key][$id] = '<small class="badge badge-default"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
                    //if  ($id == "nombre"){ echo $text;}
                     if (($id == "idfactura") || ($id == "tipo") || ($id == "fecha")  || ($id == "valor")  || ($id == "abono")  ) { $arrayResp[$key][$id] = $text; }

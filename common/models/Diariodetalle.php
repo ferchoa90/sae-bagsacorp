@@ -12,17 +12,20 @@ use Yii;
  * @property string $anio
  * @property int $item
  * @property string $fecha
- * @property resource $concepto
- * @property string $cuenta
- * @property string $cuenta_padre
+ * @property resource|null $concepto
+ * @property string|null $cuenta
+ * @property string|null $cuenta_padre
  * @property float $valor
  * @property int $debito
- * @property int $tipodiario
- * @property int $auxiliar
+ * @property int|null $tipodiario
+ * @property int|null $auxiliar
  * @property string $tipoauxiliar
  * @property int $isDeleted
+ * @property int $usuariocreacion
  * @property string $fechacreacion
  * @property string $estatus
+ *
+ * @property User $usuariocreacion0
  */
 class Diariodetalle extends \yii\db\ActiveRecord
 {
@@ -40,13 +43,14 @@ class Diariodetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['diario', 'anio', 'item', 'fecha', 'concepto', 'cuenta', 'cuenta_padre', 'valor', 'tipodiario', 'auxiliar', 'tipoauxiliar'], 'required'],
-            [['diario', 'item', 'debito', 'tipodiario', 'auxiliar', 'isDeleted'], 'integer'],
+            [['diario', 'anio', 'item', 'fecha', 'tipoauxiliar'], 'required'],
+            [['diario', 'item', 'debito', 'tipodiario', 'auxiliar', 'isDeleted', 'usuariocreacion'], 'integer'],
             [['anio', 'fecha', 'fechacreacion'], 'safe'],
             [['concepto', 'estatus'], 'string'],
             [['valor'], 'number'],
             [['cuenta', 'cuenta_padre'], 'string', 'max' => 80],
             [['tipoauxiliar'], 'string', 'max' => 10],
+            [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
         ];
     }
 
@@ -70,15 +74,34 @@ class Diariodetalle extends \yii\db\ActiveRecord
             'auxiliar' => 'Auxiliar',
             'tipoauxiliar' => 'Tipoauxiliar',
             'isDeleted' => 'Is Deleted',
+            'usuariocreacion' => 'Usuariocreacion',
             'fechacreacion' => 'Fechacreacion',
             'estatus' => 'Estatus',
         ];
     }
 
-    public function getCuentas0()
+    /**
+     * Gets query for [[Usuariocreacion0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuariocreacion0()
     {
-        return $this->hasMany(Cuentas::className(), ['codigoant' => 'cuenta']);
+        return $this->hasOne(User::className(), ['id' => 'usuariocreacion']);
     }
 
+    /*public function getCuentacontable()
+    {
+        echo ':'.($this->cuenta).' - ';
+        $result= Cuentas::find()->where(["codigoant"=>"2.1.03.001.001.002030"])->one();
+        var_dump($result);
+        //var_dump($this->hasOne(Cuentas::className(), ['codigoant' => 'cuenta']));
+        return $result;
+    }*/
 
+    public function getCuentacontable0()
+    {
+        //echo $this->cuenta;
+        return $this->hasOne(Cuentas::className(), ['codigoant' => 'cuenta']);
+    }
 }
