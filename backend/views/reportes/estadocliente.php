@@ -85,7 +85,7 @@ ActiveForm::end();
                     data=JSON.parse(response);
                     //console.log('RESP: '+response);
                     //console.log('DATA: '+data);
-                    
+
                     if ( data ) {
                       agregarData(response);
                         // ============================ Not here, this would be too late
@@ -147,8 +147,8 @@ ActiveForm::end();
             saldo=item.saldot;
 
         });
-        html+='<tr style="background-color: white;"><td></td><td></td><td></td><td></td><td><b>Saldo Ant.:</b> 0.00</td><td><b>Valor Tot.: </b> '+valor+'</td>';
-        html+='<td><b>Abono T.: </b>'+abono+'</td><td><b>S. Corte: </b>'+saldo+'</td><td></td><td></td></tr>';
+        html+='<tr style="background-color: white;"><td></td><td></td><td></td><td></td><td><b>S. Ant.:</b> 0.00</td><td><b>V. Tot.: </b> '+valor+'</td>';
+        html+='<td><b>Ab. T.: </b>'+abono+'</td><td><b>S. Cor.: </b>'+saldo+'</td><td></td><td></td></tr>';
         $('#reporte > tbody:last-child').append(html);
        }
 
@@ -175,6 +175,3 @@ ActiveForm::end();
 
 
   </script>
-
-
-
