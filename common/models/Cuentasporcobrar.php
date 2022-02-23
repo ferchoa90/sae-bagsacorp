@@ -213,6 +213,12 @@ class Cuentasporcobrar extends \yii\db\ActiveRecord
         return $this->hasOne(Clientes::className(), ['id' => 'idcliente']);
     }
 
+
+    public function getCuentaxcdet()
+    {
+        return $this->hasMany(Cuentasporcobrardet::className(), ['numerofactura' => 'id']);
+    }
+
     /**
      * Gets query for [[Usuariocreacion0]].
      *

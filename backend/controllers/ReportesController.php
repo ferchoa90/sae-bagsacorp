@@ -11,6 +11,11 @@ use yii\helpers\Url;
 use yii\db\Query;
 use common\models\Inventario;
 use common\models\Factura;
+use common\models\Cuentasporcobrar;
+use common\models\Cuentasporcobrardet;
+use common\models\Banco;
+use common\models\Diario;
+use common\models\Retencioncxc;
 use common\models\Presentacion;
 use common\models\Productos;
 use common\models\Gestioncatering;
@@ -298,6 +303,145 @@ class ReportesController extends Controller
         return $this->render('ticketreimpresion', [
             'gestion' => $gestion,
         ]);
+    }
+
+    public function actionEstadoclientefilter(){
+        extract($_POST);
+        $result= array();
+        $arrayResp = array();
+        $count = 0;
+        $factura= Factura::find()->where(['idcliente' => $cliente,'estatus'=>'ACTIVO'])->andWhere(['between', 'fecha', $desde, $hasta ])->all();
+        $anio=substr($desde,0,4);
+        $cont=0;
+        $valort=0; $abonot=0; $saldot=0;
+        foreach ($factura as $key => $value) {
+            //echo $value->diario;
+            $diarioneto=str_replace($anio.'-',"",$value->diario);
+            $diario= Diario::find()->where(['diario' => $diarioneto, 'anio'=>$anio])->one();
+            $cuentaxc= Cuentasporcobrar::find()->where(['diario' => $value->diario])->one();
+            $retencionescxc= Retencioncxc::find()->where(['facturanum' => $value->nfactura])->all();
+
+            //var_dump($cuentaxc);
+
+            $arrayResp[$cont]["numerofactura"]=$value->nfactura;
+            
+            $arrayResp[$cont]["fecha"]=$value->fecha;
+            $arrayResp[$cont]["costo"]=$value->costo;
+            $arrayResp[$cont]["iva"]=$value->iva;
+            $arrayResp[$cont]["descuento"]=$value->descuento;
+            $arrayResp[$cont]["vencimiento"]=$value->vencimiento;
+            $arrayResp[$cont]["dias"]=$value->diasplazo;
+            
+            if ($cuentaxc){
+                $arrayResp[$cont]["concepto"]=$cuentaxc->concepto;
+                $arrayResp[$cont]["abono"]="";
+                $arrayResp[$cont]["valor"]=$cuentaxc->valor;
+                $arrayResp[$cont]["saldo"]="";
+                $arrayResp[$cont]["movimiento"]=$cuentaxc->id;
+                $valort+=$cuentaxc->valor;
+
+                $arrayResp[$cont]["abonot"]=number_format($abonot,2);
+                $arrayResp[$cont]["valort"]=number_format($valort,2);
+                $arrayResp[$cont]["saldot"]=number_format($valort-$abonot,2);
+            }else{
+                $arrayResp[$cont]["concepto"]="";
+                $arrayResp[$cont]["abono"]="";
+                $arrayResp[$cont]["valor"]="";
+                $arrayResp[$cont]["saldo"]="";
+                $arrayResp[$cont]["vencimiento"]="";
+                $arrayResp[$cont]["dias"]="";
+                $arrayResp[$cont]["abonot"]=number_format($abonot,2);
+                $arrayResp[$cont]["valort"]=number_format($valort,2);
+                $arrayResp[$cont]["saldot"]=number_format($valort-$abonot,2);
+            }
+            if ($diario){
+                $arrayResp[$cont]["tipoaux"]=$diario->tipoaux;
+            }else{
+                $arrayResp[$cont]["tipoaux"]="";
+            }
+            $arrayResp[$cont]["diario"]=$value->diario;
+            $cuentaxcret= Cuentasporcobrar::find()->where(['idfactura' => $value->nfactura])->one();
+            $cont++;
+            if ($retencionescxc){
+                $ncomprobante;$fecha;$valor=0;$costo=0;$abono=0;$concepto;$origen=0;
+                foreach ($retencionescxc as $keyR => $valueR) {
+                    $ncomprobante=$valueR->numero;
+                    $fecha=$valueR->fecha;
+                    $valor+=$valueR->valorretenido;
+                    $abono+=($valueR->baseimponible-$valueR->valorretenido);
+                    $origen=$valueR->origen;
+                }
+                
+                $arrayResp[$cont]["numerofactura"]=$ncomprobante;
+                $arrayResp[$cont]["movimiento"]=$origen;
+                $arrayResp[$cont]["fecha"]=$fecha;
+                $arrayResp[$cont]["valor"]="";
+                $arrayResp[$cont]["abono"]=$valor;
+                $arrayResp[$cont]["saldo"]=$abono;
+
+                
+                
+                $arrayResp[$cont]["tipoaux"]="RET";
+                $arrayResp[$cont]["descuento"]="";
+                $arrayResp[$cont]["vencimiento"]="";
+                $arrayResp[$cont]["dias"]="";
+                $arrayResp[$cont]["diario"]="";
+                //$arrayResp[$cont]["concepto"]="COM RET".substr(0,12,$ncomprobante)." FACT ".$value->nfactura;
+                $arrayResp[$cont]["concepto"]=$cuentaxcret->concepto;
+
+                $abonot+=$valor;
+                $saldot+=$abono;
+
+                $arrayResp[$cont]["abonot"]=number_format($abonot,2);
+                $arrayResp[$cont]["valort"]=number_format($valort,2);
+                $arrayResp[$cont]["saldot"]=number_format($valort-$abonot,2);
+
+                $cont++;
+            }
+            $cuentaxcpag= Cuentasporcobrardet::find()->where(['numerofactura' => $cuentaxc->id])->all();
+            //$cuentaxcpag= $cuentaxcret->cuentaxcdet;
+            //var_dump($cuentaxcpag);
+            if ($cuentaxcpag)
+            {
+                //echo $ncomprobante;
+                foreach ($cuentaxcpag as $keyCP => $valueCP) {
+                   // echo '--- ';
+                   // echo $valueCP->numero.' | ';
+                   // echo ' | '.$origen.' | ';
+  
+                        // echo 'ORIGN:'.$valueCP->numero;
+                        $banco=Banco::find()->where(['cartera' => $valueCP->numero])->one();
+                        if ($banco){
+                            $arrayResp[$cont]["numerofactura"]="";
+                            $arrayResp[$cont]["movimiento"]=$valueCP->numero;
+                            $arrayResp[$cont]["fecha"]=$valueCP->fecha;
+                            $arrayResp[$cont]["valor"]="";
+                            $arrayResp[$cont]["abono"]=$valueCP->valor;
+                            $arrayResp[$cont]["saldo"]=number_format($abono-$valueCP->valor,2);
+                            
+                            $arrayResp[$cont]["tipoaux"]="TRA";
+                            $arrayResp[$cont]["descuento"]="";
+                            $arrayResp[$cont]["vencimiento"]="";
+                            $arrayResp[$cont]["dias"]="";
+                            $arrayResp[$cont]["diario"]="";
+                            //$arrayResp[$cont]["concepto"]="COM RET".substr(0,12,$ncomprobante)." FACT ".$value->nfactura;
+                            $arrayResp[$cont]["concepto"]=$banco->concepto;               
+                            $abonot+=$valueCP->valor;
+                            $saldot+=($abono-$valueCP->valor);
+
+                            $arrayResp[$cont]["abonot"]=number_format($abonot,2);
+                            $arrayResp[$cont]["valort"]=number_format($valort,2);
+                            $arrayResp[$cont]["saldot"]=number_format($valort-$abonot,2);
+                        }
+                             
+                    
+                }
+                $cont++;
+            }
+        }
+        return json_encode($arrayResp);
+        
+
     }
 
 }
