@@ -23,7 +23,7 @@ $div= new Bloques;
         array('tipo'=>'link','nombre'=>'regresar', 'id' => 'guardar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>'')
 
 ));
- 
+
 //var_dump($factura->tipoprecio0->nombre);
 //$tipo= ($factura->natural=0)?'SI' : 'NO';
 $contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>ID: </b>'.$factura->nfactura.'<br></div>';
@@ -60,7 +60,8 @@ $contenido.='</div>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='</div>';
 
- $tabla='<table class="table table-striped">
+ $tabla='<div class="col-12" style="width: 100%;overflow-x: scroll;">
+ <table class="table table-striped">
  <thead>
    <tr>
      <th scope="col">Cant.</th>
@@ -90,7 +91,7 @@ $cont=0; $cont2=1; $tdescuento=0; $tiva=0; $tcantidad=0;$tsubtotal=0;
 $tabla.='</tbody></table><table class="table table"> <tbody><tr><td class="text-center"><b>Items: </b>'.$cont.'</td><td class="text-center"><b>T. Cant.: </b>'.number_format($tcantidad,3).'</td>';
 $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).'</td><td class="text-center"><b>Descuento: </b>'.number_format($tdescuento,2).'</td><td class="text-center"><b>T. Iva: </b>'.number_format($tiva,2).'</td><td class="text-center"><b>Total: </b>'.number_format($tsubtotal+$tiva,2).'</td> </tr>';
 
-   $tabla.='</tbody></table>';
+   $tabla.='</tbody></table></div>';
 
     $contenido.=$tabla;
 

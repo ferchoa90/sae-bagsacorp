@@ -17,9 +17,9 @@ $div= new Bloques;
 //var_dump($clientes);
  $contenido=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'proveedores', 'id'=>'proveedores', 'valor'=>$proveedores, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cliente: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'desde', 'id'=>'desde', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Desde: ', 'col'=>'col-4 col-md-4', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'hasta', 'id'=>'hasta', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Hasta: ', 'col'=>'col-4 col-md-4', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'proveedores', 'id'=>'proveedores', 'valor'=>$proveedores, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Proveedor: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'desde', 'id'=>'desde', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Desde: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'hasta', 'id'=>'hasta', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Hasta: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
         array('tipo'=>'boton','nombre'=>'filtrar', 'id' => 'filtrar', 'titulo'=>'&nbsp;Filtrar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'negro', 'icono'=>'filtro','tamanio'=>'pequeño',  'adicional'=>'')
     ),true
 );
@@ -34,7 +34,8 @@ $div= new Bloques;
 ));
 $contenido.='<hr style="color: #0056b2;">';
 
-$tabla='<table id="reporte" class="table table-striped">
+$tabla='<div class="col-12" style="width: 100%;overflow-x: scroll;">
+<table id="reporte" class="table table-striped">
  <thead>
    <tr>
      <th scope="col">Comprobante</th>
@@ -51,7 +52,7 @@ $tabla='<table id="reporte" class="table table-striped">
  </thead>
  <tbody id="reportebody">';
 //
-$tabla.="</table>";
+$tabla.="</tbody></table></div>";
 
 $form = ActiveForm::begin(['id'=>'frmDatos']);
 echo $div->getBloqueArray(
