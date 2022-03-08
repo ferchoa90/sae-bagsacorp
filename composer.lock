@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1e0a8559d9382d306077e678744c46b",
+    "content-hash": "8a53dd41fcebe5cdb0619a9ce5636f99",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1433,6 +1433,56 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/2.1.3"
             },
             "time": "2021-05-25T15:42:17+00:00"
+        },
+        {
+            "name": "mongosoft/yii2-soap-client",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mongosoft/yii2-soap-client.git",
+                "reference": "de6fab0f197f5c0d79b9ce70b2544f031ec1f378"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mongosoft/yii2-soap-client/zipball/de6fab0f197f5c0d79b9ce70b2544f031ec1f378",
+                "reference": "de6fab0f197f5c0d79b9ce70b2544f031ec1f378",
+                "shasum": ""
+            },
+            "require": {
+                "ext-soap": "*",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "mongosoft\\soapclient\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Mohorev",
+                    "email": "dev.mohorev@gmail.com"
+                }
+            ],
+            "description": "SOAP Client Extension for Yii 2",
+            "homepage": "https://github.com/mongosoft/yii2-soap-client",
+            "keywords": [
+                "consumer",
+                "extension",
+                "soap",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/mongosoft/yii2-soap-client/issues?state=open",
+                "source": "https://github.com/mongosoft/yii2-soap-client"
+            },
+            "abandoned": true,
+            "time": "2015-02-10T12:05:51+00:00"
         },
         {
             "name": "mpdf/mpdf",

@@ -24,7 +24,8 @@
         "yii2mod/yii2-cart": "*",
         "kartik-v/yii2-export": "*",
         "almasaeed2010/adminlte": "~3.1",
-        "hail812/yii2-adminlte3": "^1.1"
+        "hail812/yii2-adminlte3": "^1.1",
+        "mongosoft/yii2-soap-client": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

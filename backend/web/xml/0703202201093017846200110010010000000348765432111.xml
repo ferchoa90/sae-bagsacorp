@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<factura id="comprobante" version="1.0.0">
+    <infoTributaria>
+        <ambiente>1</ambiente>
+        <tipoEmision>1</tipoEmision>
+        <razonSocial>MARIO FERNANDO AGUILAR JIMÉNEZ</razonSocial>
+        <nombreComercial>MARIO FERNANDO AGUILAR JIMÉNEZ</nombreComercial>
+        <ruc>0930178462001</ruc>
+        <claveAcceso>2022030701093017846200110010010000000348765432117</claveAcceso>
+        <codDoc>01</codDoc>
+        <estab>001</estab>
+        <ptoEmi>001</ptoEmi>
+        <secuencial>000000034</secuencial>
+        <dirMatriz>EVA ROMÁN Y LEGARDA</dirMatriz>
+		<regimenMicroempresas>CONTRIBUYENTE RÉGIMEN MICROEMPRESAS</regimenMicroempresas>
+		<agenteRetencion>1</agenteRetencion>
+    </infoTributaria>
+    <infoFactura>
+        <fechaEmision>08/03/2022</fechaEmision>
+        <dirEstablecimiento>EVA ROMÁN Y LEGARDA</dirEstablecimiento>
+        <obligadoContabilidad>NO</obligadoContabilidad>
+        <tipoIdentificacionComprador>05</tipoIdentificacionComprador>
+        <razonSocialComprador>MARIO AGUILAR</razonSocialComprador>
+        <identificacionComprador>0930178462</identificacionComprador>
+        <totalSinImpuestos>100.00</totalSinImpuestos>
+        <totalDescuento>0.00</totalDescuento>
+        <totalConImpuestos>
+            <totalImpuesto>
+                <codigo>2</codigo>
+                <codigoPorcentaje>2</codigoPorcentaje>
+                <baseImponible>100.00</baseImponible>
+                <valor>12.00</valor>
+            </totalImpuesto>
+	</totalConImpuestos>
+		<propina>0.00</propina>
+    	<importeTotal>112.00</importeTotal>
+    	<moneda>DOLAR</moneda>
+		<pagos>
+            <pago>
+                <formaPago>01</formaPago>
+                <total>112.00</total>
+            </pago>
+        </pagos>
+        <valorRetIva>0.00</valorRetIva>
+        <valorRetRenta>0.00</valorRetRenta>
+    </infoFactura>
+    <detalles>
+    </detalles>
+    <infoAdicional>
+        <campoAdicional nombre="Direccion">Urbanor</campoAdicional>
+        <campoAdicional nombre="Email">marioaguilar1990@gmail.com</campoAdicional>
+        <campoAdicional nombre="Fono">-</campoAdicional>
+        <campoAdicional nombre="Usuario">maguilar</campoAdicional>
+    </infoAdicional>
+</factura>

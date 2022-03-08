@@ -52,6 +52,11 @@ class FacturacionController extends Controller
         ];
     }
 
+    public function actionFacturacionelectronica()
+    {
+        return $this->render('facturacionelectronica');
+    }
+
     public function actionVerentregas($id)
     {
         $entregas= Entregas::find()->where(['id' => $id, "isDeleted" => 0])->one();

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<factura id="comprobante" version="1.0.0">
+    <infoTributaria>
+        <ambiente>2</ambiente>
+        <tipoEmision>1</tipoEmision>
+        <razonSocial>GASOLINERA DE TRANSPORTES CALUMA</razonSocial>
+        <nombreComercial>GASO CALUMA</nombreComercial>
+        <ruc>0290030382001</ruc>
+        <claveAcceso>3012202101029003038200120060050000000338765432112</claveAcceso>
+        <codDoc>01</codDoc>
+        <estab>006</estab>
+        <ptoEmi>005</ptoEmi>
+        <secuencial>000000033</secuencial>
+        <dirMatriz>AV LA NARANJA Y HEROES DE CENEPA</dirMatriz>
+		<regimenMicroempresas>CONTRIBUYENTE RÉGIMEN MICROEMPRESAS</regimenMicroempresas>
+		<agenteRetencion>1</agenteRetencion>
+    </infoTributaria>
+    <infoFactura>
+        <fechaEmision>30/12/2021</fechaEmision>
+        <dirEstablecimiento>AV LA NARANJA Y HEROES DE CENEPA</dirEstablecimiento>
+        <obligadoContabilidad>SI</obligadoContabilidad>
+        <tipoIdentificacionComprador>05</tipoIdentificacionComprador>
+        <razonSocialComprador>LUCIA PAEZ</razonSocialComprador>
+        <identificacionComprador>0928956408</identificacionComprador>
+        <totalSinImpuestos>14.75</totalSinImpuestos>
+        <totalDescuento>0.00</totalDescuento>
+        <totalConImpuestos>
+            <totalImpuesto>
+                <codigo>2</codigo>
+                <codigoPorcentaje>2</codigoPorcentaje>
+                <baseImponible>14.75</baseImponible>
+                <valor>1.77</valor>
+            </totalImpuesto>
+	</totalConImpuestos>
+		<propina>0.00</propina>
+    	<importeTotal>16.52</importeTotal>
+    	<moneda>DOLAR</moneda>
+		<pagos>
+            <pago>
+                <formaPago>01</formaPago>
+                <total>16.52</total>
+            </pago>
+        </pagos>
+        <valorRetIva>0.00</valorRetIva>
+        <valorRetRenta>0.00</valorRetRenta>
+    </infoFactura>
+    <detalles>
+        <detalle>
+            <codigoPrincipal>PROD2</codigoPrincipal>
+            <codigoAuxiliar>PROD2-1</codigoAuxiliar>
+            <descripcion>DIESEL</descripcion>
+            <cantidad>10.000</cantidad>
+            <precioUnitario>1.48</precioUnitario>
+            <descuento>0.00</descuento>
+            <precioTotalSinImpuesto>14.75</precioTotalSinImpuesto>
+            <impuestos>
+                <impuesto>
+                    <codigo>2</codigo>
+                    <codigoPorcentaje>2</codigoPorcentaje>
+                    <tarifa>12.00</tarifa>
+                    <baseImponible>14.75</baseImponible>
+                    <valor>1.77</valor>
+                </impuesto>
+            </impuestos>
+        </detalle>
+    </detalles>
+    <infoAdicional>
+        <campoAdicional nombre="Direccion">CALUMA</campoAdicional>
+        <campoAdicional nombre="Email">clientes@caluma.com</campoAdicional>
+        <campoAdicional nombre="Fono">9999999999</campoAdicional>
+        <campoAdicional nombre="Usuario">KORTIZ</campoAdicional>
+    </infoAdicional>
+</factura>
