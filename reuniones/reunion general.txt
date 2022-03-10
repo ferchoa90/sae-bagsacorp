@@ -1,0 +1,21 @@
+Taller Sistema SAE
+ 
+ - Contabilidad
+	*
+
+ - Facturación
+
+
+ - Reportes
+	Estado de C: Ver detalle de facturas para saber que se vendió
+      Proveedor en estado de cuenta mal la etiqueta.
+
+ - Productos
+
+
+
+ - Produccion
+
+
+
+ - Inventario
