@@ -97,6 +97,13 @@ class Iconos extends Component
                 $tipo='fas fa-key';
                 break;
 
+            case 'aceptar':
+                $tipo='fa fa-check-circle-o';
+                break;
+
+            case 'cancelar':
+                $tipo='fa fa-reply';
+                break;
 
 
 
@@ -114,6 +121,13 @@ class Iconos extends Component
         $tipodefault='fas fa-pencil-alt';
         $tamaniodefault='';
         switch ($tipo) {
+            case 'aceptar':
+                $tipo='fa fa-check-circle-o';
+                break;
+
+            case 'cancelar':
+                $tipo='fa fa-reply';
+                break;
 
             case 'pdf':
                 $tipo='fa fa-file-pdf-o';

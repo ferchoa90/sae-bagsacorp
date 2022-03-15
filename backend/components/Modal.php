@@ -16,24 +16,39 @@ use yii\base\InvalidConfigException;
 
 class Modal extends Component
 {
-    public function getModal($tipo,$nombre='', $id='', $titulo='', $content='', $clase='', $style='', $col='',$adicional )
+    public function getModal($tipo,$nombre='', $id='', $titulo='', $content='', $clase='', $style='', $col='',$stylemodal='',$boton1='', $boton2='',$adicional )
     {
-                return $this->getWinmodal($tipo,$nombre, $id, $titulo, $content, $clase, $style, $col,$adicional);
+                return $this->getWinmodal($tipo,$nombre, $id, $titulo, $content, $clase, $style, $col,$stylemodal,$boton1, $boton2,$adicional);
     }
 
-    public function getWinmodal($tipo,$nombre='', $id='', $titulo='',$content='', $clase='', $style='', $col='', $adicional)
-    {
+    public function getWinmodal($tipo,$nombre='', $id='', $titulo='',$content='', $clase='', $style='', $col='',$stylemodal='', $boton1='', $boton2='',$adicional)
+    { 
         $this->getWrite($nombre,$id,$tipo);
         $classdefault='';
         $tipodefault='fas fa-pencil-alt';
         $tamaniodefault='';
+        if (!$styleModal){ $styleModal="width: 60%;"; }
         switch ($tipo) {
             case 'okcancel':
                 $tipo='fas fa-pencil-alt';
+                $botones='<div class="modal-footer">
+                  <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                  <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger">Cancelar</button>
+                </div>';
                 break;
 
-            case 'ok':
+            case 'sino':
+                $tipo='fas fa-pencil-alt';
+                $botones='<div class="modal-footer">
+                <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary" data-dismiss="modal">Si</button>
+                <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger">No</button>
+                </div>';
+                break;
+                
+                
+                case 'ok':
                 $tipo='fas fa-eye';
+                $botones='<div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>';
                 break;
 
             case 'savecancel':
@@ -57,23 +72,32 @@ class Modal extends Component
                 break;
         }
 
+        if (!$nombre){ $nombre='modalDefault'; }
+        if (!$id){ $id='modalDefault'; }
+
+
+
         $div='
         <!-- Modal -->
-<div class="modal fade" id="nuevoClienteModal" tabindex="-1" role="dialog" aria-labelledby="nuevoClienteModal" aria-hidden="true">
+<div class="modal fade" name="'.$nombre.'"  id="'.$nombre.'" tabindex="-1" role="dialog" aria-labelledby="'.$nombre.'" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Agregar Cliente</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">'.$titulo.'</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">'.$content.'
-
-      </div>
+      <div class="modal-body">'.$content.'</div>
+      '.$botones.'
     </div>
   </div>
 </div>
+<style>
+.modal-content {
+  '.$styleModal.'
+}
+</style>
 
         ';
 

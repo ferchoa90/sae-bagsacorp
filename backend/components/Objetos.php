@@ -351,17 +351,17 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
                 break;
 
             default:
-                $clase=$clase;
+                $clase=$classdefault .' '.$clase;
                 break;
         }
 
         switch ($leyenda) {
             case '':
-                $input='<input type="number"  class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'"  '.$adicional.'>';
+                $input='<input type="number" onchange="javascript:'.$onchange.';"  class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'"  '.$adicional.'>';
                 break;
 
                 default:
-                $input='<input type="number" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'"  '.$adicional.'>';
+                $input='<input type="number" onchange="javascript:'.$onchange.';" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$leyenda.'"  '.$adicional.'>';
                 break;
         }
 

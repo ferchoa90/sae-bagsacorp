@@ -114,6 +114,10 @@ class Botones extends Component
                 $tipocolor='btn btn-dark btnedit';
                 break;
 
+            case 'naranja':
+                $tipocolor='btn btn-warning btnedit';
+                break;
+
             default:
                 $tipocolor=$tipocolordefault;
                 break;

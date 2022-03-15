@@ -11,13 +11,14 @@ use Yii;
  * @property int $idpedido
  * @property int $idproducto
  * @property resource|null $combo
- * @property resource $descripcion
+ * @property resource $nombreprod
+ * @property resource|null $descripcion
  * @property resource|null $observacion
  * @property int $cantidad
  * @property float $subtotal
- * @property float $total
  * @property float $descuento
  * @property float $iva
+ * @property float $total
  * @property int $usuariocreacion
  * @property string $fechacreacion
  * @property string $estatus
@@ -42,10 +43,10 @@ class Pedidosdetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idpedido', 'idproducto', 'descripcion', 'subtotal', 'total', 'usuariocreacion'], 'required'],
-            [['idpedido', 'idproducto', 'cantidad', 'usuariocreacion'], 'integer'],
-            [['combo', 'descripcion', 'observacion', 'estatus'], 'string'],
-            [['total', 'descuento', 'iva'], 'number'],
+            [['idpedido', 'idproducto', 'nombreprod', 'subtotal', 'usuariocreacion'], 'required'],
+            [['idpedido', 'idproducto', 'usuariocreacion'], 'integer'],
+            [['combo', 'nombreprod', 'descripcion', 'observacion', 'estatus'], 'string'],
+            [['subtotal', 'descuento', 'iva', 'total', 'cantidad'], 'number'],
             [['fechacreacion'], 'safe'],
             [['idpedido'], 'exist', 'skipOnError' => true, 'targetClass' => Pedidos::className(), 'targetAttribute' => ['idpedido' => 'id']],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
@@ -63,13 +64,14 @@ class Pedidosdetalle extends \yii\db\ActiveRecord
             'idpedido' => 'Idpedido',
             'idproducto' => 'Idproducto',
             'combo' => 'Combo',
+            'nombreprod' => 'Nombreprod',
             'descripcion' => 'Descripcion',
             'observacion' => 'Observacion',
             'cantidad' => 'Cantidad',
-            'subtotal' => 'subtotal',
-            'total' => 'total',
+            'subtotal' => 'Subtotal',
             'descuento' => 'Descuento',
             'iva' => 'Iva',
+            'total' => 'Total',
             'usuariocreacion' => 'Usuariocreacion',
             'fechacreacion' => 'Fechacreacion',
             'estatus' => 'Estatus',

@@ -250,7 +250,7 @@ class Facturacion_electronica extends Component
     }
 
     public function setCrearfactura($name,$xml,$ruta=""){
-		echo $directorio  = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml/$name.xml";
+		$directorio  = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml/$name.xml";
 		$directorio2 = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml_autorizado/$name.xml";
 		if (!file_exists($directorio2)):
 			if (!file_exists($directorio)):
@@ -262,7 +262,7 @@ class Facturacion_electronica extends Component
 		endif;
 	}
 
-    protected function facturaPrueba($claveacceso='2022030701093017846200110010010000000348765432117'){
+    protected function facturaPrueba($claveacceso='2022030701093017846200110010010000000348765432117',$subtotal,$iva,$total,$identificacion,$cliente,$direccion){
         $Cabecera = array(
             "ambiente"				=> "1",
             "tipoEmision"			=> "1",
@@ -279,20 +279,20 @@ class Facturacion_electronica extends Component
             "dirEstablecimiento"			=> "EVA ROMÁN Y LEGARDA", //sucursal direccion
             "obligadoContabilidad"			=> "NO",
             "tipoIdentificacionComprador"	=> "05",
-            "razonSocialComprador"			=> "MARIO AGUILAR",
-            "identificacionComprador"		=> "0930178462",
+            "razonSocialComprador"			=> $cliente,
+            "identificacionComprador"		=> $identificacion,
             "base0"							=> "0.00",
-            "base12"						=> "100.00",
-            "monto_iva"						=> "12.00",
+            "base12"						=> $subtotal,
+            "monto_iva"						=> $iva,
             "descuento"						=> 0,
             "propina"						=> 0,
-            "importeTotal"					=> "112.00",
+            "importeTotal"					=> $total,
             "moneda"						=> "DOLAR",
             "formaPagoId"					=> "01",
             "formaPagoDescrip"				=> "EFECTIVO",
             "valorRetIva"					=> 0,
             "valorRetRenta"					=> 0,
-            "Direccion"						=> "Urbanor",
+            "Direccion"						=> $direccion,
             "Email"							=> "marioaguilar1990@gmail.com",
             "placa"							=> "",
             "Fono"							=> "",
@@ -303,9 +303,9 @@ class Facturacion_electronica extends Component
             return $Cabecera;
     }
 
-    public function getXml($Cabecera='',$Detalle='',$porcen_iva='12.00'){
+    public function getXml($Cabecera='',$Detalle='',$porcen_iva='12.00',$subtotal,$iva,$total,$identificacion,$cliente,$direccion){
         //if ($Cabecera){ $Cabecera=$this->facturaPrueba;  }
-        $Cabecera=$this->facturaPrueba();
+        $Cabecera=$this->facturaPrueba('2022031401093017846200110010010000000048765432114',$subtotal,$iva,$total,$identificacion,$cliente,$direccion);
         $porcen_iva='12.00';
         //var_dump($Cabecera);
 		$totalSinImpuestos = $Cabecera['base0'] + $Cabecera['base12'];

@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use common\models\Productos;
 use common\models\Factura;
+use common\models\Facturaelectronica;
 use common\models\Facturadetalle;
 use common\models\Tipopreciofactura;
 use common\models\Vendedores;
@@ -57,12 +58,28 @@ class FacturacionController extends Controller
         return $this->render('facturacionelectronica');
     }
 
+    public function actionFacturaselectronicas()
+    {
+        return $this->render('facturaselectronicas');
+    }
+
     public function actionVerentregas($id)
     {
         $entregas= Entregas::find()->where(['id' => $id, "isDeleted" => 0])->one();
 
         return $this->render('verentregas', [
             'entregas' =>$entregas,
+           // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
+    public function actionVerfacturaelectronica($id)
+    {
+        $factura= Facturaelectronica::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verfacturaelectronica', [
+            'factura' =>$factura,
            // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
         ]);
 
@@ -390,6 +407,71 @@ class FacturacionController extends Controller
                     if (($id == "total") || ($id == "descuento") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "iva") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                }
+            }
+
+            $count++;
+
+        }
+
+
+
+        return json_encode($arrayResp);
+
+    }
+
+    public function actionFacturaselectronicasreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "facturaelectronica";
+        $model = Facturaelectronica::find()->where(['isDeleted' => '0'])->orderBy(["fecha" => SORT_DESC])->limit(1000)->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+
+                //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
+                //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                $arrayResp[$key]['cliente'] = $data->cliente->razonsocial;
+                $view='facturaelectronica';
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ride', 'id' => 'ride', 'titulo'=>'', 'link'=>'','onclick'=>'verRide('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'pdf','tamanio'=>'superp', 'adicional'=>''),
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+                    if (($id == "nfactura") || ($id == "subtotal") || ($id == "claveacceso") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "total") || ($id == "descuento") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "iva") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+                    if ($id == "enviadoenlinea" && $text == 'S') {  
+                        $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ENVIADO</small>';
+                    }elseif ($id == "enviadoenlinea" && $text == 'N') { 
+                        $arrayResp[$key][$id] = '<small class="badge badge-danger"><i class="fa fa-circle-thin"></i>&nbsp; NO ENVIADO</small>';
+                    }
+                    if ($id == "enviadosri" && $text == 'S') {  
+                        $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ENVIADO</small>';
+                    }elseif ($id == "enviadosri" && $text == 'N') { 
+                        $arrayResp[$key][$id] = '<small class="badge badge-danger"><i class="fa fa-circle-thin"></i>&nbsp; NO ENVIADO</small>';
+                    }
                 }
             }
 

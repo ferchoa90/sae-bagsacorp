@@ -8,8 +8,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
 
-$this->title = "Ver Entrega";
-$this->params['breadcrumbs'][] = ['label' => 'Administración de Entregas', 'url' => ['entregas']];
+$this->title = "Ver Factura Electrónica";
+$this->params['breadcrumbs'][] = ['label' => 'Facturación Electrónica', 'url' => ['facturacionelectronica']];
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -30,14 +30,16 @@ $crearF= $facturacione->setCrearfactura($claveacceso,$xml->asXML(),"");
     array(
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
        // array('tipo'=>'link','nombre'=>'guardar', 'id' => 'guardar', 'titulo'=>'&nbsp;Guardar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'guardar','tamanio'=>'pequeño',  'adicional'=>''),
+        array('tipo'=>'link','nombre'=>'xml', 'id' => 'xml', 'titulo'=>'&nbsp;Ver XML', 'link'=>'/backend/web/xml/'.$claveacceso.'.xml', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>'','target'=>'blank'),
         array('tipo'=>'link','nombre'=>'regresar', 'id' => 'guardar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>'')
 
 ));
 
-$contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>Response:  </b>'.$claveacceso.'<br></div>';
+$contenido='<div style="line-height:30px;" class="row"><div class="col-3 col-md-3"><b>Factura:  </b>'.$factura->nfactura.'<br></div>';
 //var_dump($factura->tipoprecio0->nombre);
 //$tipo= ($factura->natural=0)?'SI' : 'NO';
-$contenido.='<div class="col-6 col-md-6"><b>Clave de Acceso:</b>&nbsp; '.$claveacceso.'</span><br></div>';
+$contenido.='<div class="col-9 col-md-9"><b>Clave de Acceso:</b>&nbsp; '.$claveacceso.'</span><br></div>';
+$contenido.='<div class="col-12 col-md-12"><b>Autorización:</b>&nbsp; '.$factura->autorizacion.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Fecha:</b>&nbsp; '.$factura->fecha.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-6"><b>Tipo Precio:</b>&nbsp; '.$factura->tipoprecio0->nombre.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-6"><b>Autorización:</b>&nbsp; '.$factura->autorizacion.'</span><br></div>';
@@ -55,7 +57,7 @@ $contenido.='<div class="col-6 col-md-6"><b>Débito:</b>&nbsp; '.number_format($
 $contenido.='<div class="col-6 col-md-6"><b>Crédito:</b>&nbsp; '.number_format($factura->credito,2).'</span><br></div>';*/
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-6 col-md-12"><b>Notas:</b>&nbsp; '.$factura->notas.'</span><br></div>';
-$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
+//$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 //$contenido.='<div class="col-6 col-md-12"><b>Teléfono:</b>&nbsp; '.$factura->cliente->telefono.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
@@ -104,7 +106,7 @@ $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).
 
    $tabla.='</tbody></table></div>';
 
-    $contenido.=$tabla;
+   // $contenido.=$tabla;
 
 
  echo $div->getBloqueArray(
