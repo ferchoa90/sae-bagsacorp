@@ -19,17 +19,18 @@ $objeto= new Objetos;
 $div= new Bloques;
 
 $urlpost='gestionarpedido';
-$btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();
+$btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btneviar=array();
 
 $btndevolver=array('tipo'=>'link','nombre'=>'devolver', 'id' => 'devolver', 'titulo'=>'&nbsp;Devolver', 'link'=>'', 'onclick'=>'estado=\'DEVOLVER\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'cancelar','tamanio'=>'pequeño',  'adicional'=>'');
 $btnautorizar=array('tipo'=>'link','nombre'=>'autorizar', 'id' => 'autorizar', 'titulo'=>'&nbsp;Autorizar', 'link'=>'', 'onclick'=>'estado=\'AUTORIZAR\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
 $btnaceptar=array('tipo'=>'link','nombre'=>'aceptado', 'id' => 'aceptado', 'titulo'=>'&nbsp;Aceptar', 'link'=>'', 'onclick'=>'estado=\'ACEPTADO\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
+$btnenviar=array('tipo'=>'link','nombre'=>'enviar', 'id' => 'enviar', 'titulo'=>'&nbsp;Enviar', 'link'=>'', 'onclick'=>'estado=\'ENVIADO\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
 $btncancelar=array('tipo'=>'link','nombre'=>'cancelar', 'id' => 'cancelar', 'titulo'=>'&nbsp;Cancelar', 'link'=>'', 'onclick'=>'estado=\'CANCELADO\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño',  'adicional'=>'');
 
 switch ($pedido->estatuspedido) {
     case 'NUEVO':
         $stylestatuscit='badge-primary';
-        $btnautorizar=array();$btndevolver=array();
+        $btnautorizar=array();$btndevolver=array();$btnaceptar=array();
         break;
 
         case 'CONFIRMADA':
@@ -39,7 +40,7 @@ switch ($pedido->estatuspedido) {
 
     case 'ACEPTADO':
         $stylestatuscit='badge-info';
-        $btnenatencion=array();$btncancelar=array();$btnaceptar=array();
+        $btnenatencion=array();$btncancelar=array();$btnaceptar=array();$btnenviar=array();
         break;
 
     case 'CANCELADA':
@@ -50,10 +51,15 @@ switch ($pedido->estatuspedido) {
 
     case 'AUTORIZADO':
         $stylestatuscit='badge-secondary';
-        $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();
+        $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
         break;
-    
-    
+
+        case 'ENVIADO':
+            $stylestatuscit='badge-secondary';
+            $btnautorizar=array();$btncancelar=array();$btnenviar=array();
+            break;
+
+
     default:
         # code...
         break;
@@ -64,11 +70,12 @@ switch ($pedido->estatuspedido) {
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
        // array('tipo'=>'link','nombre'=>'guardar', 'id' => 'guardar', 'titulo'=>'&nbsp;Guardar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'guardar','tamanio'=>'pequeño',  'adicional'=>''),
        array('tipo'=>'link','nombre'=>'regresar', 'id' => 'guardar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>''),
+       $btnenviar,
        $btnaceptar,
        $btnautorizar,
        $btndevolver,
        $btncancelar,
-       
+
 
 ));
 
@@ -109,7 +116,7 @@ $contenido.='</div>';
      <th scope="col" class="text-center">Valor</th>
 
      <th scope="col" class="text-center">Total</th>
-     
+
    </tr>
  </thead>
  <tbody>';
@@ -183,7 +190,7 @@ echo $modal;
                     }
                 }
             });
-            
+
         }
         $('#frmDatos').on('submit', function(e){
             e.preventDefault(); // <=================== Here
@@ -201,4 +208,3 @@ input[type=number]::-webkit-outer-spin-button {
 }
 input[type=number] { -moz-appearance:textfield; }
 </style>
-

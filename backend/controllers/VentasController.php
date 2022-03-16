@@ -88,7 +88,7 @@ class VentasController extends Controller
         ]);
     }
 
-   
+
     public function actionReimpresion()
     {
         return $this->render('reimpresion');
@@ -118,7 +118,7 @@ class VentasController extends Controller
                 if (($id == "estatuspedido") && ($text=="NUEVO") ) {
                     $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
                 }
-                
+
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
@@ -142,7 +142,25 @@ class VentasController extends Controller
                     if (($id == "subtotal") || ($id == "iva") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "total") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
-                    
+
+                    if ($id == "estatusproduccion") {
+                        switch ($text) {
+                            case 'RECIBIDO':
+                                $style='badge-info';
+                                break;
+
+                            case 'NO INICIADO':
+                                    $style='badge-primary';
+                                    break;
+
+
+                            default:
+                                # code...
+                                break;
+                        }
+                        $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    }
+
                     if ($id == "estatuspedido") {
                         switch ($text) {
                             case 'NUEVO':
@@ -168,17 +186,17 @@ class VentasController extends Controller
                             case 'POR APROBAR':
                                 $style='badge-secondary';
                                 break;
-                            
+
                             case 'DEVUELTO':
                                 $style='badge-warning';
                                 break;
-                            
+
                             default:
                                 # code...
                                 break;
                         }
                         $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
-                    }   
+                    }
                 }
             }
             $count++;
@@ -190,7 +208,7 @@ class VentasController extends Controller
     {
         extract($_POST);
         $arrayResp=array();
-        if ($estado && $pedido){ 
+        if ($estado && $pedido){
             switch ($estado) {
                 case 'AUTORIZAR':
                     $estado="AUTORIZADO";
@@ -203,7 +221,7 @@ class VentasController extends Controller
                 case 'CANCELAR':
                     $estado="CANCELADO";
                     break;
-                
+
                 default:
                     # code...
                     break;
@@ -217,7 +235,7 @@ class VentasController extends Controller
                     $arrayResp=array("success"=>false);
                 }
             }
-            
+
         }
         return json_encode($arrayResp);
     }
@@ -226,15 +244,15 @@ class VentasController extends Controller
     {
         extract($_POST);
         $arrayResp=array();
-        if ($_POST){ 
+        if ($_POST){
             $pedido= new Produccion_pedidos;
             $pedido= $pedido->Nuevo($_POST);
             //die(var_dump($_POST));
             $response=$pedido;
-    
+
             //return $this->render('formrol');
             return json_encode($response);
-            
+
         }
         return json_encode($arrayResp);
     }

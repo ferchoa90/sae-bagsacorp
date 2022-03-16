@@ -151,7 +151,7 @@ class FacturacionController extends Controller
             $factura= new Factura();
             $factura->nfactura=$facturan;
             $factura->idcliente=$cliente[0]->id;
-            $factura->nombres=$cliente[0]->nombres.' '.$cliente[0]->apellidos;
+            $factura->nombres=$cliente[0]->razonsocial;
             $factura->ruc=$cliente[0]->cedula;
             $factura->usuariocreacion=  Yii::$app->user->identity->id;
             //$factura->usuariocreacion=  1;
@@ -184,14 +184,14 @@ class FacturacionController extends Controller
                     $facturaDetalle= new Facturadetalle();
                     $facturaDetalle->idfactura=$factura->id;
                     $facturaDetalle->cantidad=$value["cantidad"];
-                    $facturaDetalle->idarticulo=$modelI->id;
-                    $facturaDetalle->idinventario=$value["id"];
+                    $facturaDetalle->item=$modelI->id;
+                    //$facturaDetalle->idinventario=$value["id"];
                     $facturaDetalle->narticulo=$value["nombre"];
-                    $facturaDetalle->tarticulo=$descripcion;
-                    $facturaDetalle->tarticulo=$value["descripcion"].".";
+                    //$facturaDetalle->tarticulo=$descripcion;
+                    //$facturaDetalle->tarticulo=$value["descripcion"].".";
                     $facturaDetalle->imagen=$value["imagen"];
                     $facturaDetalle->valoru=$value["valoru"];
-                    $facturaDetalle->valort=number_format($value["valoru"]*$value["cantidad"],2);
+                    //$facturaDetalle->valort=number_format($value["valoru"]*$value["cantidad"],2);
                     $facturaDetalle->iva=$ivaI;
                     $facturaDetalle->civa=0;
                     $facturaDetalle->estatus='ACTIVO';
@@ -462,14 +462,14 @@ class FacturacionController extends Controller
                     if (($id == "total") || ($id == "descuento") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "iva") || ($id == "usuariocreacion")  || ($id == "codigo")) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
-                    if ($id == "enviadoenlinea" && $text == 'S') {  
+                    if ($id == "enviadoenlinea" && $text == 'S') {
                         $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ENVIADO</small>';
-                    }elseif ($id == "enviadoenlinea" && $text == 'N') { 
+                    }elseif ($id == "enviadoenlinea" && $text == 'N') {
                         $arrayResp[$key][$id] = '<small class="badge badge-danger"><i class="fa fa-circle-thin"></i>&nbsp; NO ENVIADO</small>';
                     }
-                    if ($id == "enviadosri" && $text == 'S') {  
+                    if ($id == "enviadosri" && $text == 'S') {
                         $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ENVIADO</small>';
-                    }elseif ($id == "enviadosri" && $text == 'N') { 
+                    }elseif ($id == "enviadosri" && $text == 'N') {
                         $arrayResp[$key][$id] = '<small class="badge badge-danger"><i class="fa fa-circle-thin"></i>&nbsp; NO ENVIADO</small>';
                     }
                 }
@@ -491,7 +491,7 @@ class FacturacionController extends Controller
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
-        }   
+        }
         $page = "entregas";
         $model = Entregas::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();

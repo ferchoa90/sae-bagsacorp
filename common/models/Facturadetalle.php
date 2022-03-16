@@ -39,14 +39,14 @@ class Facturadetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idfactura', 'cantidad', 'idarticulo', 'narticulo', 'tarticulo', 'valoru', 'valort', 'iva', 'civa'], 'required'],
-            [['idfactura',  'idarticulo', 'civa'], 'integer'],
-            [['valoru', 'valort', 'cantidad','iva' ], 'number'],
+            [['idfactura', 'cantidad' , 'narticulo', 'valoru', 'iva'], 'required'],
+            [['idfactura' ], 'integer'],
+            [['valoru',  'cantidad','iva' ], 'number'],
             [['fechacreacion'], 'safe'],
             [['estatus'], 'string'],
             [['narticulo'], 'string', 'max' => 350],
-            [['tarticulo'], 'string', 'max' => 200],
-            [['idarticulo'], 'exist', 'skipOnError' => true, 'targetClass' => Productos::className(), 'targetAttribute' => ['idarticulo' => 'id']],
+            //[['tarticulo'], 'string', 'max' => 200],
+           // [['idarticulo'], 'exist', 'skipOnError' => true, 'targetClass' => Productos::className(), 'targetAttribute' => ['idarticulo' => 'id']],
             [['idfactura'], 'exist', 'skipOnError' => true, 'targetClass' => Factura::className(), 'targetAttribute' => ['idfactura' => 'id']],
         ];
     }
@@ -75,10 +75,10 @@ class Facturadetalle extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getArticulo()
+    /*public function getArticulo()
     {
         return $this->hasOne(Inventario::className(), ['id' => 'idarticulo']);
-    }
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery

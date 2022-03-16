@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $objeto= new Objetos;
 $div= new Bloques;
 $facturacione= new Facturacion_electronica;
-$claveacceso= $facturacione->getClavedeacceso('2022-03-14','01','001-001','03');
+$claveacceso= $facturacione->getClavedeacceso('2022-03-15','01','001-001','05');
 $autoriza= $facturacione->getAutorizaXML($claveacceso);
 $xml= $facturacione->getXml('','','12.00',"100","12.00","112.00",'0990011419001','SIEMBRANUEVA S.A.','AV LAS MONJAS 10 Y C JULIO AROSEMENA');
 //var_dump($xml);

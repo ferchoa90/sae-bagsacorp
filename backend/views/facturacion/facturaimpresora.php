@@ -18,7 +18,7 @@ $this->title = 'SAE - Sistema Administrativo Contable';
 
     <div>
 
-        <img style="width:100px;    vertical-align: middle;" src="<?= URL::base()?>/images/logo_bagsacorp.png" />   
+        <img style="width:100px;    vertical-align: middle;" src="<?= URL::base()?>/images/logo_bagsacorp.png" />
 
     </div>
 
@@ -28,7 +28,7 @@ $this->title = 'SAE - Sistema Administrativo Contable';
 
         <br>DURÁN - Brizas de Santay, Mz. F, solar 117-118 Durán-Ecuador?>
 
-        <br><strong>RUC: </strong>0992638273001 
+        <br><strong>RUC: </strong>0992638273001
 
     </div>
 
@@ -38,9 +38,9 @@ $this->title = 'SAE - Sistema Administrativo Contable';
 
         <br><strong>Fecha:  </strong><?=date('d', strtotime(str_replace('-', '/', $factura->fechacreacion)));   ?> Septiembre del 2021
 
-        <br><strong>Cliente:  </strong><?=$factura->cliente->nombres.' '.$factura->cliente->apellidos ?>
+        <br><strong>Cliente:  </strong><?=$factura->cliente->razonsocial ?>
 
-        <br><strong>Ruc / Ci:  </strong><?=$factura->cliente->cedula ?>  
+        <br><strong>Ruc / Ci:  </strong><?=$factura->cliente->cedula ?>
 
     </div>
 
@@ -70,7 +70,7 @@ $this->title = 'SAE - Sistema Administrativo Contable';
 
         <tbody id="contenidoCompra">
 
-            <?php foreach ($factura->facturadetalles as $key => $value) { ?>
+            <?php foreach ($factura->facturadetalle as $key => $value) { ?>
 
                 <tr style="    text-align: center;" >
 

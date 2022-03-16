@@ -53,13 +53,13 @@ class Inventario extends \yii\db\ActiveRecord
     {
         return [
             [['idproducto', 'cantidadini', 'cantidadcaja', 'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'codigobarras', 'codigocaja', 'usuariocreacion'], 'required'],
-            [['idproducto', 'idpresentacion', 'cantidadini', 'cantidadcaja', 'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'isDeleted', 'usuariocreacion'], 'integer'],
+            [['idproducto'   , 'cantidadini', 'cantidadcaja', 'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'isDeleted', 'usuariocreacion'], 'integer'],
             [['precioint', 'preciov1', 'preciov2', 'preciovp'], 'number'],
             [['fechacreacion'], 'safe'],
             [['estatus'], 'string'],
             [['codigobarras', 'codigocaja'], 'string', 'max' => 60],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Productos::className(), 'targetAttribute' => ['idproducto' => 'id']],
-            [['idpresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacion::className(), 'targetAttribute' => ['idpresentacion' => 'id']],
+           // [['idpresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacion::className(), 'targetAttribute' => ['idpresentacion' => 'id']],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
             [['idcolor'], 'exist', 'skipOnError' => true, 'targetClass' => Color::className(), 'targetAttribute' => ['idcolor' => 'id']],
             [['idcalidad'], 'exist', 'skipOnError' => true, 'targetClass' => Calidad::className(), 'targetAttribute' => ['idcalidad' => 'id']],

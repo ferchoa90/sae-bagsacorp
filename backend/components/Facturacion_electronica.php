@@ -33,7 +33,7 @@ class Facturacion_electronica extends Component
 
     function getClavedeacceso($fecha,$tipocomp='01',$serie,$factura)
     {
-        //$CAacceso = ClaveAcceso($fecha,"01","0890006248001","2",$serie,$factura,"12345678","1");	
+        //$CAacceso = ClaveAcceso($fecha,"01","0890006248001","2",$serie,$factura,"12345678","1");
         $claveAcceso= $this->generarClave($fecha,$tipocomp,$serie,$factura);
         return $claveAcceso;
     }
@@ -87,7 +87,7 @@ class Facturacion_electronica extends Component
                 $response=$clave;
                 //$response=$clave;
             }else{
-                $response = "Error en el formato de fecha";    
+                $response = "Error en el formato de fecha";
             }
         }else{
             $response = "La fecha no puede estar vacia";
@@ -142,7 +142,7 @@ class Facturacion_electronica extends Component
             case ($dia <= 31):
                 $vdia=true;
                 break;
-            
+
             default:
                 $vdia=false;
                 break;
@@ -152,7 +152,7 @@ class Facturacion_electronica extends Component
             case ($mes <= 12):
                 $vmes=true;
                 break;
-            
+
             default:
                 $vmes=false;
                 break;
@@ -162,7 +162,7 @@ class Facturacion_electronica extends Component
             case ($anio >=2010 && $anio <= 2099):
                 $vanio=true;
                 break;
-            
+
             default:
                 $vanio=false;
                 break;
@@ -179,7 +179,7 @@ class Facturacion_electronica extends Component
     protected function IdFactura($fecha,$comprobante,$ruc,$ambiente,$serie,$num_factura,$cod_numerico,$emision){
         $Cadena 		= "";
         $verificador 	= "";
-        $Cadena = str_replace("/", "", $fecha) . $comprobante . $ruc . $ambiente . str_replace("-","",$serie) . 
+        $Cadena = str_replace("/", "", $fecha) . $comprobante . $ruc . $ambiente . str_replace("-","",$serie) .
 		$this->formato($num_factura, 9) . $this->formato($cod_numerico, 8) . $emision;
 		$verificador = $this->getVerificador($Cadena);
         $Cadena = $Cadena . $verificador;
@@ -228,7 +228,7 @@ class Facturacion_electronica extends Component
 
     }
 
-    
+
 
 
 
@@ -245,13 +245,16 @@ class Facturacion_electronica extends Component
             $result = $client->autorizacionComprobante($params);
         } catch (Exception $e) {
                 $msn = 'Excepción capturada: '.$e->getMessage();
-        }	
+        }
         return $result;
     }
 
     public function setCrearfactura($name,$xml,$ruta=""){
-		$directorio  = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml/$name.xml";
-		$directorio2 = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml_autorizado/$name.xml";
+	//	$directorio  = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml/$name.xml";
+	//	$directorio2 = $ruta."E:/xampp-new/htdocs/sae-bagsacorp/backend/web/xml_autorizado/$name.xml";
+
+        $directorio  = $ruta."C:/xampp/htdocs/sae-bagsacorp/backend/web/xml/$name.xml";
+		$directorio2 = $ruta."C:/xampp/htdocs/sae-bagsacorp/backend/web/xml_autorizado/$name.xml";
 		if (!file_exists($directorio2)):
 			if (!file_exists($directorio)):
 				date_default_timezone_set("America/Bogota");

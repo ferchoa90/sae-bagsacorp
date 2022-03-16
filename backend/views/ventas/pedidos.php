@@ -36,8 +36,9 @@ $columnas= array(
     array('columna'=>'Total', 'datareg' => 'total', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
     array('columna'=>'U. creación', 'datareg' => 'usuariocreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
     array('columna'=>'Fecha creación', 'datareg' => 'fechacreacion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
-    array('columna'=>'Estastus P.', 'datareg' => 'estatuspedido', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
-    array('columna'=>'Estatus', 'datareg' => 'estatus', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Estatus Pedido.', 'datareg' => 'estatuspedido', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Estatus Prod.', 'datareg' => 'estatusproduccion', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
+    array('columna'=>'Estatus Gen.', 'datareg' => 'estatus', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
     array('columna'=>'Acciones', 'datareg' => 'acciones', 'clase'=>'', 'estilo'=>'', 'ancho'=>'')  ,
 );
 
