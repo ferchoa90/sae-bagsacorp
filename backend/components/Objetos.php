@@ -110,6 +110,10 @@ class Objetos extends Component
                 return $this->getInputOnoff($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
 
+            case 'archivo':
+                return $this->getInputArchivo($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
+                break;
+
             default:
                 return "Debe indicar un tipo de Input";
                 break;
@@ -273,6 +277,63 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
                 </div>
             </div>
         </div>
+       ';
+        if ($boxbody):
+            $resultado=$boxbodydefault.$resultado.$enddiv;
+        else:
+            //$resultado=$bo$resultado.$enddiv;
+        endif;
+        return $resultado;
+
+    }
+
+    private static function getInputArchivo($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
+    {
+        $iconfa=new Iconos;
+        $iconfa= $iconfa->getIconofa($icono);
+        $input='';
+        $classdefault='form-control pull-right';
+        $boxbodydefault='<div class="box-body">';
+        $enddiv='</div>';
+
+        switch ($clase) {
+            case '':
+                $clase=$classdefault;
+                break;
+
+            default:
+                $clase=$clase;
+                break;
+        }
+
+        switch ($leyenda) {
+            case '':
+                $input='<input type="file" class="custom-file-input '.$clase.'" id="'.$id.'" name="'.$nombre.'" aria-describedby="inputGroupFileAddon01">';
+                break;
+
+                default:
+                $input='<input type="file" class="custom-file-input '.$clase.'" id="'.$id.'" name="'.$nombre.'" placeholder="'.$leyenda.'" aria-describedby="inputGroupFileAddon01">';
+                break;
+        }
+
+ 
+        $resultado='
+        <div class="'.$col.' mb-3 mt-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="font-size:13px; font-weight:600;" id="inputGroupFileAddon01">'.$etiqueta.'</span>
+                </div>
+                <div class="custom-file">
+                     '.$input.'
+                    <label class="custom-file-label" id="label-'.$id.'" for="inputGroupFile01">Elegir</label>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#'.$id.'").change(function(){
+                $("#label-'.$id.'").text(this.files[0].name);
+            });
+        </script>
        ';
         if ($boxbody):
             $resultado=$boxbodydefault.$resultado.$enddiv;

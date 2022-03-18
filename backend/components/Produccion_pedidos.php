@@ -26,6 +26,20 @@ use backend\components\Log_errores;
 class Produccion_pedidos extends Component
 {
 
+    public $idusuariocontrol;
+    public $idusuariosup;
+    
+
+    function __construct($usuariocontrol='',$usuariosup='')
+    {
+        $usuarioadmindef=1;
+        $usuariosupdef = 55;
+        
+        $this->idusuariocontrol=$usuarioadmindef;
+        $this->idusuariosup=$usuariosupdef;
+ 
+    } 
+
     public function getPedidos($tipo,$array=true,$orderby,$limit,$all=true)
     {
         if ($all){
@@ -82,8 +96,10 @@ class Produccion_pedidos extends Component
                 $modelPedido->nombres=$cliente->razonsocial;
                 $modelPedido->telefono=$cliente->telefono.'.';
                 $modelPedido->subtotal=$pedido["subtotal"];
+                $modelPedido->orden=$pedido["orden"];
                 $modelPedido->iva=$pedido["iva"];
                 $modelPedido->total=$pedido["totalpedido"];
+                $modelPedido->imagen=$pedido["imagen"];
                 $modelPedido->usuariocreacion=Yii::$app->user->identity->id;
                 //$modelPedido->usuariom=Yii::$app->user->identity->id;
                 
@@ -148,39 +164,147 @@ class Produccion_pedidos extends Component
         return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
     }
 
-    public function Actualizar($id,$roles)
+    public function Actualizar($id,$pedido)
     {
         //$date = date("Y-m-d H:i:s");
         $idmenu=0;
-        $modelPedido= Menuadmin::find()->where(["id"=>$id])->one();
+        $modelPedido= Pedidos::find()->where(["id"=>$id])->one();
         $result=false;
-        if ($roles):
-            if ($modelPedido):
-                $modelPedido->nombre=$roles["nombre"];
-                $modelPedido->icono=$roles["icono"];
-                $modelPedido->link=$roles["link"];
-                $modelPedido->orden=$roles["orden"];
-                $modelPedido->idparent=$roles["superior"];
-                $modelPedido->usuariom=Yii::$app->user->identity->id;
-                //$modelPedido->fechacreacion=$roles->idfactura;
-                //var_dump($roles);
+        if ($pedido):
+            $modelPedido->idcliente=$pedido["cliente"];
+            $modelPedido->observacion=$pedido["observacion"];
+            $cliente= Clientes::find()->where(["id"=>$pedido["cliente"]])->one();
+            if ($cliente){
+                $modelPedido->nombres=$cliente->razonsocial;
+                $modelPedido->telefono=$cliente->telefono.'.';
+                $modelPedido->subtotal=$pedido["subtotal"];
+                $modelPedido->orden=$pedido["orden"];
+                $modelPedido->iva=$pedido["iva"];
+                $modelPedido->total=$pedido["totalpedido"];
+                //$modelPedido->imagen=$pedido["imagen"];
+                $modelPedido->usuarioact=Yii::$app->user->identity->id;
+                $modelPedido->fechaact=date("Y-m-d h:i:s");
+                //$modelPedido->usuariom=Yii::$app->user->identity->id;
+                
+                $modelPedido->isDeleted=0;
+                $modelPedido->estatuspedido="ENVIADO";
+                //$modelPedido->estatus="ACTIVO";
+                //var_dump($pedido);
                 $error=false;
-                if ($modelPedido->save()):
-                    $error=false;
-                    return array("response" => true, "id" => $modelPedido->id, "mensaje"=> "Registro actualizado","tipo"=>"success", "success"=>true);
-                else:
-                    $this->callback(1,$idmenu,$modelPedido->errors,"Menu_admin -> Actualizar");
-                    //var_dump($modelRol->errors);
-                    return array("response" => true, "id" => 0, "mensaje"=> "Error al actualizar el registro","tipo"=>"error", "success"=>false);
-                endif;
+            }else{
+                $error=true;
+                $this->callback(1,0,"CLIENTE NO ENCONTRADO","Produccion_pedidos -> Actualizar");
+                return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
+            }
+            
+            
+            if ($modelPedido->save()):
+                $error=false;
+                $i=0;
+                foreach ($pedido as $clave=>$valor):
+                    if(substr($clave,0,8) == "cantidad"){
+                        $i++;
+                        $_POST['producto'.$valor];
+                        $producto 	= $_POST['producto'.$i];
+                        $cantidad 	= $_POST['cantidad'.$i];
+                        $valor 	= $_POST['valor'.$i];
+                        
+                        if ($cantidad !=0){
+                            $modelDetalle= new Pedidosdetalle;
+                            if ($pedido["idpedidod".$i]>0){ $modelDetalle=Pedidosdetalle::find()->where(["id"=>$pedido["idpedidod".$i] ])->one();   }else{  }
+                            
+                            
+                            $modelDetalle->idproducto=$producto;
+                            $producton=Productos::find()->where(['id' => $producto])->one();
+                            $modelDetalle->nombreprod=$producton->nombreproducto;
+                            $modelDetalle->cantidad=$cantidad;
+                            $modelDetalle->subtotal=$valor;
+                            $modelDetalle->iva=$valor*0.12;
+                            $modelDetalle->total=($valor*$cantidad)+(($valor*$cantidad)*0.12);
+                            $modelDetalle->usuarioact=Yii::$app->user->identity->id;
+                            $modelDetalle->fechaact=date("Y-m-d h:i:s");
+                            
+                            
+                            //$this->callback(1,$idmenu,$modelDetalle,"Produccion_pedidos -> Nuevo");
+                            if (!$modelDetalle->save())
+                            {
+                                $this->callback(1,$idmenu,$modelDetalle->errors,"Produccion_pedidos -> Actualizar");
+                            }
+                        }
+                        /*if(!is_numeric($cant)){
+                            $cant = 1;
+                        }*/
+                    }else{
+                        
+                    }
+                endforeach;
+                return array("response" => true, "id" => $modelPedido->id, "mensaje"=> "Registro actualizado","tipo"=>"success", "success"=>true);
             else:
-
+                $this->callback(1,$idmenu,$modelPedido->errors,"Produccion_pedidos -> Actualizar");
+                //var_dump($modelRol->errors);
+                return array("response" => true, "id" => 0, "mensaje"=> "Error al actualizar el registro","tipo"=>"error", "success"=>false);
             endif;
         else:
             $this->callback(1,0,"NO POST","Produccion_pedidos -> Actualizar");
             return array("response" => true, "id" => 0, "mensaje"=> "Error al actualizar el registro","tipo"=>"error", "success"=>false);
         endif;
-        return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
+        return array("response" => true, "id" => 0, "mensaje"=> "Error al actualizar el registro","tipo"=>"error", "success"=>false);
+    }
+
+    public function eliminar($id)
+    {
+        $model = Pedidos::findOne($id);
+        $model->isDeleted = 1;
+
+        if ($model->save())
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function estatus($estatus)
+    {
+        $style="";
+        switch ($estatus) {
+            case 'NUEVO':
+                $style='badge-primary';
+                break;
+
+            case 'ENVIADO':
+                    $style='badge-primary';
+                    break;
+
+                case 'AUTORIZADO':
+                    $style='badge-success';
+                    break;
+
+            case 'REENVIADO':
+                $style='badge-primary';
+                break;
+
+            case 'NO AUTORIZADO':
+                $style='badge-danger';
+                break;
+
+            case 'POR APROBAR':
+                $style='badge-secondary';
+                break;
+
+            case 'DEVUELTO':
+                $style='badge-warning';
+                break;
+
+                case 'ANULADO':
+                    $style='badge-danger';
+                    break;
+
+            default:
+                # code...
+                break;
+        }
+        return $style;
     }
 
     public function callback($tipo,$id,$error,$funcion)

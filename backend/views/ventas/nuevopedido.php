@@ -16,11 +16,12 @@ $this->title = 'Nuevo pedido';
 $this->params['breadcrumbs'][] = ['label' => 'Pedidos', 'url' => ['pedidos']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$urlpost='formmenuadmin';
-
 $objeto= new Objetos;
 $nav= new Navs;
 $div= new Bloques;
+?>
+ 
+<?php
 
 $urlpost='formnuevopedido';
 $botones= new Botones;
@@ -28,7 +29,9 @@ $botones= new Botones;
 //$contenidotab='';
  $contenido=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$clientes, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cliente: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$clientes, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cliente: ', 'col'=>'col-12 col-md-9', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'orden', 'id'=>'orden', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Órden del pedido','leyenda'=>'Orden de pedido', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'archivo', 'nombre'=>'archivo', 'id'=>'archivo', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Escaneado del pedido','leyenda'=>'Archivo de la orden del pedido', 'col'=>'col-12 col-md-12', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'observacion', 'id'=>'observacion', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Observación','leyenda'=>'Observación del pedido', 'col'=>'col-12 col-md-12', 'adicional'=>''),
         
         
@@ -59,9 +62,7 @@ $contenidototal=$objeto->getObjetosArray(
         
     ),true
 );
- //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-9 col-xs-12 ','','','','');
- //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-3 col-xs-12 ','','','','');
- //echo $contenido;
+ 
  $botonC=$botones->getBotongridArray(
     array(
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
@@ -76,7 +77,7 @@ $contenidototal=$objeto->getObjetosArray(
  $contenido2.='</div>';
 ?>
 
-<?php $form = ActiveForm::begin(['id'=>'frmDatos']); ?>
+<?php $form = ActiveForm::begin(['id'=>'frmDatos','options' => ['enctype' => 'multipart/form-data']]); ?>
 <?php
  echo $div->getBloqueArray(
     array(
@@ -85,8 +86,25 @@ $contenidototal=$objeto->getObjetosArray(
     )
 );
 ?>
+
+ 
 <?php ActiveForm::end(); ?>
 <script>
+
+function ftt(){
+    $('#file').click(); // emulate click on input file
+}
+function on(){
+    var ft = $('#file').val();
+    $('#foto').val(ft);
+}
+
+function crearEmp(){
+    var files = $('#file')[0].files;
+    console.log('do something', files);
+}
+
+
     function setSumatoria(obj,id)
     {
         console.log("Sumatoria: "+obj + " ID: "+id)
@@ -131,17 +149,27 @@ $contenidototal=$objeto->getObjetosArray(
         //});
         $("#guardar").on('click', function() {
             if (validardatos()==true){
-                var form    = $('#frmDatos');
+                var form = document.getElementById('frmDatos');
+                //var form    = $('#frmDatos');
+                var data = new FormData(form);
+                var archivo=document.getElementById('archivo').files;
+                data.append('files',archivo);
                 $.ajax({
                     url: '<?= $urlpost ?>',
                     async: 'false',
                     cache: 'false',
                     type: 'POST',
-                    data: form.serialize(),
+                    enctype: 'multipart/form-data',
+                    //data: form.serialize(),
+                    dataType: 'text', //Get back from PHP
+                    processData: false, //Don't process the files
+                    contentType: false,
+                    cache: false,
+                    data: data,
                     success: function(response){
                     data=JSON.parse(response);
-                    console.log(response);
-                    console.log(data.success);
+                    //console.log(response);
+                    //console.log(data.success);
                     if ( data.success == true ) {
                         // ============================ Not here, this would be too late
                         notificacion(data.mensaje,data.tipo);
@@ -192,6 +220,8 @@ $contenidototal=$objeto->getObjetosArray(
                 return false;
             }
        }
+
+
   </script>
 <style>
     input[type=number]::-webkit-inner-spin-button,
@@ -201,3 +231,4 @@ input[type=number]::-webkit-outer-spin-button {
 }
 input[type=number] { -moz-appearance:textfield; }
 </style>
+

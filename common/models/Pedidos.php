@@ -107,6 +107,11 @@ class Pedidos extends \yii\db\ActiveRecord
         return $this->hasMany(Pedidosdetalle::className(), ['idpedido' => 'id']);
     }
 
+    public function getPedidosmensajes()
+    {
+        return $this->hasMany(Pedidosmensajes::className(), ['idpedido' => 'id']);
+    }
+
     /**
      * Gets query for [[Usuariocreacion0]].
      *

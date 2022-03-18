@@ -27,28 +27,38 @@ class Modal extends Component
         $classdefault='';
         $tipodefault='fas fa-pencil-alt';
         $tamaniodefault='';
-        if (!$styleModal){ $styleModal="width: 60%;"; }
+        $input="";
+        if ($stylemodal==""){ $styleModal="width: 60%;"; }else{ $styleModal=$stylemodal; }
         switch ($tipo) {
             case 'okcancel':
                 $tipo='fas fa-pencil-alt';
                 $botones='<div class="modal-footer">
-                  <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
-                  <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger">Cancelar</button>
+                  <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary  btn-xs p-2" data-dismiss="modal">Aceptar</button>
+                  <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger  btn-xs p-2">Cancelar</button>
                 </div>';
                 break;
+
+            case 'okcancelinput':
+              $tipo='fas fa-pencil-alt';
+              $botones='<div class="modal-footer">
+                <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary  btn-xs p-2" data-dismiss="modal">Aceptar</button>
+                <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger  btn-xs p-2">Cancelar</button>
+              </div>';
+              $input='<div class="p-2 col-12"><textarea name="mensaje" id="mensaje" class="col-12" rows="3"></textarea></div>';
+              break;
 
             case 'sino':
                 $tipo='fas fa-pencil-alt';
                 $botones='<div class="modal-footer">
-                <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary" data-dismiss="modal">Si</button>
-                <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger">No</button>
+                <button type="button" onclick="javascript:'.$boton1.';" class="btn btn-primary  btn-xs p-2" data-dismiss="modal">Si</button>
+                <button type="button" onclick="javascript:'.$boton2.';" class="btn btn-danger  btn-xs p-2">No</button>
                 </div>';
                 break;
                 
                 
                 case 'ok':
                 $tipo='fas fa-eye';
-                $botones='<div class="modal-footer"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button></div>';
+                $botones='<div class="modal-footer"><button type="button" class="btn btn-danger  btn-xs p-2" data-dismiss="modal">Close</button></div>';
                 break;
 
             case 'savecancel':
@@ -88,7 +98,7 @@ class Modal extends Component
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">'.$content.'</div>
+      <div class="modal-body">'.$content.$input.'</div>
       '.$botones.'
     </div>
   </div>

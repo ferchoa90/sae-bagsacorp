@@ -22,11 +22,13 @@ use common\models\Retenciones;
 use common\models\Presentacion;
 use common\models\Productos;
 use common\models\Pedidos;
+use common\models\PedidosMensajes;
 use common\models\Horariocomidas;
 use common\models\Departamentos;
 use common\models\Clientes;
 use backend\components\Contabilidad_clientes;
 use backend\components\Contabilidad_proveedores;
+use backend\components\Archivos;
 use backend\components\Produccion_pedidos;
 use backend\models\User;
 use kartik\export\ExportMenu;
@@ -88,6 +90,42 @@ class VentasController extends Controller
         ]);
     }
 
+    public function actionEditarpedidos($id)
+    {
+        $Modelpedido=  Pedidos::find()->where(["id"=>$id,'isDeleted' => '0'])->one();
+
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        //$menuadmin = Menuadmin::find()->where(['isDeleted' => '0'])->orderBy(["nombre" => SORT_ASC])->all();
+        $productos = Productos::find()->where(['isDeleted' => '0',"isDeleted"=>"0"])->orderBy(["nombreproducto" => SORT_ASC])->all();
+        $productosArray=array();
+        $cont=0;
+        foreach ($productos as $key => $value) {
+            if ($cont==0){ $productosArray[$cont]["value"]="Seleccione producto"; $productosArray[$cont]["id"]=0; $cont++; }
+            $productosArray[$cont]["value"]=$value->nombreproducto;
+            $productosArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+        $clientes = Clientes::find()->where(['isDeleted' => '0',"isDeleted"=>"0"])->orderBy(["razonsocial" => SORT_ASC])->all();
+        $clientesArray=array();
+        $cont=0;
+        foreach ($clientes as $key => $value) {
+            if ($cont==0){ $clientesArray[$cont]["value"]="Seleccione un cliente"; $clientesArray[$cont]["id"]=0; $cont++; }
+            $clientesArray[$cont]["value"]=$value->razonsocial;
+            $clientesArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+
+
+        return $this->render('editarpedidos',[
+            'pedido'=>$Modelpedido,
+            'clientes'=>$clientesArray,
+            'productos'=>$productosArray,
+        ]);
+    }
+
 
     public function actionReimpresion()
     {
@@ -106,26 +144,32 @@ class VentasController extends Controller
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {
+                $editar=array(); $borrar=array();$archivo=array();
+                if ($data["estatuspedido"]=="NUEVO"  || $data["estatuspedido"]=="DEVUELTO") {
+                    $editar=array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$data["id"], 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>'');
+                }
+                if ($data["estatuspedido"]=="NUEVO") {
+                    $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'eliminar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data["id"]. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
+                }
+
+                if ($data["imagen"] ) {    
+                    $archivo=array('tipo'=>'link','nombre'=>'archivo', 'id' => 'archivo', 'titulo'=>'', 'link'=>'/backend/web/images/pedidos/'.$data["imagen"] ,'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'plomo', 'icono'=>'archivo','tamanio'=>'superp', 'target'=>'blank','adicional'=>'');
+                }
             foreach ($data as $id => $text) {
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
                 //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
-                $editar=array(); $borrar=array();
-                if (($id == "estatuspedido") && ($text=="NUEVO"  && $text=="DEVUELTO") ) {
-                    $editar=array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>'');
-                }
-                if (($id == "estatuspedido") && ($text=="NUEVO") ) {
-                    $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
-                }
+                
 
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
                 if ($id == "id") {
                     $botonC=$botones->getBotongridArray(
                         array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'ver', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
                           $editar,
                           $borrar,
+                          $archivo,
                         )
                       );
                     $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
@@ -162,39 +206,8 @@ class VentasController extends Controller
                     }
 
                     if ($id == "estatuspedido") {
-                        switch ($text) {
-                            case 'NUEVO':
-                                $style='badge-primary';
-                                break;
-
-                            case 'ENVIADO':
-                                    $style='badge-primary';
-                                    break;
-
-                                case 'AUTORIZADO':
-                                    $style='badge-success';
-                                    break;
-
-                            case 'REENVIADO':
-                                $style='badge-primary';
-                                break;
-
-                            case 'NO AUTORIZADO':
-                                $style='badge-danger';
-                                break;
-
-                            case 'POR APROBAR':
-                                $style='badge-secondary';
-                                break;
-
-                            case 'DEVUELTO':
-                                $style='badge-warning';
-                                break;
-
-                            default:
-                                # code...
-                                break;
-                        }
+                        $estatuspedido= New Produccion_pedidos;
+                        $style=$estatuspedido->estatus($text);
                         $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                     }
                 }
@@ -222,13 +235,36 @@ class VentasController extends Controller
                     $estado="CANCELADO";
                     break;
 
+                case 'ANULAR':
+                    $estado="ANULADO";
+                    break;
+
                 default:
                     # code...
                     break;
             }
             $modelPedido=Pedidos::find()->where(['id' => $pedido, "isDeleted" => 0])->one();
-            if ($modelPedido){
-                $modelPedido->estatuspedido=$estado;
+            $modelPedido->estatuspedido=$estado;
+            if ($modelPedido && ($estado=="DEVUELTO" || $estado=="ANULADO")){
+                $mensajePedido= New Pedidosmensajes;
+                $mensajePedido->idpedido=$pedido;
+                $mensajePedido->usuariocreacion=Yii::$app->user->identity->id;
+                $mensajePedido->idusuarioorg=Yii::$app->user->identity->id;
+                $mensajePedido->idusuariodes=55;
+                $mensajePedido->mensaje=$mensaje;
+                $mensajePedido->isDeleted=0;
+                $mensajePedido->estatus="ACTIVO";
+                if  ($mensajePedido->save()){
+                    if ($modelPedido->save()){
+                        $arrayResp=array("success"=>true);
+                    }else{
+                        $arrayResp=array("success"=>false);
+                    }
+                }else{
+                    $arrayResp=array("success"=>false, "error" => $mensajePedido->errors);
+                }
+                
+            }else{
                 if ($modelPedido->save()){
                     $arrayResp=array("success"=>true);
                 }else{
@@ -246,9 +282,43 @@ class VentasController extends Controller
         $arrayResp=array();
         if ($_POST){
             $pedido= new Produccion_pedidos;
-            $pedido= $pedido->Nuevo($_POST);
+            $archivoM= new Archivos;
+            $archivoM=$archivoM->Subirarchivo($_FILES);
+            if ($archivoM["success"])
+            {
+                $_POST["imagen"]=$archivoM["nombrearchivo"];
+                //var_dump($_POST);
+                $pedido= $pedido->Nuevo($_POST);
+                $response=$pedido;
+            }else{
+                $response=$archivoM;
+            }
+
+            //var_dump($_FILES);
             //die(var_dump($_POST));
+
+            //return $this->render('formrol');
+            return json_encode($response);
+
+        }
+        return json_encode($arrayResp);
+    }
+
+    public function actionFormeditarpedido()
+    {
+        extract($_POST);
+        $arrayResp=array();
+        if ($_POST){
+            $pedido= new Produccion_pedidos;
+
+            
+            //var_dump($_POST);
+            $pedido= $pedido->Actualizar($idpedido,$_POST);
             $response=$pedido;
+            
+
+            //var_dump($_FILES);
+            //die(var_dump($_POST));
 
             //return $this->render('formrol');
             return json_encode($response);
@@ -299,6 +369,19 @@ class VentasController extends Controller
             'clientes' => $clientesArray,
             'productos' => $productosArray,
         ]);
+    }
+
+    public function actionPedidoseliminar($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $pedido= new Produccion_pedidos;
+        $pedido= $pedido->eliminar($id);
+
+        return $pedido;
+        //return $this->redirect(['index']);
     }
 
 

@@ -19,12 +19,12 @@ $objeto= new Objetos;
 $div= new Bloques;
 
 $urlpost='gestionarpedido';
-$btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btneviar=array();
+$btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
 
-$btndevolver=array('tipo'=>'link','nombre'=>'devolver', 'id' => 'devolver', 'titulo'=>'&nbsp;Devolver', 'link'=>'', 'onclick'=>'estado=\'DEVOLVER\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'cancelar','tamanio'=>'pequeño',  'adicional'=>'');
+$btndevolver=array('tipo'=>'link','nombre'=>'devolver', 'id' => 'devolver', 'titulo'=>'&nbsp;Devolver', 'link'=>'', 'onclick'=>'estado=\'DEVOLVER\';$(\'#modalDevolver\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'cancelar','tamanio'=>'pequeño',  'adicional'=>'');
 $btnautorizar=array('tipo'=>'link','nombre'=>'autorizar', 'id' => 'autorizar', 'titulo'=>'&nbsp;Autorizar', 'link'=>'', 'onclick'=>'estado=\'AUTORIZAR\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
-$btnaceptar=array('tipo'=>'link','nombre'=>'aceptado', 'id' => 'aceptado', 'titulo'=>'&nbsp;Aceptar', 'link'=>'', 'onclick'=>'estado=\'ACEPTADO\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
-$btnenviar=array('tipo'=>'link','nombre'=>'enviar', 'id' => 'enviar', 'titulo'=>'&nbsp;Enviar', 'link'=>'', 'onclick'=>'estado=\'ENVIADO\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
+$btnaceptar=array('tipo'=>'link','nombre'=>'aceptado', 'id' => 'aceptado', 'titulo'=>'&nbsp;Aceptar', 'link'=>'', 'onclick'=>'estado=\'ACEPTADO\';$(\'#modalAceptar\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
+$btnenviar=array('tipo'=>'link','nombre'=>'enviar', 'id' => 'enviar', 'titulo'=>'&nbsp;Enviar', 'link'=>'', 'onclick'=>'estado=\'ENVIADO\';$(\'#modalEnviar\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'aceptar','tamanio'=>'pequeño',  'adicional'=>'');
 $btncancelar=array('tipo'=>'link','nombre'=>'cancelar', 'id' => 'cancelar', 'titulo'=>'&nbsp;Cancelar', 'link'=>'', 'onclick'=>'estado=\'CANCELADO\';$(\'#modalConfirmacion\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'pequeño',  'adicional'=>'');
 
 switch ($pedido->estatuspedido) {
@@ -41,6 +41,7 @@ switch ($pedido->estatuspedido) {
     case 'ACEPTADO':
         $stylestatuscit='badge-info';
         $btnenatencion=array();$btncancelar=array();$btnaceptar=array();$btnenviar=array();
+        $btndevolver=array('tipo'=>'link','nombre'=>'anular', 'id' => 'anular', 'titulo'=>'&nbsp;Anular', 'link'=>'', 'onclick'=>'estado=\'ANULAR\';$(\'#modalAnular\').modal(\'show\');' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'cancelar','tamanio'=>'pequeño',  'adicional'=>'');
         break;
 
     case 'CANCELADA':
@@ -54,9 +55,19 @@ switch ($pedido->estatuspedido) {
         $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
         break;
 
-        case 'ENVIADO':
-            $stylestatuscit='badge-secondary';
-            $btnautorizar=array();$btncancelar=array();$btnenviar=array();
+    case 'ENVIADO':
+        $stylestatuscit='badge-secondary';
+        $btnautorizar=array();$btncancelar=array();$btnenviar=array();
+        break;
+
+    case 'DEVUELTO':
+        $stylestatuscit='badge-warning';
+        $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
+        break;
+    
+        case 'ANULADO':
+            $stylestatuscit='badge-danger';
+            $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
             break;
 
 
@@ -69,7 +80,7 @@ switch ($pedido->estatuspedido) {
     array(
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
        // array('tipo'=>'link','nombre'=>'guardar', 'id' => 'guardar', 'titulo'=>'&nbsp;Guardar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'guardar','tamanio'=>'pequeño',  'adicional'=>''),
-       array('tipo'=>'link','nombre'=>'regresar', 'id' => 'guardar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>''),
+       array('tipo'=>'link','nombre'=>'regresar', 'id' => 'regresar', 'titulo'=>'&nbsp;Regresar', 'link'=>'', 'onclick'=>'history.back()' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'regresar','tamanio'=>'pequeño',  'adicional'=>''),
        $btnenviar,
        $btnaceptar,
        $btnautorizar,
@@ -79,8 +90,14 @@ switch ($pedido->estatuspedido) {
 
 ));
 
-$contenido='<div style="line-height:30px;" class="row"><div class="col-6 col-md-6"><b>Pedido:  </b>'.$pedido->id.'<br></div>';
-$contenido.='<div class="col-6 col-md-6"><b>Fecha :  </b>'.$pedido->fechacreacion.'<br></div>';
+$botonarchivo=$botones->getBotongridArray(
+    array(
+       array('tipo'=>'link','nombre'=>'pdf', 'id' => 'pdf', 'titulo'=>'&nbsp;Ver', 'link'=>'/backend/web/images/pedidos/'.$pedido->imagen, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'archivo','tamanio'=>'pequeño','target'=>'blank',  'adicional'=>''),
+));
+
+$contenido='<div style="line-height:30px;" class="row"><div class="col-4 col-md-4"><b>Pedido:  </b>'.$pedido->id.'<br></div>';
+$contenido.='<div class="col-4 col-md-4"><b>Orden:  </b>'.$pedido->orden.'<br></div>';
+$contenido.='<div class="col-4 col-md-4"><b>Fecha:  </b>'.$pedido->fechacreacion.'<br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-6 col-md-12"><b>Cliente:</b>&nbsp; '.$pedido->nombres.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-9"><b>Dirección:</b>&nbsp; '.$pedido->direccion.'</span><br></div>';
@@ -89,6 +106,8 @@ $contenido.='<div class="col-6 col-md-3"><b>Teléfono:</b>&nbsp; '.$pedido->tele
 $contenido.='<div class="col-6 col-md-4"><b>Subtotal:</b>&nbsp; '.$pedido->subtotal.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-5"><b>Iva:</b>&nbsp; '.$pedido->iva.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-3"><b>Total:</b>&nbsp; '.$pedido->total.'</span><br></div>';
+$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
+$contenido.='<div class="col-12 col-md-12 mb-2"><b>Documento: </b>&nbsp; '.$botonarchivo.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><b>Notas:</b>&nbsp; '.$pedido->notas.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
@@ -107,7 +126,7 @@ $contenido.='</div>';
  $contenido2.='<hr style="color: #0056b2;">';
  $contenido2.='</div>';
 
- $tabla='<div class="col-12" style="width: 100%;overflow-x: scroll;">
+ $tabla='<div class="col-12 mt-2" style="width: 100%;overflow-x: scroll;">
  <table class="table table-striped">
  <thead>
    <tr>
@@ -138,8 +157,49 @@ $tabla.='</tbody></table><table class="table table"> <tbody><tr><td class="text-
 $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).'</td><td class="text-center"><b>Descuento: </b>'.number_format($tdescuento,2).'</td><td class="text-center"><b>T. Iva: </b>'.number_format($tiva,2).'</td><td class="text-center"><b>Total: </b>'.number_format($tsubtotal+$tiva,2).'</td> </tr>';
 
    $tabla.='</tbody></table></div>';
+ //  var_dump($pedido->pedidosmensajes);
+ if ($pedido->pedidosmensajes){
+ $mensajes='
+ <div class="mt-3">
+    <label> Comentarios </label>
+    <div class="chat-container p-3">
+        <ul class="chat-box chatContainerScroll pr-5">';
+        $cont=0;
+    foreach ($pedido->pedidosmensajes as $key => $value) {
+        $cont++;
+        if ($cont==1)
+        {
+        $mensajes.='<li class="chat-left">
+                <div class="chat-avatar" style="text-align: center;"> 
+                    <img src="/backend/web/images/default.png" alt="Retail Admin">
+                    <div class="chat-name mt-2"><b>'.$value->idusuarioorg0->nombres.' '.$value->idusuarioorg0->apellidos.'</b></div>
+                </div>
+                <div class="chat-text">'.$value->mensaje.'</div>
+                <!--<div class="chat-hour"><span class="fa fa-check-circle"></span></div>-->
+            </li>';
+        }
+        if ($cont==2){
+            $mensajes.='<li class="chat-right">
+                <!--<div class="chat-hour">08:56 <span class="fa fa-check-circle"></span></div>-->
+                <div class="chat-text">'.$value->mensaje.'</div>
+                <div class="chat-avatar" style="text-align: center;"> 
+                    <img src="/backend/web/images/default.png" alt="Retail Admin">
+                    <div class="chat-name mt-2"><b>'.$value->idusuarioorg0->nombres.' '.$value->idusuarioorg0->apellidos.'</b></div>
+                </div>
+            </li>';
+            $cont=0;
+        }
+    }
 
-    $contenido.=$tabla;
+        
+            
+        $mensajes.='</ul>
+    </div>
+</div>
+ 
+ ';
+ }
+    $contenido.=$tabla.$mensajes;
 
 
 $form = ActiveForm::begin(['id'=>'frmDatos']);
@@ -151,21 +211,37 @@ $form = ActiveForm::begin(['id'=>'frmDatos']);
         array('tipo'=>'bloquediv','nombre'=>'bloc1','id'=>'bloc1','titulo'=>'Información','clase'=>'col-md-3 col-xs-12 ','style'=>'','col'=>'','tipocolor'=>'gris','adicional'=>'','contenido'=>$contenido2),
     )
 );
-ActiveForm::end();
 
 $modal= New Modal;
-$modal= $modal->getModal('okcancel','modalConfirmacion','modalConfirmacion', '', '¿Desea autorizar el pedido?', '', '', '','','cambiarEstado()','$(\'#modalConfirmacion\').modal(\'hide\');','' );
-echo $modal;
+$estatusmen="cambiar el estatus";
+
+$modalAutorizar= $modal->getModal('okcancel','modalConfirmacion','modalConfirmacion', '', '¿Desea autorizar el pedido?', '', '', '','','cambiarEstado(false)','$(\'#modalConfirmacion\').modal(\'hide\');','' );
+$modalAceptar= $modal->getModal('okcancel','modalAceptar','modalAceptar', '', '¿Desea aceptar el pedido, y enviarlo para su autorización final?', '', '', '','','cambiarEstado(false)','$(\'#modalAceptar\').modal(\'hide\');','' );
+$modalEnviar= $modal->getModal('okcancel','modalEnviar','modalEnviar', '', '¿Desea enviar el pedido, para su aprobación?', '', '', '','','cambiarEstado(false)','$(\'#modalEnviar\').modal(\'hide\');','' );
+$modalAnular= $modal->getModal('okcancelinput','modalAnular','modalAnular', '', '¿Desea anular el pedido, el mismo no podrá ser nuevamente activado?', '', '', '','width: 80%;','cambiarEstado(true)','$(\'#modalAnular\').modal(\'hide\');','' );
+$modalDevolver= $modal->getModal('okcancelinput','modalDevolver','modalDevolver', '', '¿Desea devolver el pedido?', '', '', '','width: 80%;','cambiarEstado(true)','$(\'#modalDevolver\').modal(\'hide\');','' );
+echo $modalAutorizar;
+echo $modalEnviar;
+echo $modalAceptar;
+echo $modalAnular;
+if ($pedido->estatuspedido=="ENVIADO"){echo $modalDevolver;}
+
+ActiveForm::end();
+
+
 //var_dump($objeto);
 ?>
+
+
 <script>
       var estado='';
         //$("#frmDatos").find(':input').each(function() {
         // var elemento= this;
          //console.log("elemento.id="+ elemento.id + ", elemento.value=" + elemento.value);
         //});
-        function cambiarEstado() {
-            console.log("Cambiar estado: "+estado);
+        function cambiarEstado(mensaje) {
+            //console.log("Cambiar estado: "+estado);
+
             $('#estado').val(estado);
                 var form    = $('#frmDatos');
                 $.ajax({
@@ -182,7 +258,7 @@ echo $modal;
                         // ============================ Not here, this would be too late
                         notificacion(data.mensaje,data.tipo);
                         //$this.data().isSubmitted = true;
-                        //$('#frmDatos')[0].reset();
+                        $('#frmDatos')[0].reset();
                         location.reload();
                         return true;
                     }else{

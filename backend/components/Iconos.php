@@ -29,6 +29,11 @@ class Iconos extends Component
     {
 
         switch ($icono) {
+            case 'archivo':
+                $tipo='fa fa-file-code-o';
+                break;
+
+            
             case 'pdf':
                 $tipo='file-pdf-o';
                 break;
@@ -121,6 +126,11 @@ class Iconos extends Component
         $tipodefault='fas fa-pencil-alt';
         $tamaniodefault='';
         switch ($tipo) {
+
+            case 'archivo':
+                $tipo='fa fa-file-code-o';
+                break;
+                
             case 'aceptar':
                 $tipo='fa fa-check-circle-o';
                 break;
