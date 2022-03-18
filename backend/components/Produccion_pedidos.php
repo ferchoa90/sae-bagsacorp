@@ -28,17 +28,17 @@ class Produccion_pedidos extends Component
 
     public $idusuariocontrol;
     public $idusuariosup;
-    
+
 
     function __construct($usuariocontrol='',$usuariosup='')
     {
         $usuarioadmindef=1;
         $usuariosupdef = 55;
-        
+
         $this->idusuariocontrol=$usuarioadmindef;
         $this->idusuariosup=$usuariosupdef;
- 
-    } 
+
+    }
 
     public function getPedidos($tipo,$array=true,$orderby,$limit,$all=true)
     {
@@ -102,7 +102,7 @@ class Produccion_pedidos extends Component
                 $modelPedido->imagen=$pedido["imagen"];
                 $modelPedido->usuariocreacion=Yii::$app->user->identity->id;
                 //$modelPedido->usuariom=Yii::$app->user->identity->id;
-                
+
                 $modelPedido->isDeleted=0;
                 $modelPedido->estatuspedido="NUEVO";
                 $modelPedido->estatus="ACTIVO";
@@ -113,8 +113,8 @@ class Produccion_pedidos extends Component
                 $this->callback(1,0,"CLIENTE NO ENCONTRADO","Produccion_pedidos -> Nuevo");
                 return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
             }
-            
-            
+
+
             if ($modelPedido->save()):
                 $error=false;
                 $i=0;
@@ -137,7 +137,7 @@ class Produccion_pedidos extends Component
                             $modelDetalle->total=($valor*$cantidad)+(($valor*$cantidad)*0.12);
                             $modelDetalle->usuariocreacion=Yii::$app->user->identity->id;
                             $modelDetalle->estatus="ACTIVO";
-                            
+
                             //$this->callback(1,$idmenu,$modelDetalle,"Produccion_pedidos -> Nuevo");
                             if (!$modelDetalle->save())
                             {
@@ -148,7 +148,7 @@ class Produccion_pedidos extends Component
                             $cant = 1;
                         }*/
                     }else{
-                        
+
                     }
                 endforeach;
                 return array("response" => true, "id" => $modelPedido->id, "mensaje"=> "Registro agregado","tipo"=>"success", "success"=>true);
@@ -185,7 +185,7 @@ class Produccion_pedidos extends Component
                 $modelPedido->usuarioact=Yii::$app->user->identity->id;
                 $modelPedido->fechaact=date("Y-m-d h:i:s");
                 //$modelPedido->usuariom=Yii::$app->user->identity->id;
-                
+
                 $modelPedido->isDeleted=0;
                 $modelPedido->estatuspedido="ENVIADO";
                 //$modelPedido->estatus="ACTIVO";
@@ -196,8 +196,8 @@ class Produccion_pedidos extends Component
                 $this->callback(1,0,"CLIENTE NO ENCONTRADO","Produccion_pedidos -> Actualizar");
                 return array("response" => true, "id" => 0, "mensaje"=> "Error al agregar el registro","tipo"=>"error", "success"=>false);
             }
-            
-            
+
+
             if ($modelPedido->save()):
                 $error=false;
                 $i=0;
@@ -208,12 +208,12 @@ class Produccion_pedidos extends Component
                         $producto 	= $_POST['producto'.$i];
                         $cantidad 	= $_POST['cantidad'.$i];
                         $valor 	= $_POST['valor'.$i];
-                        
+
                         if ($cantidad !=0){
                             $modelDetalle= new Pedidosdetalle;
                             if ($pedido["idpedidod".$i]>0){ $modelDetalle=Pedidosdetalle::find()->where(["id"=>$pedido["idpedidod".$i] ])->one();   }else{  }
-                            
-                            
+
+
                             $modelDetalle->idproducto=$producto;
                             $producton=Productos::find()->where(['id' => $producto])->one();
                             $modelDetalle->nombreprod=$producton->nombreproducto;
@@ -223,8 +223,8 @@ class Produccion_pedidos extends Component
                             $modelDetalle->total=($valor*$cantidad)+(($valor*$cantidad)*0.12);
                             $modelDetalle->usuarioact=Yii::$app->user->identity->id;
                             $modelDetalle->fechaact=date("Y-m-d h:i:s");
-                            
-                            
+
+
                             //$this->callback(1,$idmenu,$modelDetalle,"Produccion_pedidos -> Nuevo");
                             if (!$modelDetalle->save())
                             {
@@ -235,7 +235,7 @@ class Produccion_pedidos extends Component
                             $cant = 1;
                         }*/
                     }else{
-                        
+
                     }
                 endforeach;
                 return array("response" => true, "id" => $modelPedido->id, "mensaje"=> "Registro actualizado","tipo"=>"success", "success"=>true);
@@ -300,6 +300,10 @@ class Produccion_pedidos extends Component
                     $style='badge-danger';
                     break;
 
+                    case 'ACEPTADO':
+                        $style='badge-success';
+                        break;
+
             default:
                 # code...
                 break;
@@ -317,13 +321,13 @@ class Produccion_pedidos extends Component
 
                 return true;
                 break;
-            
+
             default:
                 # code...
                 break;
         }
     }
- 
+
 
 
 }

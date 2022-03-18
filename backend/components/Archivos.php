@@ -23,6 +23,7 @@ class Archivos extends Component
     function __construct($ruta='',$tamanio='',$tipoarchivo='',$formatosdefecto='')
     {
         $rutadefecto='E:/xampp-new/htdocs/sae-bagsacorp/backend/web/images/pedidos/';
+        $rutadefecto='C:/xampp/htdocs/sae-bagsacorp/backend/web/images/pedidos/';
         $rutadefectoprod = '/var/www/html/frontend/web/images/pedidos/';
         $tamaniodefecto="10000000"; //MB
         $tipoarchivodefecto="*.jpg|*.png|*.pdf|";
@@ -49,7 +50,7 @@ class Archivos extends Component
                 //var_dump($check);
                 if($check != false) {
                     //echo "File is an image - " . $check["mime"] . ".";
-                    
+
                     $uploadOk = 1;
                 } else {
                     //echo "File is not an image.";
@@ -65,7 +66,7 @@ class Archivos extends Component
                     $uploadOk = 0;
                 }
             }
-            
+
             // Check file size
             if ($value["size"] > $this->tamanio) {
                 $return=array("success"=>false,"Mensaje"=>"La imagen subida excede el límite de tamaño.");

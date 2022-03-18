@@ -144,15 +144,19 @@ class VentasController extends Controller
         $arrayResp = array();
         $count = 0;
         foreach ($model as $key => $data) {
-                $editar=array(); $borrar=array();$archivo=array();
+                $editar=array(); $borrar=array();$archivo=array();$facturar=array();
                 if ($data["estatuspedido"]=="NUEVO"  || $data["estatuspedido"]=="DEVUELTO") {
                     $editar=array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$data["id"], 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>'');
+                }
+
+                if ($data["estatuspedido"]=="AUTORIZADO") {
+                    $facturar=array('tipo'=>'link','nombre'=>'generar', 'id' => 'generar', 'titulo'=>'', 'link'=>'/backend/web/facturacion/nuevafactura', 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'pdf','tamanio'=>'superp', 'adicional'=>'');
                 }
                 if ($data["estatuspedido"]=="NUEVO") {
                     $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'eliminar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data["id"]. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
                 }
 
-                if ($data["imagen"] ) {    
+                if ($data["imagen"] ) {
                     $archivo=array('tipo'=>'link','nombre'=>'archivo', 'id' => 'archivo', 'titulo'=>'', 'link'=>'/backend/web/images/pedidos/'.$data["imagen"] ,'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'plomo', 'icono'=>'archivo','tamanio'=>'superp', 'target'=>'blank','adicional'=>'');
                 }
             foreach ($data as $id => $text) {
@@ -160,7 +164,7 @@ class VentasController extends Controller
                 $arrayResp[$key]['num'] = $count+1;
                 //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
                 //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
-                
+
 
                 $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
                 if ($id == "id") {
@@ -170,6 +174,7 @@ class VentasController extends Controller
                           $editar,
                           $borrar,
                           $archivo,
+                          $facturar,
                         )
                       );
                     $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
@@ -263,7 +268,7 @@ class VentasController extends Controller
                 }else{
                     $arrayResp=array("success"=>false, "error" => $mensajePedido->errors);
                 }
-                
+
             }else{
                 if ($modelPedido->save()){
                     $arrayResp=array("success"=>true);
@@ -311,11 +316,11 @@ class VentasController extends Controller
         if ($_POST){
             $pedido= new Produccion_pedidos;
 
-            
+
             //var_dump($_POST);
             $pedido= $pedido->Actualizar($idpedido,$_POST);
             $response=$pedido;
-            
+
 
             //var_dump($_FILES);
             //die(var_dump($_POST));

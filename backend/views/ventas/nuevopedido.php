@@ -20,7 +20,7 @@ $objeto= new Objetos;
 $nav= new Navs;
 $div= new Bloques;
 ?>
- 
+
 <?php
 
 $urlpost='formnuevopedido';
@@ -30,12 +30,12 @@ $botones= new Botones;
  $contenido=$objeto->getObjetosArray(
     array(
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$clientes, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cliente: ', 'col'=>'col-12 col-md-9', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'orden', 'id'=>'orden', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Órden del pedido','leyenda'=>'Orden de pedido', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'orden', 'id'=>'orden', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Órden de compra cliente','leyenda'=>'# orden', 'col'=>'col-12 col-md-3', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'archivo', 'nombre'=>'archivo', 'id'=>'archivo', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Escaneado del pedido','leyenda'=>'Archivo de la orden del pedido', 'col'=>'col-12 col-md-12', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'observacion', 'id'=>'observacion', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Observación','leyenda'=>'Observación del pedido', 'col'=>'col-12 col-md-12', 'adicional'=>''),
-        
-        
-        
+
+
+
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cantidad1', 'id'=>'cantidad1', 'valor'=>'', 'onchange'=>' setSumatoria(this,1)', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Cantidad','leyenda'=>'Cantidad', 'col'=>'col-2 col-md-2', 'adicional'=>''),
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'producto1', 'id'=>'producto1', 'valor'=>$productos, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Producto', 'col'=>'col-6 col-md-6', 'adicional'=>''),
@@ -49,7 +49,7 @@ $botones= new Botones;
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'producto3', 'id'=>'producto3', 'valor'=>$productos, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'', 'col'=>'col-6 col-md-6', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'valor3', 'id'=>'valor3', 'valor'=>'', 'onchange'=>' setSumatoria(this,3)', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'','leyenda'=>'0.00', 'col'=>'col-2 col-md-2', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'total3', 'id'=>'total3', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'','leyenda'=>'0.00', 'col'=>'col-2 col-md-2', 'adicional'=>' readonly'),
-        
+
     ),true
 );
 
@@ -59,10 +59,10 @@ $contenidototal=$objeto->getObjetosArray(
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'subtotal', 'id'=>'subtotal', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Subtotal','leyenda'=>'0.00', 'col'=>'col-4 col-md-4', 'adicional'=>' readonly'),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'iva', 'id'=>'iva', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Iva','leyenda'=>'0.00', 'col'=>'col-4 col-md-4', 'adicional'=>' readonly'),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'totalpedido', 'id'=>'totalpedido', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Total','leyenda'=>'0.00', 'col'=>'col-4 col-md-4', 'adicional'=>' readonly'),
-        
+
     ),true
 );
- 
+
  $botonC=$botones->getBotongridArray(
     array(
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
@@ -87,7 +87,7 @@ $contenidototal=$objeto->getObjetosArray(
 );
 ?>
 
- 
+
 <?php ActiveForm::end(); ?>
 <script>
 
@@ -112,7 +112,7 @@ function crearEmp(){
         cantidad=$("#cantidad"+id).val();
         unitario=$("#valor"+id).val();
         total=$("#total"+id).val();
-        
+
 
         if (cantidad && unitario){
             total= parseFloat(cantidad)*parseFloat(unitario);
@@ -130,7 +130,7 @@ function crearEmp(){
             if (cantidad && unitario){
                 total= parseFloat(cantidad)*parseFloat(unitario);
                 subtotal+= parseFloat(total);
-                
+
             }
 
             $("#subtotal").val(parseFloat(subtotal).toFixed(2));
@@ -202,7 +202,7 @@ function crearEmp(){
                 if ($('#icono').val()!=""){
                     if ($('#link').val()!=""){
                         if ($('#orden').val()!=""){
-                            return true;                            
+                            return true;
                         }else{
                             $('#orden').focus();
                             return false;
@@ -231,4 +231,3 @@ input[type=number]::-webkit-outer-spin-button {
 }
 input[type=number] { -moz-appearance:textfield; }
 </style>
-

@@ -64,7 +64,7 @@ switch ($pedido->estatuspedido) {
         $stylestatuscit='badge-warning';
         $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
         break;
-    
+
         case 'ANULADO':
             $stylestatuscit='badge-danger';
             $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
@@ -96,7 +96,7 @@ $botonarchivo=$botones->getBotongridArray(
 ));
 
 $contenido='<div style="line-height:30px;" class="row"><div class="col-4 col-md-4"><b>Pedido:  </b>'.$pedido->id.'<br></div>';
-$contenido.='<div class="col-4 col-md-4"><b>Orden:  </b>'.$pedido->orden.'<br></div>';
+$contenido.='<div class="col-4 col-md-4"><b>Orden de C. Cliente:  </b>'.$pedido->orden.'<br></div>';
 $contenido.='<div class="col-4 col-md-4"><b>Fecha:  </b>'.$pedido->fechacreacion.'<br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-6 col-md-12"><b>Cliente:</b>&nbsp; '.$pedido->nombres.'</span><br></div>';
@@ -107,6 +107,7 @@ $contenido.='<div class="col-6 col-md-4"><b>Subtotal:</b>&nbsp; '.$pedido->subto
 $contenido.='<div class="col-6 col-md-5"><b>Iva:</b>&nbsp; '.$pedido->iva.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-3"><b>Total:</b>&nbsp; '.$pedido->total.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
+$contenido.='<div class="col-12 col-md-12"><b>Observación:</b>&nbsp; '.$pedido->observacion.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12 mb-2"><b>Documento: </b>&nbsp; '.$botonarchivo.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><b>Notas:</b>&nbsp; '.$pedido->notas.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
@@ -169,20 +170,27 @@ $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).
         $cont++;
         if ($cont==1)
         {
-        $mensajes.='<li class="chat-left">
-                <div class="chat-avatar" style="text-align: center;"> 
+        $mensajes.='
+        <div class="col-12 chat-left chat-avatar" style="text-align: left;">
+            <div class="chat-hour p-3">'.$value->fechacreacion.' &nbsp;<span class="fa fa-check-circle"></span></div>
+        </div>
+        <li class="chat-left">
+        <div class="chat-avatar" style="text-align: center;">
                     <img src="/backend/web/images/default.png" alt="Retail Admin">
                     <div class="chat-name mt-2"><b>'.$value->idusuarioorg0->nombres.' '.$value->idusuarioorg0->apellidos.'</b></div>
                 </div>
                 <div class="chat-text">'.$value->mensaje.'</div>
-                <!--<div class="chat-hour"><span class="fa fa-check-circle"></span></div>-->
             </li>';
         }
         if ($cont==2){
-            $mensajes.='<li class="chat-right">
-                <!--<div class="chat-hour">08:56 <span class="fa fa-check-circle"></span></div>-->
+            $mensajes.='
+            <div class="col-12 chat-right chat-avatar" style="text-align: right;">
+            <div class="chat-hour p-3">'.$value->fechacreacion.' &nbsp;<span class="fa fa-check-circle"></span></div>
+        </div>
+            <li class="chat-right">
+
                 <div class="chat-text">'.$value->mensaje.'</div>
-                <div class="chat-avatar" style="text-align: center;"> 
+                <div class="chat-avatar" style="text-align: center;">
                     <img src="/backend/web/images/default.png" alt="Retail Admin">
                     <div class="chat-name mt-2"><b>'.$value->idusuarioorg0->nombres.' '.$value->idusuarioorg0->apellidos.'</b></div>
                 </div>
@@ -191,12 +199,12 @@ $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).
         }
     }
 
-        
-            
+
+
         $mensajes.='</ul>
     </div>
 </div>
- 
+
  ';
  }
     $contenido.=$tabla.$mensajes;
