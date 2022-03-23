@@ -70,6 +70,16 @@ switch ($pedido->estatuspedido) {
             $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
             break;
 
+    case 'FACTURADO TOTAL':
+        $stylestatuscit='badge-secondary';
+        $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
+        break;
+
+    case 'FACTURADO PARCIAL':
+        $stylestatuscit='badge-warning';
+        $btnautorizar=array();$btndevolver=array();$btnaceptar=array();$btncancelar=array();$btnenviar=array();
+        break;
+
 
     default:
         # code...
@@ -108,7 +118,9 @@ $contenido.='<div class="col-6 col-md-5"><b>Iva:</b>&nbsp; '.$pedido->iva.'</spa
 $contenido.='<div class="col-6 col-md-3"><b>Total:</b>&nbsp; '.$pedido->total.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Observación:</b>&nbsp; '.$pedido->observacion.'</span><br></div>';
-$contenido.='<div class="col-12 col-md-12 mb-2"><b>Documento: </b>&nbsp; '.$botonarchivo.'</span><br></div>';
+$contenido.='<div class="col-6 col-md-3 mb-3"><b>Documento: </b>&nbsp; '.$botonarchivo.'</span><br></div>';
+//$contenido.='<div class="col-6 col-md-3 mb-3"><b>Cartera: </b>&nbsp; <span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp;&nbsp;AL DÍA</span> </span><br></div>';
+//$contenido.='<div class="col-6 col-md-3 mb-3"><b>Cartera: </b>&nbsp; <span class="badge badge-warning"><i class="fa fa-circle"></i>&nbsp;&nbsp;VENCIDA (40 DÍAS)</span> </span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><b>Notas:</b>&nbsp; '.$pedido->notas.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
@@ -172,24 +184,28 @@ $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).
         {
         $mensajes.='
         <div class="col-12 chat-left chat-avatar" style="text-align: left;">
-            <div class="chat-hour p-3">'.$value->fechacreacion.' &nbsp;<span class="fa fa-check-circle"></span></div>
+           
         </div>
         <li class="chat-left">
         <div class="chat-avatar" style="text-align: center;">
                     <img src="/backend/web/images/default.png" alt="Retail Admin">
                     <div class="chat-name mt-2"><b>'.$value->idusuarioorg0->nombres.' '.$value->idusuarioorg0->apellidos.'</b></div>
                 </div>
-                <div class="chat-text">'.$value->mensaje.'</div>
+                <div class="chat-text">'.$value->mensaje.'
+                <div class="chat-hour p-3">'.$value->fechacreacion.' &nbsp;<span class="fa fa-check-circle"></span></div>
+                </div>
             </li>';
         }
         if ($cont==2){
             $mensajes.='
             <div class="col-12 chat-right chat-avatar" style="text-align: right;">
-            <div class="chat-hour p-3">'.$value->fechacreacion.' &nbsp;<span class="fa fa-check-circle"></span></div>
+            
         </div>
             <li class="chat-right">
 
-                <div class="chat-text">'.$value->mensaje.'</div>
+                <div class="chat-text">'.$value->mensaje.'
+                <div class="chat-hour p-3">'.$value->fechacreacion.' &nbsp;<span class="fa fa-check-circle"></span></div>
+                </div>
                 <div class="chat-avatar" style="text-align: center;">
                     <img src="/backend/web/images/default.png" alt="Retail Admin">
                     <div class="chat-name mt-2"><b>'.$value->idusuarioorg0->nombres.' '.$value->idusuarioorg0->apellidos.'</b></div>

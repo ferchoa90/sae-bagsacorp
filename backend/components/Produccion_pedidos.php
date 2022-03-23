@@ -11,6 +11,7 @@ use common\models\Pedidosdetalle;
 use common\models\Productos;
 use common\models\Clientes;
 use common\models\Roles;
+use common\models\Pedidosmensajes;
 use common\models\Rolespermisos;
 use backend\components\Log_errores;
 
@@ -173,6 +174,7 @@ class Produccion_pedidos extends Component
         if ($pedido):
             $modelPedido->idcliente=$pedido["cliente"];
             $modelPedido->observacion=$pedido["observacion"];
+            $estatusini= $modelPedido["estatuspedido"];
             $cliente= Clientes::find()->where(["id"=>$pedido["cliente"]])->one();
             if ($cliente){
                 $modelPedido->nombres=$cliente->razonsocial;
@@ -201,6 +203,21 @@ class Produccion_pedidos extends Component
             if ($modelPedido->save()):
                 $error=false;
                 $i=0;
+                if ($estatusini=="DEVUELTO"){
+
+                    $mensajePedido= New Pedidosmensajes;
+                    $mensajePedido->idpedido=$modelPedido->id;
+                    $mensajePedido->usuariocreacion=Yii::$app->user->identity->id;
+                    $mensajePedido->idusuarioorg=1;
+                    $mensajePedido->idusuariodes=55;
+                    $mensajePedido->mensaje=$pedido["mensajeenvio"];
+                    $mensajePedido->isDeleted=0;
+                    $mensajePedido->estatus="ACTIVO";
+                    if  ($mensajePedido->save()){
+                        
+                        
+                    }
+                }
                 foreach ($pedido as $clave=>$valor):
                     if(substr($clave,0,8) == "cantidad"){
                         $i++;
@@ -228,12 +245,10 @@ class Produccion_pedidos extends Component
                             //$this->callback(1,$idmenu,$modelDetalle,"Produccion_pedidos -> Nuevo");
                             if (!$modelDetalle->save())
                             {
+                                
                                 $this->callback(1,$idmenu,$modelDetalle->errors,"Produccion_pedidos -> Actualizar");
                             }
                         }
-                        /*if(!is_numeric($cant)){
-                            $cant = 1;
-                        }*/
                     }else{
 
                     }
@@ -291,9 +306,17 @@ class Produccion_pedidos extends Component
             case 'POR APROBAR':
                 $style='badge-secondary';
                 break;
+            
+            case 'FACTURADO TOTAL':
+                $style='badge-secondary';
+                break;
 
             case 'DEVUELTO':
                 $style='badge-warning';
+                break;
+
+            case 'GENERADO':
+                $style='badge-primary';
                 break;
 
                 case 'ANULADO':

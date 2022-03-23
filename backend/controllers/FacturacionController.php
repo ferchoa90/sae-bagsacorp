@@ -13,6 +13,7 @@ use common\models\Facturadetalle;
 use common\models\Tipopreciofactura;
 use common\models\Vendedores;
 use common\models\Formaspago;
+use common\models\Pedidos;
 use common\models\Inventario;
 use backend\components\Botones;
 use common\models\Clientes;
@@ -117,19 +118,18 @@ class FacturacionController extends Controller
         //$nombrep=explode(" -",$_REQUEST["nombrep"]);
         //$nombrep[0]="167";
         $page = "site";
-        $model = Clientes::find()->where(['cedula' => $cedularuc])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $model = Clientes::find()->where(['cedula' => $cedularuc])->orderBy(["fechacreacion" => SORT_DESC])->one();
         $arrayResp = array();
         $count = 1;
-            foreach ($model as $key => $data) {
-                $arrayResp[$key]['id'] = $data->id;
-                $arrayResp[$key]['cedula'] = $data->cedula;
-                $arrayResp[$key]['nombres'] = $data->nombres;
-                if ($data->apellidos){  $arrayResp[$key]['apellidos'] = $data->apellidos; }else{  $arrayResp[$key]['apellidos'] = ""; }
-                $arrayResp[$key]['direccion'] = $data->direccion;
-                $arrayResp[$key]['telefono'] = $data->telefono;
-                $arrayResp[$key]['correo'] = $data->correo;
-                $arrayResp[$key]['tipo'] = $data->tipo;
-                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+           if ($model){
+                $arrayResp[0]['id'] = $model['id'];
+                $arrayResp[0]['cedula'] = $model['cedula'];
+                $arrayResp[0]['nombres'] = $model['razonsocial'];
+                $arrayResp[0]['direccion'] = $model['direccion'];
+                $arrayResp[0]['telefono'] = $model['telefono'];
+                $arrayResp[0]['correo'] = $model['correo'];
+                //$arrayResp[0]['tipo'] = $model['tipo'];
+                $arrayResp[0]['usuariocreacion'] = $model->usuariocreacion0->username;
                 $count++;
             }
         return json_encode($arrayResp);
@@ -143,11 +143,13 @@ class FacturacionController extends Controller
         $return=array();
         if (isset($_POST) and !empty($_POST)) {
             $data = $_POST;
+           
             //echo $data["cliente"];
             $factant=Factura::find()->orderBy(["fechacreacion" => SORT_DESC])->one();
             //var_dump($factant);
             $facturan=$factant->nfactura+1;
             $cliente = Clientes::find()->where(['cedula' => $data["cliente"]])->orderBy(["fechacreacion" => SORT_DESC])->all();
+            $clienteid=$cliente[0]->id;
             $factura= new Factura();
             $factura->nfactura=$facturan;
             $factura->idcliente=$cliente[0]->id;
@@ -158,7 +160,7 @@ class FacturacionController extends Controller
             $factura->tipopago= ($data["formapago"]=='efectivo')? 1 : 5;
             $factura->tipodoc=1;
             $factura->facturae='PENDIENTE';
-            $factura->estatus='ACTIVA';
+            $factura->estatus='ACTIVO';
             $valortotal=0;
             $iva=0;
             $subtotal=0;
@@ -166,12 +168,13 @@ class FacturacionController extends Controller
                 //$value["id"];
                 $valortotal=$valortotal+($value["valoru"]*$value["cantidad"]);
             }
-            $valortotal= number_format($valortotal, 2);
-            $subtotal= number_format($valortotal/1.12,2);
-            $iva= number_format($valortotal-$subtotal,2);
-            $factura->subtotal=$subtotal;
+            $subtotal= $valortotal;
+            $valortotal= $valortotal*1.12;
+            $iva= $subtotal*0.12;
+            $factura->subtotal=$valortotal;
             $factura->iva=$iva;
             $factura->total=$valortotal;
+            $factura->fecha= date("Y-m-d");
             if ($factura->save()){
                 foreach ($data["data"] as $key => $value) {
                     //$value["id"];
@@ -200,11 +203,20 @@ class FacturacionController extends Controller
                         $modelI->save();
                     //var_dump($facturaDetalle->errors);
                 }
-                    $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $factura->id);
+
+                    $pedido= Pedidos::find()->where(['idcliente' => $clienteid,"estatus"=>"ACTIVO","estatuspedido"=>"AUTORIZADO"])->orderBy(["fechacreacion" => SORT_DESC])->one();
+                     //$clienteid;
+                    if ($pedido){
+                        $pedido->estatuspedido="FACTURADO TOTAL";
+                        $pedido->estatus="CERRADO";
+                        $pedido->save();
+                    }
+
+                    //$return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $factura->id);
             }else{
                 $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el banner.","resp" => false, "id" => "");
             }
-             //var_dump($factura->errors);
+            // var_dump($factura->errors);
             //var_dump($data["data"][0]);
             return json_encode($return);
         }
@@ -230,25 +242,25 @@ class FacturacionController extends Controller
                 $arrayResp[0]['imagen'] = $model>imagen;
             }*/
             foreach ($model as $keyI => $dataI) {
-                $arrayResp[$keyI]['titulo'] = $dataI->producto->nombreproducto;
-                $arrayResp[$keyI]['descripcion'] = $dataI->producto->descripcion;
+                $arrayResp[$keyI]['titulo'] = $dataI->producto0->nombreproducto;
+                $arrayResp[$keyI]['descripcion'] = "";
                 $arrayResp[$keyI]['color'] = $dataI->color->nombre;
                 $arrayResp[$keyI]['clasificacion'] = $dataI->clasificacion->nombre;
-                $arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$dataI->producto->imagen.'"/>';
+                $arrayResp[$keyI]['imagen'] = '<img style="width:20px;" src="/frontend/web/images/articulos/'.$dataI->producto0->imagen.'"/>';
                 //$arrayResp[$keyI]['imagen'] = '-';
                 $arrayResp[$keyI]['stock'] = $dataI->stock;
-                $arrayResp[$keyI]['cantidadini'] = $dataI->cantidadini;
-                $arrayResp[$keyI]['cantidadcaja'] = $dataI->cantidadcaja;
-                $arrayResp[$keyI]['precioint'] = $dataI->precioint;
-                $arrayResp[$keyI]['preciov1'] = $dataI->preciov1;
-                $arrayResp[$keyI]['preciov2'] = $dataI->preciov2;
-                $arrayResp[$keyI]['preciovp'] = $dataI->preciovp;
+                $arrayResp[$keyI]['cantidadini'] = $dataI->stock;
+                $arrayResp[$keyI]['cantidadcaja'] = $dataI->stock;
+                $arrayResp[$keyI]['precioint'] = $dataI->costo;
+                $arrayResp[$keyI]['preciov1'] = $dataI->total;
+                $arrayResp[$keyI]['preciov2'] = $dataI->total;
+                $arrayResp[$keyI]['preciovp'] = $dataI->total;
                 $arrayResp[$keyI]['codigobarras'] = $dataI->codigobarras;
                 $arrayResp[$keyI]['codigocaja'] = $dataI->codigocaja;
-                $arrayResp[$keyI]['usuariocreacion'] = $dataI->producto->usuariocreacion0->username;
+                $arrayResp[$keyI]['usuariocreacion'] = $dataI->producto0->usuariocreacion0->username;
                 //$arrayResp[$keyI]['fechacreacion'] = "-";
                 $arrayResp[$keyI]['id'] = $dataI->id;
-                $arrayResp[$keyI]['imagen'] = $dataI->producto->imagen;
+                $arrayResp[$keyI]['imagen'] = $dataI->producto0->imagen;
                 $count++;
             }
         //die(var_dump($arrayResp));
@@ -318,13 +330,14 @@ class FacturacionController extends Controller
         }
         $page = "inventario";
         //$model = Productos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
-        $modelI =  Inventario::find()->where(['isDeleted' => 0,'idsucursal' => Yii::$app->user->identity->idsucursal ])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $modelI =  Inventario::find()->where(['isDeleted' => 0 ])->andWhere("idproducto > 0")->orderBy(["fechacreacion" => SORT_DESC])->limit(100)->all();
         $arrayResp = array();
         //die(var_dump($modelI));
         $count = 1;
         foreach ($modelI as $key => $data) {
             //$arrayResp[] = $data->id.' - '.$data->producto->nombreproducto.' - '.$data->producto->marca0->nombre.' '.$data->color->nombre.' '.$data->clasificacion->nombre.' - '.$data->producto->descripcion;
-            $arrayResp[] = $data->id.' - '.$data->producto->nombreproducto;
+            $arrayResp[] = $data->id.' - '.$data->producto0->nombreproducto;
+            
         }
        //  die(var_dump($arrayResp));
         return json_encode($arrayResp);

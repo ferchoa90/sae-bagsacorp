@@ -262,14 +262,14 @@ class InventarioController extends Controller
             return $this->redirect(URL::base() . "/site/login");
         }
         $page = "inventario";
-        $modelI = Productos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $modelI = Productos::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all()->limit(50);
        // $modelI =  Inventario::find()->where(['isDeleted' => 0,'idsucursal' => Yii::$app->user->identity->idsucursal ])->orderBy(["fechacreacion" => SORT_DESC])->all();
         $arrayResp = array();
         $count = 1;
         foreach ($modelI as $key => $data) {
             $arrayResp[] = $data->id.' - '.$data->nombreproducto.' - '.$data->marca0->nombre.' '.$data->color->nombre.' '.$data->descripcion;
         }
-       //  die(var_dump($arrayResp));
+        // die(var_dump($arrayResp));
         return json_encode($arrayResp);
     }
 

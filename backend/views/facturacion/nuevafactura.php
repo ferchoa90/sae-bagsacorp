@@ -37,10 +37,11 @@ $this->title = "Nueva Factura";
             
               $contenido=$objeto->getObjetosArray(
                 array(
-                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipoprecio', 'id'=>'tipoprecio', 'valor'=>$tiproprecio, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Precio: ', 'col'=>'col-12 col-md-2', 'adicional'=>''),
-                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'formapago', 'id'=>'formapago', 'valor'=>$formaspago, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Forma de pago: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
-                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'vendedor', 'id'=>'vendedor', 'valor'=>$vendedores, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Vendedor: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
-                    array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'vencimiento', 'id'=>'vencimiento', 'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Vencimiento: ', 'col'=>'col-12 col-md-2', 'adicional'=>' min="1" max="30" '),
+                    //array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipoprecio', 'id'=>'tipoprecio', 'valor'=>$tiproprecio, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Precio: ', 'col'=>'col-12 col-md-2', 'adicional'=>''),
+                    array('tipo'=>'select','subtipo'=>'', 'nombre'=>'formapago', 'id'=>'formapago', 'valor'=>$formaspago, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Forma de pago: ', 'col'=>'col-12 col-md-3', 'adicional'=>' readonly'),
+                    array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'vendedor', 'id'=>'vendedor', 'valor'=>'MARIO AGUILAR', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Vendedor: ', 'col'=>'col-12 col-md-3', 'adicional'=>' readonly'),
+                    array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'fecha', 'id'=>'fecha', 'valor'=>'2022-03-23', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Emisión: ', 'col'=>'col-12 col-md-2', 'adicional'=>' readonly'),
+                    array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'vencimiento', 'id'=>'vencimiento', 'valor'=> '30', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Vencimiento: ', 'col'=>'col-12 col-md-2', 'adicional'=>' min="1" max="30" readonly '),
                 ),true
             );
           ?>
@@ -79,7 +80,7 @@ $this->title = "Nueva Factura";
                         </div>
                   </h6>
                   <div class=" card-header align-items-center justify-content-between align-middle col-12">
-                    <?= $contenido; ?>
+                    <?= $contenido; ?> 
                 </div>
                  
                 </div>
@@ -93,10 +94,11 @@ $this->title = "Nueva Factura";
                     <thead>
                       <tr>
                         <th scope="col">Cantidad</th>
-                        <th scope="col">Imagen</th>
                         <th scope="col">Producto</th>
+                        <th scope="col">Imagen</th>
                         <th scope="col">V. Unitario</th>
                         <th scope="col">V. Total</th>
+                        <th scope="col">Rollos</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -110,7 +112,7 @@ $this->title = "Nueva Factura";
                     </tbody>
                   </table>
                   </div>
-                  <div class="pull-left "  style="padding-left: 15px;">
+                 <!-- <div class="pull-left "  style="padding-left: 15px;">
                     <div class="row ">
                     <div class="custom-control custom-radio">
                             <input class="custom-control-input" type="radio" id="customRadio1" name="customRadio" value="efectivo" checked>
@@ -122,11 +124,41 @@ $this->title = "Nueva Factura";
                         <label for="customRadio2" style="font-size: 13px;font-weight: bold;"  class="custom-control-label">Crédito</label>
                     </div>
                     </div>
+                  </div>-->
+                  <div class="pull-right row col-12">
+                    <div class="col-9">&nbsp;</div>
+                    <div class="col-3 row text-right">
+                      <div class="col-8">
+                        <span style="font-size: 15px;font-weight: bold;"  class="col-9" >SUBTOTAL: </span>
+                      </div>
+                      <div class="col-4">
+                        <span  style="font-size: 18px;font-weight: bold; color:orange;"  class="col-3" id="total">0.00</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="pull-right ">
-                    <span style="font-size: 15px;font-weight: bold;" >TOTAL: $</span>
-                    <span  style="font-size: 18px;font-weight: bold; color:orange;" id="total">0.00</span>
+                  <div class="pull-right row col-12">
+                    <div class="col-9">&nbsp;</div>
+                    <div class="col-3 row text-right">
+                      <div class="col-8">
+                        <span style="font-size: 15px;font-weight: bold;"  class="col-9" >IVA (12%): </span>
+                      </div>
+                      <div class="col-4">
+                        <span  style="font-size: 18px;font-weight: bold; color:orange;"  class="col-3" id="iva">0.00</span>
+                      </div>
+                    </div>
                   </div>
+                  <div class="pull-right row col-12">
+                    <div class="col-9">&nbsp;</div>
+                    <div class="col-3 row text-right">
+                      <div class="col-8">
+                        <span style="font-size: 15px;font-weight: bold;"  class="col-9" >TOTAL: </span>
+                      </div>
+                      <div class="col-4">
+                        <span  style="font-size: 18px;font-weight: bold; color:orange;"  class="col-3" id="totalfinal">0.00</span>
+                      </div>
+                    </div>
+                  </div>
+                   
                 </div>
                 </div>
               </div>
@@ -255,7 +287,7 @@ $(document).ready(function(){
          if (data[0])
          {
            // console.log(data[0].nombres);
-             $('#nCliente').html(data[0].nombres+' '+data[0].apellidos )
+             $('#nCliente').html(data[0].nombres )
              $('#codigobarras').focus();
              $('#cliente').prop('disabled', true);
          }else{
@@ -309,6 +341,8 @@ $(document).ready(function(){
     dataint = dataFactura;
     var html='';
     var total=0;
+    var iva=0;
+    var totalfinal=0;
     for (var i = 0, l = dataint.length; i < l; i++) {
       var obj = dataint[i];
       //console.log(obj);
@@ -333,11 +367,15 @@ $(document).ready(function(){
       var preciot=obj.total;
       var imagen='<img style=\"width: 30px;\" src=\"/images/articulos/'+obj.imagen+'\" />';
       //html=html+trini+tdini+input+tdfin+tdini+obj.nombre+' - '+ obj.descripcion+' '+obj.color+' '+obj.clasificacion+tdfin+tdini+imagen+tdfin+tdini+inputprecio+tdfin+tdtini+preciot+tdfin+tdini+button+tdfin+trfin;
-      html=html+trini+tdini+input+tdfin+tdini+obj.nombre+' - '+ obj.descripcion+tdfin+tdini+imagen+tdfin+tdini+inputprecio+tdfin+tdtini+preciot+tdfin+tdini+button+tdfin+trfin;
+      html=html+trini+tdini+input+tdfin+tdini+obj.nombre+' - '+ obj.descripcion+tdfin+tdini+imagen+tdfin+tdini+inputprecio+tdfin+tdtini+preciot+tdfin+tdini+'0.00'+tdfin+tdini+button+tdfin+trfin;
       total=parseFloat(total)+parseFloat(preciot);
+      iva=parseFloat(total)*parseFloat(0.12);
+      totalfinal=parseFloat(total)+parseFloat(iva);
     }
     //console.log(total);
     $('#total').html(total.toFixed(2));
+    $('#iva').html(iva.toFixed(2));
+    $('#totalfinal').html(totalfinal.toFixed(2));
     $('#contenidoCompra').html(html);
     $(\"#tableFixHead\").scrollTop($(\"#tableFixHead\").prop(\"scrollHeight\"));
   }
@@ -380,8 +418,13 @@ $(document).ready(function(){
         }
       console.log(parseFloat(dataFactura[i].total));
       total=parseFloat(total)+parseFloat(dataFactura[i].total);
+      
     }
+    iva=parseFloat(total)*parseFloat(0.12);
+    totalfinal=parseFloat(total)+parseFloat(iva);
     $('#total').html(total.toFixed(2));
+    $('#iva').html(iva.toFixed(2));
+    $('#totalfinal').html(totalfinal.toFixed(2));
     localStorage.setItem('listaFactura', JSON.stringify(dataFactura));
   }
   function cambiarPrecio(pos,obj) {
@@ -397,7 +440,12 @@ $(document).ready(function(){
       console.log(parseFloat(dataFactura[i].total));
         total=parseFloat(total)+parseFloat(dataFactura[i].total);
     }
+    iva=parseFloat(total)*parseFloat(0.12);
+    totalfinal=parseFloat(total)+parseFloat(iva);
     $('#total').html(total.toFixed(2));
+    $('#iva').html(iva.toFixed(2));
+    $('#totalfinal').html(totalfinal.toFixed(2));
+    
     localStorage.setItem('listaFactura', JSON.stringify(dataFactura));
   }
   function agregarItemFac(data) {
@@ -483,7 +531,8 @@ $(document).ready(function(){
         obtenerCliente($('#cliente').val());
       }
       var cliente=$('#cliente').val();
-      var formapago=document.querySelector('input[name=\"customRadio\"]:checked').value;
+      //var formapago=document.querySelector('input[name=\"customRadio\"]:checked').value;
+      var formapago='efectivo';
       $.ajax({
           url:\"ingresarfactura\",
           method:\"POST\",
@@ -498,6 +547,8 @@ $(document).ready(function(){
                 if (data.id)
                 {
                   imprimirFactura(data.id);
+                  $('#iva').html('0.00');
+                  $('#totalfinal').html('0.00');
                 }
             } else {
                  alert('No se ha podido guardar la factura');
@@ -515,6 +566,8 @@ $(document).ready(function(){
       $('#nCliente').html('....');
       $('#contenidoCompra').html('');
       $('#total').html('0.00');
+      $('#iva').html('0.00');
+      $('#totalfinal').html('0.00');
        dataFacturaprod = [];
        encerarFactura();
       localStorage.setItem('listaFactura', JSON.stringify(dataFactura));

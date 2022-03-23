@@ -50,16 +50,19 @@ $botones= new Botones;
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'valor3', 'id'=>'valor3', 'valor'=>$pedido->pedidosdetalle[2]->subtotal, 'onchange'=>' setSumatoria(this,3)', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'','leyenda'=>'0.00', 'col'=>'col-2 col-md-2', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'total3', 'id'=>'total3', 'valor'=>$pedido->pedidosdetalle[2]->total, 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'','leyenda'=>'0.00', 'col'=>'col-2 col-md-2', 'adicional'=>' readonly'),
         
+
+        
     ),true
 );
-
+if ($pedido->estatuspedido=="DEVUELTO"){ $cajamensaje=array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'mensajeenvio', 'id'=>'mensajeenvio', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Mensaje de envío de pedido','leyenda'=>'Mensaje de envío de pedido', 'col'=>'col-12 col-md-12', 'adicional'=>''); }
 $contenidototal=$objeto->getObjetosArray(
     array(
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'subtotal', 'id'=>'subtotal', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Subtotal','leyenda'=>'0.00', 'col'=>'col-4 col-md-4', 'adicional'=>' readonly'),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'iva', 'id'=>'iva', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Iva','leyenda'=>'0.00', 'col'=>'col-4 col-md-4', 'adicional'=>' readonly'),
         array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'totalpedido', 'id'=>'totalpedido', 'valor'=>'', 'onchange'=>'', 'clase'=>'text-right', 'style'=>'', 'icono'=>'','boxbody'=>false,'etiqueta'=>'Total','leyenda'=>'0.00', 'col'=>'col-4 col-md-4', 'adicional'=>' readonly'),
-        
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
+        $cajamensaje
     ),true
 );
  
@@ -221,7 +224,7 @@ function crearEmp(){
                         // ============================ Not here, this would be too late
                         notificacion(data.mensaje,data.tipo);
                         //$this.data().isSubmitted = true;
-                        $('#frmDatos')[0].reset();
+                        //$('#frmDatos')[0].reset();
                         return true;
                     }else{
                         notificacion(data.mensaje,data.tipo);

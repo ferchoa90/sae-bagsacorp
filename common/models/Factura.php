@@ -46,7 +46,7 @@ class Factura extends \yii\db\ActiveRecord
         return [
             [['nfactura', 'idcliente', 'nombres', 'ruc', 'subtotal', 'total', 'iva', 'usuariocreacion'], 'required'],
             [['nfactura', 'idcliente', 'usuariocreacion', 'tipopago', 'tipodoc'], 'integer'],
-            [['subtotal', 'total', 'iva'], 'number'],
+            //[['subtotal', 'total', 'iva'], 'number'],
             [['fechacreacion'], 'safe'],
             [['facturae', 'estatus'], 'string'],
             [['nombres'], 'string', 'max' => 350],

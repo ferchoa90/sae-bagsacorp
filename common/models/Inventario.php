@@ -52,13 +52,13 @@ class Inventario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idproducto', 'cantidadini', 'cantidadcaja', 'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'codigobarras', 'codigocaja', 'usuariocreacion'], 'required'],
-            [['idproducto'   , 'cantidadini', 'cantidadcaja', 'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'isDeleted', 'usuariocreacion'], 'integer'],
-            [['precioint', 'preciov1', 'preciov2', 'preciovp'], 'number'],
+            [['idproducto',   'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'codigobarras', 'codigocaja', 'usuariocreacion'], 'required'],
+            [['idproducto'   , 'stock', 'idcolor', 'idcalidad', 'idsucursal', 'idclasificacion', 'isDeleted', 'usuariocreacion'], 'integer'],
+            [['costo', 'total'], 'number'],
             [['fechacreacion'], 'safe'],
             [['estatus'], 'string'],
             [['codigobarras', 'codigocaja'], 'string', 'max' => 60],
-            [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Productos::className(), 'targetAttribute' => ['idproducto' => 'id']],
+            //[['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Productos::className(), 'targetAttribute' => ['idproducto' => 'id']],
            // [['idpresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacion::className(), 'targetAttribute' => ['idpresentacion' => 'id']],
             [['usuariocreacion'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuariocreacion' => 'id']],
             [['idcolor'], 'exist', 'skipOnError' => true, 'targetClass' => Color::className(), 'targetAttribute' => ['idcolor' => 'id']],
@@ -107,9 +107,13 @@ class Inventario extends \yii\db\ActiveRecord
     }
 
 
-    public function getProducto()
+    public function getProducto0()
     {
-        return $this->hasOne(Productos::className(), ['id' => 'idproducto']);
+        $producto=Productos::find()->where(["id"=> $this->idproducto])->one();
+        //echo ( $this->idproducto.' - ');
+        //return $this->hasOne(Productos::className(), ['id' => 'idproducto']);
+        return $producto;
+
     }
 
     /**

@@ -26,6 +26,8 @@ use common\models\PedidosMensajes;
 use common\models\Horariocomidas;
 use common\models\Departamentos;
 use common\models\Clientes;
+use common\models\Ordenprod;
+use common\models\Pedidosprod;
 use backend\components\Contabilidad_clientes;
 use backend\components\Contabilidad_proveedores;
 use backend\components\Archivos;
@@ -132,6 +134,16 @@ class VentasController extends Controller
         return $this->render('reimpresion');
     }
 
+    public function actionOrdenesproduccion()
+    {
+        return $this->render('ordenesproduccion');
+    }
+
+    public function actionPedidosproduccion()
+    {
+        return $this->render('pedidosproduccion');
+    }
+
     public function actionPedidosreg()
     {
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -184,12 +196,195 @@ class VentasController extends Controller
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'CERRADO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
 
                     if (($id == "nombres")  || ($id == "direccion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "telefono") || ($id == "usuariocreacion") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "subtotal") || ($id == "iva") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "total") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+
+                    if ($id == "estatusproduccion") {
+                        switch ($text) {
+                            case 'RECIBIDO':
+                                $style='badge-info';
+                                break;
+
+                            case 'NO INICIADO':
+                                    $style='badge-primary';
+                                    break;
+
+                                    case 'PROC PRODUCCION':
+                                        $style='badge-primary';
+                                        break;
+
+
+                            default:
+                                # code...
+                                break;
+                        }
+                        $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    }
+
+                    if ($id == "estatuspedido") {
+                        $estatuspedido= New Produccion_pedidos;
+                        $style=$estatuspedido->estatus($text);
+                        $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+
+    public function actionOrdenesprodreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "ordenesprod";
+        $view=$page;
+        $model = Ordenprod::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+                $editar=array(); $borrar=array();$archivo=array();$facturar=array();
+                if ($data["estatusorden"]=="NUEVO"  || $data["estatusorden"]=="DEVUELTO") {
+                    //$editar=array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$data["id"], 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>'');
+                }
+
+                if ($data["estatusorden"]=="AUTORIZADO") {
+                    $facturar=array('tipo'=>'link','nombre'=>'generar', 'id' => 'generar', 'titulo'=>'', 'link'=>'/backend/web/facturacion/nuevafactura', 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'pdf','tamanio'=>'superp', 'adicional'=>'');
+                }
+                if ($data["estatusorden"]=="NUEVO") {
+                    $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'eliminar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data["id"]. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
+                }
+
+               
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
+                //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
+
+
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'ver', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          $editar,
+                          $borrar,
+                          $archivo,
+                          $facturar,
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'CERRADO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+
+                 
+                    if (($id == "usuariocreacion") || ($id == "idpedido") ) { $arrayResp[$key][$id] = $text; }
+                    if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
+
+                    if ($id == "estatusproduccion") {
+                        switch ($text) {
+                            case 'RECIBIDO':
+                                $style='badge-info';
+                                break;
+
+                            case 'NO INICIADO':
+                                    $style='badge-primary';
+                                    break;
+
+
+                            default:
+                                # code...
+                                break;
+                        }
+                        $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    }
+
+                    if ($id == "estatusorden") {
+                        $estatuspedido= New Produccion_pedidos;
+                        $style=$estatuspedido->estatus($text);
+                        $arrayResp[$key][$id] = '<small class="badge '.$style.'" style="color:white"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                    }
+                }
+            }
+            $count++;
+        }
+        return json_encode($arrayResp);
+    }
+
+    public function actionPedidosprodreg()
+    {
+        //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        $page = "pedidosprod";
+        $view=$page;
+        $model = Pedidosprod::find()->where(['isDeleted' => '0'])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        $arrayResp = array();
+        $count = 0;
+        foreach ($model as $key => $data) {
+                $editar=array(); $borrar=array();$archivo=array();$facturar=array();
+                if ($data["estatuspedido"]=="NUEVO"  || $data["estatuspedido"]=="DEVUELTO") {
+                    //$editar=array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$data["id"], 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>'');
+                }
+
+                if ($data["estatuspedido"]=="AUTORIZADO") {
+                    $facturar=array('tipo'=>'link','nombre'=>'generar', 'id' => 'generar', 'titulo'=>'', 'link'=>'/backend/web/facturacion/nuevafactura', 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'naranja', 'icono'=>'pdf','tamanio'=>'superp', 'adicional'=>'');
+                }
+                if ($data["estatuspedido"]=="NUEVO") {
+                    $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'eliminar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data["id"]. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
+                }
+
+               
+            foreach ($data as $id => $text) {
+                $botones= new Botones;
+                $arrayResp[$key]['num'] = $count+1;
+                //$arrayResp[$key]['imagen'] = '<img style="width:30px;" src="/frontend/web/images/articulos/'.$data->imagen.'"/>';
+                //$arrayResp[$key]['proveedor'] = $data->proveedor->nombre;
+
+
+                $arrayResp[$key]['usuariocreacion'] = $data->usuariocreacion0->username;
+                if ($id == "id") {
+                    $botonC=$botones->getBotongridArray(
+                        array(
+                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'ver', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                          $editar,
+                          $borrar,
+                          $archivo,
+                          $facturar,
+                        )
+                      );
+                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    //$arrayResp[$key]['button'] = '-';
+                }
+                if ($id == "estatus" && $text == 'ACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'INACTIVO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'CERRADO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } else {
+
+                 
+                    if (($id == "usuariocreacion") || ($id == "idpedido") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
 
                     if ($id == "estatusproduccion") {
@@ -281,6 +476,60 @@ class VentasController extends Controller
         return json_encode($arrayResp);
     }
 
+    public function actionGestionarpedidoprod()
+    {
+        extract($_POST);
+        $arrayResp=array();
+        if ($estado && $pedido){
+            switch ($estado) {
+                case 'GENERAR':
+                    $estado="GENERADO";
+                    $estatuspedidoprod="PROC PRODUCCIÓN";
+                    $estatuspedido="EN PRODUCCIÓN";
+                    break;
+
+                case 'DEVOLVER':
+                    $estado="DEVUELTO";
+                    break;
+
+                case 'CANCELAR':
+                    $estado="CANCELADO";
+                    break;
+
+                case 'ANULAR':
+                    $estado="ANULADO";
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+            $modelPedidop=Pedidosprod::find()->where(['id' => $pedido, "isDeleted" => 0])->one();
+            $modelPedidop->estatuspedido=$estado;
+          
+                if  ($modelPedidop->save()){
+                    $modelPedido=Pedidos::find()->where(['id' => $modelPedidop->idpedido, "isDeleted" => 0])->one();
+                    $modelPedido->estatusproduccion=$estatuspedidoprod;
+                        if  ($modelPedido->save()){
+                            $arrayResp=array("success"=>true);
+                        }else{
+                            $arrayResp=array("success"=>false, "error" => $modelPedido->errors);    
+                        }
+                    }else{
+                        //$arrayResp=array("success"=>false);
+                        $arrayResp=array("success"=>false, "error" => $modelPedidop->errors);
+                    }
+          
+          
+
+            
+
+        }
+        return json_encode($arrayResp);
+    }
+
+    
+
     public function actionFormnuevopedido()
     {
         extract($_POST);
@@ -342,6 +591,30 @@ class VentasController extends Controller
         ]);
 
     }
+
+
+    public function actionVerpedidosprod($id)
+    {
+        $pedido= Pedidosprod::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verpedidoprod', [
+            'data' =>$pedido,
+           // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
+    public function actionVerordenesprod($id)
+    {
+        $pedido= Ordenprod::find()->where(['id' => $id, "isDeleted" => 0])->one();
+
+        return $this->render('verordenesprod', [
+            'data' =>$pedido,
+           // 'entregasdetalle' => Diariodetalle::find()->where(['diario' => $entregas->diario, "isDeleted" => 0])->all(),
+        ]);
+
+    }
+
 
     public function actionNuevopedido()
     {
