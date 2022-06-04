@@ -104,4 +104,12 @@ class Diariodetalle extends \yii\db\ActiveRecord
         //echo $this->cuenta;
         return $this->hasOne(Cuentas::className(), ['codigoant' => 'cuenta']);
     }
+
+    public function getCuentas0()
+    {
+        //echo $this->cuenta;
+        return $this->hasMany(Cuentas::className(), ['codigoant' => 'cuenta']);
+    }
+
+
 }

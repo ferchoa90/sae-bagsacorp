@@ -89,6 +89,7 @@ class Produccion_pedidos extends Component
         $idmenu=0;
         $modelPedido= new Pedidos;
         $result=false;
+            //var_dump($pedido);
         if ($pedido):
             $modelPedido->idcliente=$pedido["cliente"];
             $modelPedido->observacion=$pedido["observacion"];
@@ -214,8 +215,8 @@ class Produccion_pedidos extends Component
                     $mensajePedido->isDeleted=0;
                     $mensajePedido->estatus="ACTIVO";
                     if  ($mensajePedido->save()){
-                        
-                        
+
+
                     }
                 }
                 foreach ($pedido as $clave=>$valor):
@@ -245,7 +246,7 @@ class Produccion_pedidos extends Component
                             //$this->callback(1,$idmenu,$modelDetalle,"Produccion_pedidos -> Nuevo");
                             if (!$modelDetalle->save())
                             {
-                                
+
                                 $this->callback(1,$idmenu,$modelDetalle->errors,"Produccion_pedidos -> Actualizar");
                             }
                         }
@@ -306,7 +307,7 @@ class Produccion_pedidos extends Component
             case 'POR APROBAR':
                 $style='badge-secondary';
                 break;
-            
+
             case 'FACTURADO TOTAL':
                 $style='badge-secondary';
                 break;

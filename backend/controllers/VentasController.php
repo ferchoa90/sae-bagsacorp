@@ -198,6 +198,8 @@ class VentasController extends Controller
                     $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'CERRADO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
+                } elseif ($id == "estatus" && $text == 'ANULADO') {
+                    $arrayResp[$key][$id] = '<small class="badge badge-danger"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
 
                     if (($id == "nombres")  || ($id == "direccion") ) { $arrayResp[$key][$id] = $text; }
@@ -265,7 +267,7 @@ class VentasController extends Controller
                     $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'eliminar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data["id"]. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
                 }
 
-               
+
             foreach ($data as $id => $text) {
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
@@ -295,7 +297,7 @@ class VentasController extends Controller
                     $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
 
-                 
+
                     if (($id == "usuariocreacion") || ($id == "idpedido") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
 
@@ -353,7 +355,7 @@ class VentasController extends Controller
                     $borrar=array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'eliminar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data["id"]. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>'');
                 }
 
-               
+
             foreach ($data as $id => $text) {
                 $botones= new Botones;
                 $arrayResp[$key]['num'] = $count+1;
@@ -383,7 +385,7 @@ class VentasController extends Controller
                     $arrayResp[$key][$id] = '<small class="badge badge-secondary"><i class="fa fa-circle-thin"></i>&nbsp; ' . $text . '</small>';
                 } else {
 
-                 
+
                     if (($id == "usuariocreacion") || ($id == "idpedido") ) { $arrayResp[$key][$id] = $text; }
                     if (($id == "fechacreacion") ) { $arrayResp[$key][$id] = $text; }
 
@@ -445,6 +447,7 @@ class VentasController extends Controller
             }
             $modelPedido=Pedidos::find()->where(['id' => $pedido, "isDeleted" => 0])->one();
             $modelPedido->estatuspedido=$estado;
+            if ($estado=="ANULADO"){$modelPedido->estatus="ANULADO";}
             if ($modelPedido && ($estado=="DEVUELTO" || $estado=="ANULADO")){
                 $mensajePedido= New Pedidosmensajes;
                 $mensajePedido->idpedido=$pedido;
@@ -506,29 +509,29 @@ class VentasController extends Controller
             }
             $modelPedidop=Pedidosprod::find()->where(['id' => $pedido, "isDeleted" => 0])->one();
             $modelPedidop->estatuspedido=$estado;
-          
+
                 if  ($modelPedidop->save()){
                     $modelPedido=Pedidos::find()->where(['id' => $modelPedidop->idpedido, "isDeleted" => 0])->one();
                     $modelPedido->estatusproduccion=$estatuspedidoprod;
                         if  ($modelPedido->save()){
                             $arrayResp=array("success"=>true);
                         }else{
-                            $arrayResp=array("success"=>false, "error" => $modelPedido->errors);    
+                            $arrayResp=array("success"=>false, "error" => $modelPedido->errors);
                         }
                     }else{
                         //$arrayResp=array("success"=>false);
                         $arrayResp=array("success"=>false, "error" => $modelPedidop->errors);
                     }
-          
-          
 
-            
+
+
+
 
         }
         return json_encode($arrayResp);
     }
 
-    
+
 
     public function actionFormnuevopedido()
     {

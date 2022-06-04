@@ -120,7 +120,7 @@ $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Observación:</b>&nbsp; '.$pedido->observacion.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-3 mb-3"><b>Documento: </b>&nbsp; '.$botonarchivo.'</span><br></div>';
 //$contenido.='<div class="col-6 col-md-3 mb-3"><b>Cartera: </b>&nbsp; <span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp;&nbsp;AL DÍA</span> </span><br></div>';
-//$contenido.='<div class="col-6 col-md-3 mb-3"><b>Cartera: </b>&nbsp; <span class="badge badge-warning"><i class="fa fa-circle"></i>&nbsp;&nbsp;VENCIDA (40 DÍAS)</span> </span><br></div>';
+ $contenido.='<div class="col-6 col-md-3 mb-3"><b>Cartera: </b>&nbsp; <span class="badge badge-danger"><i class="fa fa-circle"></i>&nbsp;&nbsp;<span style="font-size:14px">VENCIDA (40 DÍAS)</span></span> </span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><b>Notas:</b>&nbsp; '.$pedido->notas.'</span><br></div>';
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';
@@ -157,7 +157,7 @@ $cont=0; $cont2=1; $tdescuento=0; $tiva=0; $tcantidad=0;$tsubtotal=0;
  foreach ($pedido->pedidosdetalle as $key => $value) {
     $scope= ($con==1)? $scope='scope="row"' : $scope='';
     $tcantidad+=$value->cantidad;
-    $tsubtotal+=$value->total;
+    $tsubtotal+=($value->total/1.12);
     $tiva+=($value->iva*$value->cantidad);
     $tdescuento+=$value->descuento;
    // if ($value->debito==0){ $debe=$value->valor; $sumdebe+=$value->valor; $haber=0; }else{  $haber=$value->valor;  $sumhaber+=$value->valor; $debe=0;     }
@@ -184,7 +184,7 @@ $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).
         {
         $mensajes.='
         <div class="col-12 chat-left chat-avatar" style="text-align: left;">
-           
+
         </div>
         <li class="chat-left">
         <div class="chat-avatar" style="text-align: center;">
@@ -199,7 +199,7 @@ $tabla.='<td class="text-center"><b>Subtotal: </b>'.number_format($tsubtotal,2).
         if ($cont==2){
             $mensajes.='
             <div class="col-12 chat-right chat-avatar" style="text-align: right;">
-            
+
         </div>
             <li class="chat-right">
 

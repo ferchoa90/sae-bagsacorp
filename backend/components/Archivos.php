@@ -22,8 +22,8 @@ class Archivos extends Component
 
     function __construct($ruta='',$tamanio='',$tipoarchivo='',$formatosdefecto='')
     {
-        $rutadefecto='E:/xampp-new/htdocs/sae-bagsacorp/backend/web/images/pedidos/';
-        //$rutadefecto='C:/xampp/htdocs/sae-bagsacorp/backend/web/images/pedidos/';
+        //$rutadefecto='E:/xampp-new/htdocs/sae-bagsacorp/backend/web/images/pedidos/';
+        $rutadefecto='C:/xampp/htdocs/sae-bagsacorp/backend/web/images/pedidos/';
         $rutadefectoprod = '/var/www/html/frontend/web/images/pedidos/';
         $tamaniodefecto="10000000"; //MB
         $tipoarchivodefecto="*.jpg|*.png|*.pdf|";

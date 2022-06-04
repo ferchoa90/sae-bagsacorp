@@ -143,10 +143,11 @@ class FacturacionController extends Controller
         $return=array();
         if (isset($_POST) and !empty($_POST)) {
             $data = $_POST;
-           
+
             //echo $data["cliente"];
             $factant=Factura::find()->orderBy(["fechacreacion" => SORT_DESC])->one();
             //var_dump($factant);
+
             $facturan=$factant->nfactura+1;
             $cliente = Clientes::find()->where(['cedula' => $data["cliente"]])->orderBy(["fechacreacion" => SORT_DESC])->all();
             $clienteid=$cliente[0]->id;
@@ -166,6 +167,7 @@ class FacturacionController extends Controller
             $subtotal=0;
             foreach ($data["data"] as $key => $value) {
                 //$value["id"];
+
                 $valortotal=$valortotal+($value["valoru"]*$value["cantidad"]);
             }
             $subtotal= $valortotal;
@@ -176,6 +178,7 @@ class FacturacionController extends Controller
             $factura->total=$valortotal;
             $factura->fecha= date("Y-m-d");
             if ($factura->save()){
+
                 foreach ($data["data"] as $key => $value) {
                     //$value["id"];
                     $subtotalI= number_format($value["valoru"]/1.12,2);
@@ -205,18 +208,19 @@ class FacturacionController extends Controller
                 }
 
                     $pedido= Pedidos::find()->where(['idcliente' => $clienteid,"estatus"=>"ACTIVO","estatuspedido"=>"AUTORIZADO"])->orderBy(["fechacreacion" => SORT_DESC])->one();
-                     //$clienteid;
+                  //  var_dump($pedido);
+
                     if ($pedido){
                         $pedido->estatuspedido="FACTURADO TOTAL";
                         $pedido->estatus="CERRADO";
                         $pedido->save();
                     }
 
-                    //$return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $factura->id);
+                    $return=array("success"=>true,"Mensaje"=>"OK","resp" => true, "id" => $factura->id);
             }else{
                 $return=array("success"=>false,"Mensaje"=>"No se ha podido ingresar el banner.","resp" => false, "id" => "");
             }
-            // var_dump($factura->errors);
+
             //var_dump($data["data"][0]);
             return json_encode($return);
         }
@@ -337,7 +341,7 @@ class FacturacionController extends Controller
         foreach ($modelI as $key => $data) {
             //$arrayResp[] = $data->id.' - '.$data->producto->nombreproducto.' - '.$data->producto->marca0->nombre.' '.$data->color->nombre.' '.$data->clasificacion->nombre.' - '.$data->producto->descripcion;
             $arrayResp[] = $data->id.' - '.$data->producto0->nombreproducto;
-            
+
         }
        //  die(var_dump($arrayResp));
         return json_encode($arrayResp);
