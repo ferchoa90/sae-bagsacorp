@@ -27,6 +27,7 @@ use common\models\Retenciones;
 use common\models\Retencioncxc;
 use common\models\Formapagocuentas;
 use backend\components\Botones;
+use backend\components\Contabilidad_cuentas;
 use kartik\mpdf\Pdf;
 
 
@@ -101,6 +102,16 @@ class ContabilidadController extends Controller
 
         //var_dump($clientesArray);
         return $this->render('nuevacuenta', [
+            'cuentas' => $cuentasArray,
+        ]);
+    }
+
+    public function actionNuevobancomov()
+    {
+        $cuentasArray = new Contabilidad_cuentas();
+        $cuentasArray = $cuentasArray->getSelect();
+        //var_dump($clientesArray);
+        return $this->render('nuevobancomov', [
             'cuentas' => $cuentasArray,
         ]);
     }
@@ -352,7 +363,7 @@ class ContabilidadController extends Controller
 
     public function actionCajareg()
     {
-
+    
         //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");

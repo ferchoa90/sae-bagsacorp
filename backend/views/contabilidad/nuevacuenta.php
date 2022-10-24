@@ -37,6 +37,8 @@ $div= new Bloques;
 
  $contenido2='<div style="line-height:25px;"><b>Estatus:</b>&nbsp;&nbsp;&nbsp;<span class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ACTIVO</span><br>';
  $contenido2.='<hr style="color: #0056b2;">';
+ $contenido2.='</div>';
+
 
  echo $div->getBloqueArray(
     array(

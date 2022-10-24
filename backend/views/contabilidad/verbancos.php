@@ -33,7 +33,8 @@ $contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Beneficiario:</b>&nbsp; '.$bancos->beneficiario.'</span><br></div>';
 $contenido.='<div class="col-12 col-md-12"><b>Concepto:</b>&nbsp; '.$bancos->concepto.'</span><br></div>';
 $contenido.='<div class="col-6 col-md-4"><b>Valor:</b>&nbsp; '.$bancos->valor.'</span><br></div>';
-$contenido.='<div class="col-6 col-md-4"><b>Tipo de pago:</b>&nbsp; '.$bancos->tipopagobanco0->nombre.'</span><br></div>';
+$tipopago= ($bancos->tipopagobanco0->nombre)? $bancos->tipopagobanco0->nombre: 'N/A' ;
+$contenido.='<div class="col-6 col-md-4"><b>Tipo de pago:</b>&nbsp; '.$tipopago.'</span><br></div>';
 
 //$contenido.='<div class="col-12 col-md-12"><hr style="color: #0056b2;"></div>';
 $contenido.='</div>';

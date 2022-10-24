@@ -150,7 +150,7 @@ class Objetos extends Component
                 $select='<select class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" value="'.$valor.'" placeholder="'.$etiqueta.'">';
                 break;
         }
-        $selectvalue+='<option>'.$etiqueta.'</option>';
+        $selectvalue.='<option>'.$etiqueta.'</option>';
 
       foreach ($valor as $key => $value) {
         if($valordefecto!=NULL && $value["id"]==$valordefecto){$selected=' selected="selected" '; }

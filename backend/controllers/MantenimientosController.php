@@ -312,6 +312,8 @@ class MantenimientosController extends Controller
                     $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
                     //$arrayResp[$key]['button'] = '-';
                 }
+
+                
                 if ($id == "estatus" && $text == 'ACTIVO') {
                     $arrayResp[$key][$id] = '<small class="badge badge-success"><i class="fa fa-circle"></i>&nbsp; ' . $text . '</small>';
                 } elseif ($id == "estatus" && $text == 'INACTIVO') {

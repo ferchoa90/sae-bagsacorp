@@ -45,6 +45,22 @@ class Contabilidad_cuentas extends Component
         return $result;
     }
 
+    public function getSelect()
+    {
+        $cuentas = Cuentas::find()->where(["isDeleted"=>0])->orderBy(["fechacreacion" => SORT_DESC])->all();
+        //var_dump($cuentas);
+        $cuentasArray=array();
+        $cont=0;
+        foreach ($cuentas as $key => $value) {
+            if ($cont==0){ $cuentasArray[$cont]["value"]="Seleccione una cuenta"; $cuentasArray[$cont]["id"]=-1; $cont++; }
+            $cuentasArray[$cont]["value"]= $value->codigoant.' -> '.$value->nombre;;
+            $cuentasArray[$cont]["id"]=$value->id;
+            $cont++;
+        }
+        return $cuentasArray;
+
+    }
+
     public function Nuevo($asiento,$tipo)
     {
         //$date = date("Y-m-d H:i:s");
