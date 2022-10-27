@@ -24,17 +24,17 @@ $hoy=date_create();
             'valor'=>date_format($hoy, "Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,
             'etiqueta'=>'Fecha: ', 'col'=>'col-12 col-md-4', 'adicional'=>' readonly'),    
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'diario', 'id'=>'diario', 
-            'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
             'etiqueta'=>'Diario: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),    
         array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cuenta', 'id'=>'cuenta', 'valor'=>$cuentas, 
             'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
             'etiqueta'=>'Cuenta: ', 'col'=>'col-12 col-md-8', 'adicional'=>''),
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'numeroretencion', 'id'=>'numeroretencion', 
-            'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
             'etiqueta'=>'No. Retencion: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
 
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),                    
-        
+
         array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'beneficiario', 'id'=>'beneficiario', 
             'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
             'etiqueta'=>'Beneficiario: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
