@@ -13,6 +13,7 @@ use common\models\Bancos;
 use common\models\Banco;
 use common\models\Caja;
 use common\models\Cuentas;
+use common\models\Tipopagobanco;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporcobrardet;
 use common\models\Cuentasporpagar;
@@ -27,7 +28,6 @@ use common\models\Retenciones;
 use common\models\Retencioncxc;
 use common\models\Formapagocuentas;
 use backend\components\Botones;
-use backend\components\Contabilidad_cuentas;
 use kartik\mpdf\Pdf;
 
 
@@ -108,11 +108,43 @@ class ContabilidadController extends Controller
 
     public function actionNuevobancomov()
     {
-        $cuentasArray = new Contabilidad_cuentas();
-        $cuentasArray = $cuentasArray->getSelect();
-        //var_dump($clientesArray);
+        $tiposPagoBanco = Tipopagobanco::find()
+            ->where(["isDeleted" => 0,"estatus" => "ACTIVO", "reporte" => 1])
+            ->orderBy(["nombre" => SORT_ASC])
+            ->all();
+        $tiposPBArray=array();
+        $cont = 0;
+        foreach ($tiposPagoBanco as $key => $value) {
+            if ($cont == 0) { 
+                $tiposPBArray[$cont]["value"] = "Seleccione un tipo de pago"; 
+                $tiposPBArray[$cont]["id"] =-1 ; 
+                $cont++; 
+            }
+            $tiposPBArray[$cont]["value"]=$value->nombre;
+            $tiposPBArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+
+        $cuentas=Cuentas::find()
+            ->where(["isDeleted" => 0,"estatus" => "ACTIVO"])
+            ->orderBy(["codigoant" => SORT_ASC])
+            ->all();
+        $cuentasArray=array();
+        $cont = 0;
+        foreach ($cuentas as $key => $value) {
+            if ($cont == 0) { 
+                $cuentasArray[$cont]["value"] = "Seleccione una cuenta";
+                $cuentasArray[$cont]["id"] = -1;
+                $cont++;
+            }
+            $cuentasArray[$cont]["value"] = $value->codigoant.' -> '.$value->nombre;
+            $cuentasArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+
         return $this->render('nuevobancomov', [
             'cuentas' => $cuentasArray,
+            'tiposPago' => $tiposPBArray
         ]);
     }
 

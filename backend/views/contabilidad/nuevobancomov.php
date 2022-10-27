@@ -7,26 +7,50 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
 
-$this->title = "Nueva cuenta";
+$this->title = "Nuevo Banco Mov";
 $this->params['breadcrumbs'][] = $this->title;
 
 
 $objeto= new Objetos;
 $div= new Bloques;
+$hoy=date_create();
 
  $contenido=$objeto->getObjetosArray(
     array(
-        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cliente', 'id'=>'cliente', 'valor'=>$cuentas, 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Categoria: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cuenta', 'id'=>'cuenta', 'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Nombre de la cuenta: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'saldo', 'id'=>'saldo', 'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'dinero','boxbody'=>false,'etiqueta'=>'Saldo: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
-        array('tipo'=>'input','subtipo'=>'numero', 'nombre'=>'cheque', 'id'=>'cheque', 'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,'etiqueta'=>'Cheque: ', 'col'=>'col-12 col-md-3', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'referencia', 'id'=>'referencia', 
+            'valor'=>'', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'Referencia: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'fecha', 'nombre'=>'fecha', 'id'=>'fecha', 
+            'valor'=>date_format($hoy, "Y-m-d"), 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'calendario','boxbody'=>false,
+            'etiqueta'=>'Fecha: ', 'col'=>'col-12 col-md-4', 'adicional'=>' readonly'),    
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'diario', 'id'=>'diario', 
+            'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'Diario: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),    
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'cuenta', 'id'=>'cuenta', 'valor'=>$cuentas, 
+            'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'Cuenta: ', 'col'=>'col-12 col-md-8', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'numeroretencion', 'id'=>'numeroretencion', 
+            'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'No. Retencion: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
 
+        array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),                    
+        
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'beneficiario', 'id'=>'beneficiario', 
+            'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'Beneficiario: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'cajatexto', 'nombre'=>'concepto', 'id'=>'concepto', 
+            'valor'=> '', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'Concepto: ', 'col'=>'col-12 col-md-12', 'adicional'=>''),
+        array('tipo'=>'input','subtipo'=>'moneda', 'nombre'=>'valor', 'id'=>'valor', 
+            'valor'=>'0.00', 'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'valor','boxbody'=>false,
+            'etiqueta'=>'Valor: ', 'col'=>'col-12 col-md-4', 'adicional'=>''),
+        array('tipo'=>'select','subtipo'=>'', 'nombre'=>'tipopago', 'id'=>'tipopago', 'valor'=>$tiposPago, 
+            'onchange'=>'', 'clase'=>'', 'style'=>'', 'icono'=>'lapiz','boxbody'=>false,
+            'etiqueta'=>'Tipo de pago: ', 'col'=>'col-12 col-md-8', 'adicional'=>''),
     ),true
 );
- //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-9 col-xs-12 ','','','','');
- //echo $div->getBloque('bloquediv','rr','ee','PRUEBA','col-md-3 col-xs-12 ','','','','');
- //echo $contenido;
- $botones= new Botones; $botonC=$botones->getBotongridArray(
+ 
+$botones= new Botones; $botonC=$botones->getBotongridArray(
     array(
         array('tipo'=>'separador','clase'=>'', 'estilo'=>'', 'color'=>''),
         array('tipo'=>'link','nombre'=>'guardar', 'id' => 'guardar', 'titulo'=>'&nbsp;Guardar', 'link'=>'', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'guardar','tamanio'=>'pequeño',  'adicional'=>''),
