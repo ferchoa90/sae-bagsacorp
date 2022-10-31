@@ -8,12 +8,14 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\db\Query;
+use backend\components\Contabilidad_bancos;
 use backend\models\User;
 use common\models\Bancos;
 use common\models\Banco;
 use common\models\Caja;
 use common\models\Cuentas;
 use common\models\Tipopagobanco;
+use common\models\Tipopago;
 use common\models\Cuentasporcobrar;
 use common\models\Cuentasporcobrardet;
 use common\models\Cuentasporpagar;
@@ -108,6 +110,23 @@ class ContabilidadController extends Controller
 
     public function actionNuevobancomov()
     {
+        $tiposPago = Tipopago::find()
+            ->where(["estatus" => "ACTIVO"])
+            ->orderBy(["nombre" => SORT_ASC])
+            ->all();
+        $tiposPagoArray=array();
+        $cont = 0;
+        foreach ($tiposPago as $key => $value) {
+            if ($cont == 0) { 
+                $tiposPagoArray[$cont]["value"] = "Seleccione un tipo de mov"; 
+                $tiposPagoArray[$cont]["id"] = -1; 
+                $cont++; 
+            }
+            $tiposPagoArray[$cont]["value"]=$value->nombre;
+            $tiposPagoArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+
         $tiposPagoBanco = Tipopagobanco::find()
             ->where(["isDeleted" => 0,"estatus" => "ACTIVO", "reporte" => 1])
             ->orderBy(["nombre" => SORT_ASC])
@@ -117,7 +136,7 @@ class ContabilidadController extends Controller
         foreach ($tiposPagoBanco as $key => $value) {
             if ($cont == 0) { 
                 $tiposPBArray[$cont]["value"] = "Seleccione un tipo de pago"; 
-                $tiposPBArray[$cont]["id"] =-1 ; 
+                $tiposPBArray[$cont]["id"] = -1; 
                 $cont++; 
             }
             $tiposPBArray[$cont]["value"]=$value->nombre;
@@ -144,7 +163,8 @@ class ContabilidadController extends Controller
 
         return $this->render('nuevobancomov', [
             'cuentas' => $cuentasArray,
-            'tiposPago' => $tiposPBArray
+            'tiposPago' => $tiposPagoArray,
+            'tiposPagoBanco' => $tiposPBArray
         ]);
     }
 
@@ -490,6 +510,19 @@ class ContabilidadController extends Controller
             $count++;
         }
         return json_encode($arrayResp);
+    }
+
+    public function actionGuardarbancomov()
+    {        
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        if (isset($_POST) and !empty($_POST)) {
+            extract($_POST);
+            $modulo = new Contabilidad_bancos;
+            $response = $modulo->BancoMovNuevo($_POST);
+            return json_encode($response);
+        }
     }
 
 
