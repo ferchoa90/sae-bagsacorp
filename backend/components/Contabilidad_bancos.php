@@ -10,7 +10,7 @@ class Contabilidad_bancos extends Component
 {
   private const MODULO = 'CONTABILIDAD - BANCOS-MOV';
 
-  public function BancoMovNuevo($bancomov) {
+  public function BancoMovGuardar($bancomov) {
     $result = (object) [
       'success' => false,
       'id' => 0,
@@ -18,21 +18,30 @@ class Contabilidad_bancos extends Component
       'tipo' => 'error'
     ];
     if ($bancomov) {
-        $model= New Banco();
-        $model->tipo = $bancomov['tipo'];
-        $model->referencia = $bancomov['referencia'];
-        $model->fecha = $bancomov['fecha'];
-        $model->diario = $bancomov['diario'];
-        $model->cuenta = $bancomov['cuenta'];
-        $model->numeroretencion = $bancomov['numeroretencion'];
-        $model->beneficiario = $bancomov['beneficiario'];
-        $model->concepto = $bancomov['concepto'];
-        $model->valor = $bancomov['valor'];
-        $model->tipopago = $bancomov['tipopago'];
+        $id = -1;
+        if ($bancomov['id']) {
+          $id = $bancomov['id'];
+        }
+        $model = New Banco();
+        if ($id > 0) {
+          $model = Banco::findOne(intval($id));
+        }
+        if ($model != NULL) {
+          $model->tipo = $bancomov['tipo'];
+          $model->referencia = $bancomov['referencia'];
+          $model->fecha = $bancomov['fecha'];
+          $model->diario = $bancomov['diario'];
+          $model->cuenta = $bancomov['cuenta'];
+          $model->numeroretencion = $bancomov['numeroretencion'];
+          $model->beneficiario = $bancomov['beneficiario'];
+          $model->concepto = $bancomov['concepto'];
+          $model->valor = $bancomov['valor'];
+          $model->tipopago = $bancomov['tipopago'];
 
-        $model->isDeleted = 0;
-        $model->estatus = 'ACTIVO';
-
+          $model->isDeleted = 0;
+          $model->estatus = 'ACTIVO';
+        }
+        
         if ($model->save()) {
           $result->success = true;
           $result->id = $model->id;
