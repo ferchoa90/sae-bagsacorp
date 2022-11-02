@@ -168,6 +168,68 @@ class ContabilidadController extends Controller
         ]);
     }
 
+    public function actionEditarbancos($id) {
+        $tiposPago = Tipopago::find()
+            ->where(["estatus" => "ACTIVO"])
+            ->orderBy(["nombre" => SORT_ASC])
+            ->all();
+        $tiposPagoArray=array();
+        $cont = 0;
+        foreach ($tiposPago as $key => $value) {
+            if ($cont == 0) { 
+                $tiposPagoArray[$cont]["value"] = "Seleccione un tipo de mov"; 
+                $tiposPagoArray[$cont]["id"] = -1; 
+                $cont++; 
+            }
+            $tiposPagoArray[$cont]["value"]=$value->nombre;
+            $tiposPagoArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+
+        $tiposPagoBanco = Tipopagobanco::find()
+            ->where(["isDeleted" => 0,"estatus" => "ACTIVO", "reporte" => 1])
+            ->orderBy(["nombre" => SORT_ASC])
+            ->all();
+        $tiposPBArray=array();
+        $cont = 0;
+        foreach ($tiposPagoBanco as $key => $value) {
+            if ($cont == 0) { 
+                $tiposPBArray[$cont]["value"] = "Seleccione un tipo de pago"; 
+                $tiposPBArray[$cont]["id"] = -1; 
+                $cont++; 
+            }
+            $tiposPBArray[$cont]["value"]=$value->nombre;
+            $tiposPBArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+
+        $cuentas=Cuentas::find()
+            ->where(["isDeleted" => 0,"estatus" => "ACTIVO"])
+            ->orderBy(["codigoant" => SORT_ASC])
+            ->all();
+        $cuentasArray=array();
+        $cont = 0;
+        foreach ($cuentas as $key => $value) {
+            if ($cont == 0) { 
+                $cuentasArray[$cont]["value"] = "Seleccione una cuenta";
+                $cuentasArray[$cont]["id"] = -1;
+                $cont++;
+            }
+            $cuentasArray[$cont]["value"] = $value->codigoant.' -> '.$value->nombre;
+            $cuentasArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+        
+        $bancomov = Banco::find()->where(['id' => $id, "isDeleted" => 0])->one();
+        
+        return $this->render('editarbancomov', [
+            'bancomov' => $bancomov,
+            'cuentas' => $cuentasArray,
+            'tiposPago' => $tiposPagoArray,
+            'tiposPagoBanco' => $tiposPBArray
+        ]);
+    }
+
     public function actionBancosmov()
     {
         return $this->render('bancosmov');
@@ -327,7 +389,6 @@ class ContabilidadController extends Controller
             'bancos' =>$bancos,
             //'bancosdetalle' => Diariodetalle::find()->where(['diario' => $bancos->diario, "isDeleted" => 0])->all(),
         ]);
-
     }
 
     public function actionVercuentapc($id)
@@ -520,7 +581,7 @@ class ContabilidadController extends Controller
         if (isset($_POST) and !empty($_POST)) {
             extract($_POST);
             $modulo = new Contabilidad_bancos;
-            $response = $modulo->BancoMovNuevo($_POST);
+            $response = $modulo->BancoMovGuardar($_POST);
             return json_encode($response);
         }
     }

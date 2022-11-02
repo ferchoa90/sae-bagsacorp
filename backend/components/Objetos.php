@@ -114,6 +114,10 @@ class Objetos extends Component
                 return $this->getInputArchivo($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
 
+            case 'hidden':
+                return $this->getInputHidden($nombre, $id, $valor);
+                break;    
+
             default:
                 return "Debe indicar un tipo de Input";
                 break;
@@ -285,6 +289,14 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
         endif;
         return $resultado;
 
+    }
+
+    private static function getInputHidden($nombre, $id, $valor)
+    {
+        //$res = '<div class="form-group">' .
+         return '<input type="text" id="'. $id .'" name="'. $nombre .'" value="'. $valor .'"/>';
+        //       '</div>';
+               
     }
 
     private static function getInputArchivo($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
