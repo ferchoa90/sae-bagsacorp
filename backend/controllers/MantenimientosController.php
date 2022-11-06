@@ -8,10 +8,13 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use common\models\Productos;
 use common\models\Clientes;
+use common\models\Cuentas;
 use common\models\Proveedores;
 use common\models\Operarios;
 use common\models\Transporte;
 use backend\components\Botones;
+use backend\components\Contabilidad_proveedores;
+use yii\helpers\Url;
 
 
 /**
@@ -149,7 +152,74 @@ class MantenimientosController extends Controller
             'proveedor' => Proveedores::find()->where(['id'=>$id])->orderBy(["nombre"=>SORT_ASC])->one(),
             //'modelTeam' => Productos::find()->all(),
         ]);
-    
+    }
+
+
+    public function actionNuevoproveedor() {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $cuentas=Cuentas::find()
+            ->where(["isDeleted" => 0,"estatus" => "ACTIVO"])
+            ->orderBy(["codigoant" => SORT_ASC])
+            ->all();
+        $cuentasArray=array();
+        $cont = 0;
+        foreach ($cuentas as $key => $value) {
+            if ($cont == 0) { 
+                $cuentasArray[$cont]["value"] = "Seleccione una cuenta";
+                $cuentasArray[$cont]["id"] = -1;
+                $cont++;
+            }
+            $cuentasArray[$cont]["value"] = $value->codigoant.' -> '.$value->nombre;
+            $cuentasArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+ 
+        return $this->render('nuevoproveedor', [
+            'cuentas' => $cuentasArray
+        ]);
+    }
+
+    public function actionEditarproveedor($id) {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+
+        $cuentas=Cuentas::find()
+            ->where(["isDeleted" => 0,"estatus" => "ACTIVO"])
+            ->orderBy(["codigoant" => SORT_ASC])
+            ->all();
+        $cuentasArray=array();
+        $cont = 0;
+        foreach ($cuentas as $key => $value) {
+            if ($cont == 0) { 
+                $cuentasArray[$cont]["value"] = "Seleccione una cuenta";
+                $cuentasArray[$cont]["id"] = -1;
+                $cont++;
+            }
+            $cuentasArray[$cont]["value"] = $value->codigoant.' -> '.$value->nombre;
+            $cuentasArray[$cont]["id"] = $value->id;
+            $cont++;
+        }
+ 
+        return $this->render('editarproveedor', [
+            'proveedor' => Proveedores::findOne($id),
+            'cuentas' => $cuentasArray
+        ]);
+    }
+
+    public function actionGuardarproveedor() {        
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        if (isset($_POST) and !empty($_POST)) {
+            extract($_POST);
+            $modulo = new Contabilidad_proveedores;
+            $response = $modulo->ProveedorGuardar($_POST);
+            return json_encode($response);
+        }
     }
 
     public function actionVertransporte($id)
@@ -201,7 +271,7 @@ class MantenimientosController extends Controller
                     $botonC=$botones->getBotongridArray(
                         array(
                           array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                        //  array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
