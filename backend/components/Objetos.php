@@ -98,7 +98,7 @@ class Objetos extends Component
                 break;
 
             case 'checkbox':
-                return $this->getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
+                return $this->getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $style, $icono,$boxbody,$etiqueta,$leyenda, $col, $adicional);
                 break;
 
 
@@ -186,12 +186,10 @@ class Objetos extends Component
 
 private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $estilo, $icono,$boxbody,$etiqueta,$leyenda='', $col, $adicional)
     {
-        $iconfa=new Iconos;
-        $iconfa= $iconfa->getIconofa($icono);
-        $input='';
         $classdefault='form-control pull-right';
         $boxbodydefault='<div class="box-body">';
         $enddiv='</div>';
+        $checked = $valor ? " checked" : "";
 
         switch ($clase) {
             case '':
@@ -203,15 +201,15 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
                 break;
         }
 
-        $input=' <input type="checkbox" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'"  checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger">';
+        $input=' <input type="checkbox" class="'.$clase.'" id="'.$id.'" name="'.$nombre.'" '.$checked.' data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger">';
 
 
 
         $resultado='
         <div class="'.$col.'">
             <div class="form-group">
+                <label>'.$etiqueta.'</label>
                 <div class="input-group mb-3">
-
                     '.$input.'
                 </div>
             </div>
@@ -220,8 +218,8 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
         <script>
   $(function() {
     $("#'.$id.'").bootstrapToggle({
-      on: "Enabled",
-      off: "Disabled"
+      on: "Si",
+      off: "No"
     });
   })
 </script>
@@ -294,7 +292,7 @@ private function getInputCheckbox($nombre, $id, $valor, $onchange, $clase, $esti
     private static function getInputHidden($nombre, $id, $valor)
     {
         //$res = '<div class="form-group">' .
-         return '<input type="text" id="'. $id .'" name="'. $nombre .'" value="'. $valor .'"/>';
+         return '<input type="hidden" id="'. $id .'" name="'. $nombre .'" value="'. $valor .'"/>';
         //       '</div>';
                
     }

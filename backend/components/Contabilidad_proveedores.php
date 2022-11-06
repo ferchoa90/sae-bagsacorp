@@ -72,6 +72,57 @@ class Contabilidad_proveedores extends Component
         return $date;
     }
 
+    public function ProveedorGuardar($proveedor) {
+        $result = (object) [
+            'success' => false,
+            'id' => 0,
+            'message' => 'No se pudo completar la operacion',
+            'tipo' => 'error'
+          ];
+          if ($proveedor) {
+              $id = -1;
+              if ($proveedor['id']) {
+                $id = $proveedor['id'];
+              }
+              $model = New Proveedores();
+              if ($id > 0) {
+                $model = Proveedores::findOne(intval($id));
+              }
+              if ($model != NULL) {
+                $model->identificacion = $proveedor['identificacion'];
+                $model->natural = $proveedor['natural'] ? 1 : 0;
+                $model->cuentacontable = $proveedor['cuentacontable'];
+                $model->cuentaanticipo = $proveedor['cuentaanticipo'];
+                $model->debito = $proveedor['debito'];
+                $model->credito = $proveedor['credito'];
+                $model->nombre = $proveedor['nombre'];
+                $model->direccion = $proveedor['direccion'];
+                $model->correo = $proveedor['correo'];
+                $model->notas = $proveedor['notas'];
+                $model->contacto = $proveedor['contacto'];
+                $model->fax = $proveedor['fax'];
+                $model->telefono = $proveedor['telefono'];
+                $model->isDeleted = 0;
+                $model->estatus = 'ACTIVO';
+              }
+              
+              if ($model->save()) {
+                $result->success = true;
+                $result->id = $model->id;
+                $result->message = 'Los datos se guardaron exitosamente';
+                $result->tipo = 'success';
+              } else {
+                $this->logearError(1, 0, $model->errors);
+                $errores = "";
+                foreach ($model->errors as $msj) {
+                  $errores .= $msj . "\r\n";
+                }
+                $result->message = $errores;
+              }
+          }
+          return $result;
+    }
+
     public function auditoria(){
 
     }
