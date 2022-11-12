@@ -1,13 +1,6 @@
 <?php
-use backend\components\Objetos;
 use backend\components\Botones;
-use backend\components\Bloques;
 use backend\components\Grid;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\web\View;
-use backend\assets\AppAsset;
-/* @var $this yii\web\View */
 
 $this->title = "Transporte";
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,8 +11,12 @@ $botones= new Botones;
 <div class="row col-12 p-2" >
 <?php
 echo $botones->getBotongridArray(
-    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'nuevooperario', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
-
+    array(
+        array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 
+            'link'=>'nuevotransporte', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 
+            'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')
+    )
+);
 ?>
 </div>
 <?php

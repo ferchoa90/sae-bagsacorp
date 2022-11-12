@@ -14,6 +14,9 @@ use common\models\Operarios;
 use common\models\Transporte;
 use backend\components\Botones;
 use backend\components\Contabilidad_proveedores;
+use backend\components\Operarios as ComponentOperarios;
+use backend\components\Transportes;
+use backend\models\User;
 use yii\helpers\Url;
 
 
@@ -29,7 +32,7 @@ class MantenimientosController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['create', 'update', 'view', 'delete', 'index'],
                 'rules' => [
                     [
@@ -43,7 +46,7 @@ class MantenimientosController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ],
@@ -154,7 +157,6 @@ class MantenimientosController extends Controller
         ]);
     }
 
-
     public function actionNuevoproveedor() {
         if (Yii::$app->user->isGuest) {
             return $this->redirect(URL::base() . "/site/login");
@@ -222,6 +224,30 @@ class MantenimientosController extends Controller
         }
     }
 
+    public function actionGuardarOperario() {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        if (isset($_POST) and !empty($_POST)) {
+            extract($_POST);
+            $modulo = new ComponentOperarios();
+            $response = $modulo->OperarioGuardar($_POST);
+            return json_encode($response);
+        }
+    }
+
+    public function actionGuardartransporte() {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+        if (isset($_POST) and !empty($_POST)) {
+            extract($_POST);
+            $modulo = new Transportes();
+            $response = $modulo->TransporteGuardar($_POST);
+            return json_encode($response);
+        }
+    }
+
     public function actionVertransporte($id)
     {
         if (Yii::$app->user->isGuest) {
@@ -233,6 +259,24 @@ class MantenimientosController extends Controller
             //'modelTeam' => Productos::find()->all(),
         ]);
     
+    }
+
+    public function actionNuevotransporte() {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+ 
+        return $this->render('nuevotransporte');
+    }
+
+    public function actionEditartransporte($id) {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(URL::base() . "/site/login");
+        }
+ 
+        return $this->render('editartransporte', [
+            'transporte' => Transporte::findOne($id)
+        ]);
     }
 
     public function actionVercliente($id)
@@ -317,14 +361,7 @@ class MantenimientosController extends Controller
               //  $arrayResp[$key]['cliente'] = $data->cliente->nombres;
                 $view='operarios';
                 if ($id == "id") {
-                    $botonC=$botones->getBotongridArray(
-                        array(
-                          array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
-                          array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
-                        )
-                      );
-                    $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
+                    
                     //$arrayResp[$key]['button'] = '-';
                 }
                 if ($id == "estatus" && $text == 'ACTIVO') {
@@ -339,9 +376,15 @@ class MantenimientosController extends Controller
                 }
 
             }
-
+            $botonC=$botones->getBotongridArray(
+                array(
+                  array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$data['id'], 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
+                  array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'', 'onclick'=>'editarOperario('.$data["id"].',\''.$data["nombres"].'\')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                  array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$data['id']. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
+                )
+              );
+            $arrayResp[$key]['acciones'] = '<div style="display:flex;">'.$botonC.'</div>' ;
             $count++;
-
         }
 
 
@@ -375,7 +418,7 @@ class MantenimientosController extends Controller
                     $botonC=$botones->getBotongridArray(
                         array(
                           array('tipo'=>'link','nombre'=>'ver', 'id' => 'editar', 'titulo'=>'', 'link'=>'ver'.$view.'?id='.$text, 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'azul', 'icono'=>'ver','tamanio'=>'superp',  'adicional'=>''),
-                          //array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
+                          array('tipo'=>'link','nombre'=>'editar', 'id' => 'editar', 'titulo'=>'', 'link'=>'editar'.$view.'?id='.$text, 'onclick'=>'', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verdesuave', 'icono'=>'editar','tamanio'=>'superp', 'adicional'=>''),
                           array('tipo'=>'link','nombre'=>'eliminar', 'id' => 'editar', 'titulo'=>'', 'link'=>'','onclick'=>'deleteReg('.$text. ')', 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'rojo', 'icono'=>'eliminar','tamanio'=>'superp', 'adicional'=>''),
                         )
                       );
@@ -410,7 +453,6 @@ class MantenimientosController extends Controller
 
     }
     
-
 
     /**
      * {@inheritdoc}

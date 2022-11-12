@@ -5,7 +5,7 @@ use backend\components\Objetos;
 use backend\components\Bloques;
 use backend\components\Botones;
 
-$this->title = "Editar Proveedor";
+$this->title = "Nuevo Proveedor";
 $this->params['breadcrumbs'][] = $this->title;
 
 

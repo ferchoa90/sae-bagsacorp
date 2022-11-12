@@ -18,7 +18,7 @@ $botones= new Botones;
 <div class="row col-12 p-2" >
 <?php
 echo $botones->getBotongridArray(
-    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'nuevooperario', 'onclick'=>'' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
+    array(array('tipo'=>'link','nombre'=>'ver', 'id' => 'new', 'titulo'=>' Agregar', 'link'=>'', 'onclick'=>'nuevoOperario();' , 'clase'=>'', 'style'=>'', 'col'=>'', 'tipocolor'=>'verde', 'icono'=>'nuevo','tamanio'=>'pequeño',  'adicional'=>'')));
 
 ?>
 </div>
@@ -42,8 +42,51 @@ echo $grid->getGrid(
 
 ?>
 
+<script>
+function nuevoOperario() {
+    let nombre = prompt('Nombre del operario');
+    if (nombre != null) {
+        guardarOperario({
+            id: 0,
+            nombre: nombre
+        });
+    } else {
+        notificacion("El nombre es un campo requerido","error");
+    }
+}
 
+function editarOperario(pid, pnombre) {
+    let nombre = prompt('Nombre del operario', pnombre);
+    if (nombre != null) {
+        guardarOperario({
+            id: pid,
+            nombre: nombre
+        })
+    } else {
+        notificacion("El nombre es un campo requerido","error");
+    }
+}
 
-
-
-
+function guardarOperario(operario) {
+    $.ajax({
+        url: 'guardaroperario',
+        async: 'false',
+        cache: 'false',
+        type: 'POST',
+        data: operario,
+        success: function(response) {
+            data=JSON.parse(response);
+            notificacion(data.message, data.tipo);
+            if (data.success) {
+                location.reload();
+                return true;
+            }
+        },
+        error: function(data) {
+            console.log("Error al guardar operario:");
+            console.log(data);
+            notificacion("Se produjo un error al intentar guardar");
+        },
+    });
+}
+</script>
